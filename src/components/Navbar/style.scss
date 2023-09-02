@@ -1,0 +1,99 @@
+@import '../../index.scss';
+
+.navbar {
+    background-color: #FFF;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    max-width: 200px;
+    border-right: 1px solid $mono;
+    z-index: 55;
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+
+    .ppp-logo-container {
+        margin: 1.5rem 2rem;
+        position: relative;
+        width: 9rem;
+    }
+
+    .ppp-logo {
+        object-fit: contain;
+        height: 100%;
+        width: 100%;
+    }
+
+    nav {
+        padding: 0;
+
+        a {
+            color: $light-grey;
+            text-decoration: none;
+            box-sizing: border-box;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            position: relative;
+            transition-duration: 300ms;
+
+            &:hover {
+                background-color: #f2f5f791;
+            }
+
+            &.active {
+                transition-duration: 500ms;
+                background-color: #F2F5F7;
+                color: $primary;
+
+                &::before {
+                    content: " ";
+                    position: absolute;
+                    height: 100%;
+                    width: 3px;
+                    background-color: $primary;
+                    left: 0;
+                    top: 0;
+
+                }
+            }
+        }
+    }
+
+    .sign-out-btn {
+        color: $light-grey;
+        box-sizing: border-box;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        background-color: transparent;
+        border: none;
+        margin-top: auto;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        transition-duration: 300ms;
+        position: relative;
+
+        &:hover {
+            background-color: $mono;
+            color: rgba(255, 0, 0, 0.857);
+
+            &::before {
+                content: " ";
+                position: absolute;
+                height: 100%;
+                width: 3px;
+                background-color: rgba(255, 0, 0, 0.857);
+                left: 0;
+                top: 0;
+
+            }
+        }
+    }
+}
