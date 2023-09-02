@@ -13,6 +13,8 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
     const isAdmin = auth.roles.includes(ROLES_LIST.Admin);
     const navigate = useNavigate()
 
+    console.log(studentsEmpty);
+
     return (
         <TableContainer component={Paper} elevation={3} sx={{ position: 'relative', boxSizing: 'border-box', borderRadius: 3, zIndex: 10 }}>
             <Box

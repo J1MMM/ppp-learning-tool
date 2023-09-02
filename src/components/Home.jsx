@@ -61,9 +61,12 @@ const Home = () => {
                     isAdmin && setUsers(res2.data)
                     setNoServerRes(false)
                     setStudentsEmpty(false)
-                    if (students.length == 0) {
+
+                    if (res1.data.length == 0) {
                         setStudentsEmpty(true)
                     }
+
+
                 }
             } catch (err) {
                 setNoServerRes(true)
@@ -74,11 +77,16 @@ const Home = () => {
         getData()
 
 
+
+
         return () => {
+
             isMounted = false;
             isMounted && controller.abort();
         }
     }, [])
+
+
 
     const cardData = [
         {
