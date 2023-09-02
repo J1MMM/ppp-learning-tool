@@ -132,7 +132,7 @@ const Lessons = () => {
 
     const lessonsEl = lessons?.map((lesson, index) => {
         const fileExt = lesson.filename.split('.').pop().toLowerCase()
-        docs.push({ uri: `http://localhost:3500/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() })
+        docs.push({ uri: `https://capstone-server-kqsi.onrender.com/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() })
         // setDocs(prev => [...prev, { uri: `http://localhost:3500/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() }])
 
         return <LessonCard
@@ -306,7 +306,7 @@ const Lessons = () => {
                         documents={docs}
                         activeDocument={activeDocs}
                         pluginRenderers={DocViewerRenderers}
-                        style={{ height: 1300 }}
+                        style={{ height: "100%" }}
                         theme={{
                             primary: "#414AE0",
                             secondary: "black",
