@@ -306,7 +306,7 @@ const Lessons = () => {
                         documents={docs}
                         activeDocument={activeDocs}
                         pluginRenderers={DocViewerRenderers}
-                        style={{ height: 700 }}
+                        style={{ height: 1300 }}
                         theme={{
                             primary: "#414AE0",
                             secondary: "black",
