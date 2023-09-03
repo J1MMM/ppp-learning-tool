@@ -1,7 +1,7 @@
 import { Box, Button, Card, Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grow, IconButton, Paper, Slide, TextField, Typography } from '@mui/material';
 import React, { forwardRef, useEffect, useState } from 'react';
 import useAxios from '../hooks/useAxios';
-import { Add, ArrowBack, ArrowBackIosNewRounded, ArrowBackIosNewSharp, Download, DownloadOutlined, FileOpen, Folder, FolderOutlined, MoreVert } from '@mui/icons-material';
+import { Add, ArrowBack, ArrowBackIosNewRounded, ArrowBackIosNewSharp, Close, Download, DownloadOutlined, FileOpen, Folder, FolderOutlined, MoreVert } from '@mui/icons-material';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import useData from '../hooks/useData';
 import useAuth from '../hooks/useAuth';
@@ -132,8 +132,8 @@ const Lessons = () => {
 
     const lessonsEl = lessons?.map((lesson, index) => {
         const fileExt = lesson.filename.split('.').pop().toLowerCase()
-        // docs.push({ uri: `https://capstone-server-kqsi.onrender.com/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() })
-        docs.push({ uri: `http://localhost:3500/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() })
+        docs.push({ uri: `https://capstone-server-kqsi.onrender.com/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() })
+        // docs.push({ uri: `http://localhost:3500/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() })
         // setDocs(prev => [...prev, { uri: `http://localhost:3500/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() }])
 
         return <LessonCard
@@ -295,20 +295,14 @@ const Lessons = () => {
                 TransitionComponent={Transition}
             >
                 <Box>
-                    <Box
-                        display="flex"
-                        justifyContent="space-between"
-                        alignItems="center"
-                    >
 
-                        <Button onClick={() => setOpenVDialog(false)}><ArrowBackIosNewRounded sx={{ mr: 1 }} /> Back</Button>
-                        <Typography variant='h6' mr={5} color="primary.main">File Preview</Typography>
-                    </Box>
+
+                    <Button onClick={() => setOpenVDialog(false)} sx={{ position: 'absolute', top: "3rem", left: 0, zIndex: 10, '&:hover': { color: 'red' } }}><Close sx={{ mr: 1 }} /> Close</Button>
                     <DocViewer
                         documents={docs}
                         activeDocument={activeDocs}
                         pluginRenderers={DocViewerRenderers}
-                        style={{ height: "100%" }}
+                        style={{ height: "100%", minHeight: 750 }}
                         theme={{
                             primary: "#414AE0",
                             secondary: "black",
