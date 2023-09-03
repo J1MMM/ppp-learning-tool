@@ -22,155 +22,158 @@ const StudentsTable = ({
 
 
     return (
-        <TableContainer component={Paper} elevation={3} sx={{ position: 'relative', boxSizing: 'border-box', borderRadius: 3, zIndex: 10 }}>
-            <Box
-                bgcolor='#fff'
-                display='flex'
-                justifyContent='space-between'
-                p={3}
-                pb={1}
-                boxSizing='border-box'
-                position='sticky'
-                top='0'
-                left='0'
-                zIndex='99'
-            >
-                <Box>
-                    <Box display='flex' alignItems='center' gap={1} mb={-.5}>
-                        <Typography variant='h5' >Students Management</Typography>
-                        <Chip label={`${students.length == 0 ? 'Empty' : students.length > 1 ? `${students.length} Students` : `${students.length} Student`}`} sx={{ fontFamily: 'Poppins, sans-serif', color: 'primary.main' }} size='small' />
-                    </Box>
-                    <Typography variant='caption' color='InactiveCaptionText' >Insights and information about different students within the institution.</Typography>
-                </Box>
-
-                <Button
-                    variant='contained'
-                    size='small'
-                    onClick={() => setAddStudentModal(true)} sx={{ mb: 2 }}
+        <Grow in={true}>
+            <TableContainer component={Paper} elevation={3} sx={{ position: 'relative', boxSizing: 'border-box', borderRadius: 3, zIndex: 10 }}>
+                <Box
+                    bgcolor='#fff'
+                    display='flex'
+                    justifyContent='space-between'
+                    p={3}
+                    pb={1}
+                    boxSizing='border-box'
+                    position='sticky'
+                    top='0'
+                    left='0'
+                    zIndex='99'
                 >
-                    <Add />
-                    <Typography pr={1} variant='button'>
-                        Add Student
-                    </Typography>
-                </Button>
-            </Box>
-            <Table sx={{ minWidth: 650, position: 'relative' }} aria-label="simple table" >
-                <TableHead sx={{ bgcolor: '#FCFCFD' }}>
-                    <TableRow>
-                        <TableCell sx={{ color: 'grey', fontSize: 'small' }}>First Name</TableCell>
-                        <TableCell sx={{ color: 'grey', fontSize: 'small' }}>Last Name</TableCell>
-                        <TableCell sx={{ color: 'grey', fontSize: 'small' }}>Middle Name</TableCell>
-                        <TableCell sx={{ color: 'grey', fontSize: 'small' }}>Email</TableCell>
-                        <TableCell sx={{ color: 'grey', fontSize: 'small' }} >Learning Disabilities</TableCell>
-                        {isAdmin && <TableCell sx={{ color: 'grey', fontSize: 'small' }} >Instructor</TableCell>}
-                        <TableCell sx={{ color: 'grey', fontSize: 'small' }} >Actions</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {students?.map((student, index) => {
-                        const fullname = `${student.firstname} ${student.lastname}`
-                        function capitalizeFirstLetter(str) {
-                            return str.charAt(0).toUpperCase() + str.slice(1);
-                        }
+                    <Box>
+                        <Box display='flex' alignItems='center' gap={1} mb={-.5}>
+                            <Typography variant='h5' >Students Management</Typography>
+                            <Chip label={`${students.length == 0 ? 'Empty' : students.length > 1 ? `${students.length} Students` : `${students.length} Student`}`} sx={{ fontFamily: 'Poppins, sans-serif', color: 'primary.main' }} size='small' />
+                        </Box>
+                        <Typography variant='caption' color='InactiveCaptionText' >Insights and information about different students within the institution.</Typography>
+                    </Box>
 
-                        const disabilitiesChip = student.learning_disabilities?.map((item, index) => {
+                    <Button
+                        variant='contained'
+                        size='small'
+                        onClick={() => setAddStudentModal(true)} sx={{ mb: 2 }}
+                    >
+                        <Add />
+                        <Typography pr={1} variant='button'>
+                            Add Student
+                        </Typography>
+                    </Button>
+                </Box>
+                <Table sx={{ minWidth: 650, position: 'relative' }} aria-label="simple table" >
+                    <TableHead sx={{ bgcolor: '#FCFCFD' }}>
+                        <TableRow>
+                            <TableCell sx={{ color: 'grey', fontSize: 'small' }}>First Name</TableCell>
+                            <TableCell sx={{ color: 'grey', fontSize: 'small' }}>Last Name</TableCell>
+                            <TableCell sx={{ color: 'grey', fontSize: 'small' }}>Middle Name</TableCell>
+                            <TableCell sx={{ color: 'grey', fontSize: 'small' }}>Email</TableCell>
+                            <TableCell sx={{ color: 'grey', fontSize: 'small' }} >Learning Disabilities</TableCell>
+                            {isAdmin && <TableCell sx={{ color: 'grey', fontSize: 'small' }} >Instructor</TableCell>}
+                            <TableCell sx={{ color: 'grey', fontSize: 'small' }} >Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {students?.map((student, index) => {
+                            const fullname = `${student.firstname} ${student.lastname}`
+                            function capitalizeFirstLetter(str) {
+                                return str.charAt(0).toUpperCase() + str.slice(1);
+                            }
+
+                            const disabilitiesChip = student.learning_disabilities?.map((item, index) => {
+                                return (
+                                    <Chip key={index} label={capitalizeFirstLetter(item)} sx={{ bgcolor: '#EFF4FF', fontFamily: 'Poppins, sans-serif', color: item == 'dyslexia' ? '#BF2011' : item == 'dysgraphia' ? '#7F56D9' : '#0FC06B', fontSize: 'x-small' }} />
+                                )
+                            })
+
                             return (
-                                <Chip key={index} label={capitalizeFirstLetter(item)} sx={{ bgcolor: '#EFF4FF', fontFamily: 'Poppins, sans-serif', color: item == 'dyslexia' ? '#BF2011' : item == 'dysgraphia' ? '#7F56D9' : '#0FC06B', fontSize: 'x-small' }} />
+                                <TableRow
+                                    hover
+                                    key={index}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell sx={{ fontSize: 'small' }}>{student.firstname}</TableCell>
+                                    <TableCell sx={{ fontSize: 'small' }}>{student.lastname}</TableCell>
+                                    <TableCell sx={{ fontSize: 'small' }}>{student.middlename}</TableCell>
+                                    <TableCell sx={{ fontSize: 'small' }}>
+                                        <Box display='flex' alignItems='center' gap={1}>
+                                            <UserAvatar fullname={fullname} height={'35px'} width={'35px'} fontSize="70%" />
+                                            {student.email}
+                                        </Box>
+                                    </TableCell>
+                                    <TableCell sx={{ fontSize: 'small' }}>
+                                        <Box
+                                            display='flex'
+                                            gap={1}
+                                            flexWrap='wrap'
+                                        >
+                                            {disabilitiesChip}
+                                        </Box>
+                                    </TableCell>
+                                    {isAdmin && <TableCell sx={{ fontSize: 'small' }}>{student.instructor}</TableCell>}
+                                    <TableCell  >
+                                        <Box
+                                            width="fit-content"
+                                            display="flex"
+                                            gap={1}
+                                        >
+                                            <Tooltip title="Delete">
+                                                <IconButton
+                                                    color='error'
+                                                    onClick={() => {
+                                                        setDeleteModal(true)
+                                                        setDeleteStudentId(student._id)
+
+                                                    }}>
+                                                    <DeleteOutline />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title="Edit">
+                                                <IconButton
+                                                    onClick={() => {
+                                                        setUpateStudentModal(true)
+                                                        geStudent(student?._id)
+                                                    }}
+                                                >
+                                                    <EditOutlined />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
                             )
-                        })
+                        })}
+                    </TableBody>
+                </Table>
 
-                        return (
-                            <TableRow
-                                hover
-                                key={index}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell sx={{ fontSize: 'small' }}>{student.firstname}</TableCell>
-                                <TableCell sx={{ fontSize: 'small' }}>{student.lastname}</TableCell>
-                                <TableCell sx={{ fontSize: 'small' }}>{student.middlename}</TableCell>
-                                <TableCell sx={{ fontSize: 'small' }}>
-                                    <Box display='flex' alignItems='center' gap={1}>
-                                        <UserAvatar fullname={fullname} height={'35px'} width={'35px'} fontSize="70%" />
-                                        {student.email}
-                                    </Box>
-                                </TableCell>
-                                <TableCell sx={{ fontSize: 'small' }}>
-                                    <Box
-                                        display='flex'
-                                        gap={1}
-                                        flexWrap='wrap'
-                                    >
-                                        {disabilitiesChip}
-                                    </Box>
-                                </TableCell>
-                                {isAdmin && <TableCell sx={{ fontSize: 'small' }}>{student.instructor}</TableCell>}
-                                <TableCell  >
-                                    <Box
-                                        width="fit-content"
-                                        display="flex"
-                                        gap={1}
-                                    >
-                                        <Tooltip title="Delete">
-                                            <IconButton
-                                                color='error'
-                                                onClick={() => {
-                                                    setDeleteModal(true)
-                                                    setDeleteStudentId(student._id)
+                {studentsEmpty &&
+                    <Grow in={studentsEmpty}>
+                        <Box
 
-                                                }}>
-                                                <DeleteOutline />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Edit">
-                                            <IconButton
-                                                onClick={() => {
-                                                    setUpateStudentModal(true)
-                                                    geStudent(student?._id)
-                                                }}
-                                            >
-                                                <EditOutlined />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </Box>
-                                </TableCell>
-                            </TableRow>
-                        )
-                    })}
-                </TableBody>
-            </Table>
-
-            {studentsEmpty &&
-                <Grow in={studentsEmpty}>
+                            display='flex'
+                            justifyContent="center"
+                            alignItems="center"
+                            flexDirection="column"
+                            gap={2}
+                            margin={5}
+                            boxSizing='border-box'
+                        >
+                            <img src={emptyTable} style={{
+                                maxWidth: '25rem'
+                            }} />
+                            <Typography variant='h4' color='#2F2E41'>No Students Found</Typography>
+                        </Box>
+                    </Grow>
+                }
+                {students < 1 && !studentsEmpty &&
                     <Box
-
-                        display='flex'
+                        width="100%"
+                        display="flex"
                         justifyContent="center"
                         alignItems="center"
-                        flexDirection="column"
-                        gap={2}
-                        margin={5}
-                        boxSizing='border-box'
+                        boxSizing="border-box"
+                        height="50vh"
                     >
-                        <img src={emptyTable} style={{
-                            maxWidth: '25rem'
-                        }} />
-                        <Typography variant='h4' color='#2F2E41'>No Students Found</Typography>
+                        <CircularProgress />
                     </Box>
-                </Grow>
-            }
-            {students < 1 && !studentsEmpty &&
-                <Box
-                    width="100%"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    boxSizing="border-box"
-                    height="50vh"
-                >
-                    <CircularProgress />
-                </Box>
-            }
-        </TableContainer>)
+                }
+            </TableContainer>
+        </Grow>
+    )
 }
 
 export default StudentsTable;

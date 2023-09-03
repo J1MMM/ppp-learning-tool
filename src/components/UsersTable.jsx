@@ -11,7 +11,7 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
     return (
         <>
             {noResponse ? <NoServerResponse show={noResponse} /> :
-                (<TableContainer component={Paper} elevation={3} sx={{ position: 'relative', boxSizing: 'border-box', borderRadius: 3, zIndex: 10 }}>
+                (<Grow in={true}><TableContainer component={Paper} elevation={3} sx={{ position: 'relative', boxSizing: 'border-box', borderRadius: 3, zIndex: 10 }}>
                     <Box
                         bgcolor='#fff'
                         display='flex'
@@ -128,7 +128,7 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                         </Box>
 
                     }
-                </TableContainer>)}
+                </TableContainer></Grow>)}
         </>
     );
 }

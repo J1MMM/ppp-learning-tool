@@ -39,8 +39,9 @@ const AddLessonDialog = ({ open, onClose, disabled, setDisabled, setLessons, set
 
         try {
             const response = await axios.post('/upload', formData)
-            console.log(response);
-            setLessons(prev => [...prev, response.data.result])
+
+            const newData = ({ ...response.data.result, show: true })
+            setLessons(prev => [...prev, newData])
             setSnackMsg(response.data.message)
             setSnackOpen(true)
             setSnackSev("success")

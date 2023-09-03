@@ -34,6 +34,7 @@ const Users = () => {
     const [noResponse, setNoResponse] = useState(false)
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         let isMounted = true;
         const controller = new AbortController();
 

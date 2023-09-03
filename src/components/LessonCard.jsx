@@ -1,5 +1,5 @@
 import { Download, FileOpen, FolderOpen, FolderOpenRounded, FolderOpenSharp, MoreVert, OpenInFullRounded, ViewAgenda, ViewArray } from '@mui/icons-material';
-import { Box, Button, Dialog, Divider, IconButton, Menu, MenuItem, Paper, Slide, Typography } from '@mui/material';
+import { Box, Button, Dialog, Divider, Grow, IconButton, Menu, MenuItem, Paper, Slide, Typography } from '@mui/material';
 import React, { forwardRef, useState } from 'react';
 import useAxios from '../hooks/useAxios';
 
@@ -28,7 +28,8 @@ const LessonCard =
         setDeleteModal,
         setDeleteFilename,
         setDeleteID,
-        handleViewFile
+        handleViewFile,
+        show
     }) => {
         const axios = useAxios()
         const [cardElevation, setCardElevation] = useState(3)
@@ -76,79 +77,81 @@ const LessonCard =
 
 
         return (
-            <Paper
-                elevation={cardElevation}
-                onMouseEnter={() => setCardElevation(5)}
-                onMouseLeave={() => setCardElevation(3)}
-                sx={{
-                    width: '100%',
-                    maxWidth: '300px',
-                    height: '300px',
-                    boxSizing: 'border-box',
-                    display: 'flex',
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    borderRadius: 3,
-                    overflow: "hidden",
-                    position: 'relative',
-                }}
-            >
-
-                <Box
-                    position="relative"
-                    width="100%"
-                    height="100%"
-                    maxHeight="120px"
-                    overflow="hidden"
-                    display="flex"
-                    flexDirection="column"
-                    p={2}
-                    boxSizing="border-box"
+            <Grow in={show} >
+                <Paper
+                    elevation={cardElevation}
+                    onMouseEnter={() => setCardElevation(5)}
+                    onMouseLeave={() => setCardElevation(3)}
+                    sx={{
+                        width: '100%',
+                        maxWidth: '300px',
+                        height: '300px',
+                        boxSizing: 'border-box',
+                        display: 'flex',
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        borderRadius: 3,
+                        overflow: "hidden",
+                        position: 'relative',
+                    }}
                 >
-                    <Typography variant='h6' zIndex={5} color="#FFF">{title}</Typography>
-                    <Typography variant='caption' zIndex={5} color="#FFF">{fullname}</Typography>
 
-                    <IconButton
-                        color='common'
-                        size='large'
-                        sx={{ position: 'absolute', top: 1, right: 1, zIndex: 5 }}
-                        onClick={(e) => setAnchorEl(e.currentTarget)}
+                    <Box
+                        position="relative"
+                        width="100%"
+                        height="100%"
+                        maxHeight="120px"
+                        overflow="hidden"
+                        display="flex"
+                        flexDirection="column"
+                        p={2}
+                        boxSizing="border-box"
                     >
-                        <MoreVert />
-                    </IconButton>
+                        <Typography variant='h6' zIndex={5} color="#FFF">{title}</Typography>
+                        <Typography variant='caption' zIndex={5} color="#FFF">{fullname}</Typography>
 
-                    <img src={banner[stringToNumber(id)]} style={{ position: 'absolute', objectFit: 'cover', height: '100%', width: '100%', top: 0, left: 0, zIndex: 3, }} draggable="false" />
-                    <Box bgcolor="black" position="absolute" height="100%" width="100%" top="0" left="0" sx={{ opacity: .3 }} zIndex={4} />
-                </Box>
+                        <IconButton
+                            color='common'
+                            size='large'
+                            sx={{ position: 'absolute', top: 1, right: 1, zIndex: 5 }}
+                            onClick={(e) => setAnchorEl(e.currentTarget)}
+                        >
+                            <MoreVert />
+                        </IconButton>
 
-                <Box
-                    // border="1px solid red"
-                    display="flex"
-                    justifyContent="flex-end"
-                    alignItems="center"
-                    p={1}
-                    boxSizing="border-box"
-                    position="relative"
-                    gap={1}
-                >
-                    <Divider sx={{ position: 'absolute', width: '100%', top: 0, left: 0 }} />
+                        <img src={banner[stringToNumber(id)]} style={{ position: 'absolute', objectFit: 'cover', height: '100%', width: '100%', top: 0, left: 0, zIndex: 3, }} draggable="false" />
+                        <Box bgcolor="black" position="absolute" height="100%" width="100%" top="0" left="0" sx={{ opacity: .3 }} zIndex={4} />
+                    </Box>
 
-                    <Button size='small' onClick={() => handleDownload(filename)}>download</Button>
-                    <Button size='small' onClick={() => handleViewFile(filename, index)}>preview</Button>
-                </Box>
+                    <Box
+                        // border="1px solid red"
+                        display="flex"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        p={1}
+                        boxSizing="border-box"
+                        position="relative"
+                        gap={1}
+                    >
+                        <Divider sx={{ position: 'absolute', width: '100%', top: 0, left: 0 }} />
 
-                <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={() => setAnchorEl(null)}
-                >
-                    <MenuItem onClick={() => { setEditLessonOpen(true); setLessonToEditID(id); handleEditLesson(id) }}>Edit</MenuItem>
-                    <MenuItem onClick={() => { setDeleteModal(true); setDeleteID(id), setDeleteFilename(filename), setAnchorEl(null) }}>Delete</MenuItem>
+                        <Button size='small' onClick={() => handleDownload(filename)}>download</Button>
+                        <Button size='small' onClick={() => handleViewFile(filename, index)}>preview</Button>
+                    </Box>
 
-                </Menu>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={() => setAnchorEl(null)}
+                    >
+                        <MenuItem onClick={() => { setEditLessonOpen(true); setLessonToEditID(id); handleEditLesson(id) }}>Edit</MenuItem>
+                        <MenuItem onClick={() => { setDeleteModal(true); setDeleteID(id), setDeleteFilename(filename), setAnchorEl(null) }}>Delete</MenuItem>
 
-            </Paper>
+                    </Menu>
+
+                </Paper>
+            </Grow >
         );
     }
 

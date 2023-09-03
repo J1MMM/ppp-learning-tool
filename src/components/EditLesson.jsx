@@ -35,7 +35,7 @@ const EditLesson = ({ open, onClose, disabled, setDisabled, lessonToEditID, setS
             console.log(response);
             setLessons(prev => prev?.map(user => {
                 if (user?._id == response?.data?.result?._id) {
-                    return response?.data?.result
+                    return ({ ...response.data.result, show: true })
                 } else {
                     return user
                 }

@@ -58,6 +58,7 @@ const Lessons = () => {
 
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         let isMounted = true;
         const controller = new AbortController();
 
@@ -72,11 +73,8 @@ const Lessons = () => {
                     setEmpty(true)
                     return null;
                 }
-                console.log(response.data);
-
                 setEmpty(false)
-                isMounted && setLessons(response.data)
-                console.log(response.data);
+                isMounted && setLessons(response.data.map(data => ({ ...data, show: true })))
             } catch (err) {
                 if (err.response.status === 401) {
                     setUnAuthorized(true)
@@ -95,6 +93,8 @@ const Lessons = () => {
     }, [])
 
     const deleteLesson = async () => {
+        setLessons(prev => prev.map(data => (data._id == deletID ? { ...data, show: false } : data)))
+
         try {
             const res = await axiosPrivate.delete('/upload', {
                 data: {
@@ -102,8 +102,8 @@ const Lessons = () => {
                     "filename": deletFilename
                 }
             })
-
             console.log(res);
+
             setLessons(prev => prev.filter(item => item._id !== deletID))
             console.log(lessons);
 
@@ -132,7 +132,8 @@ const Lessons = () => {
 
     const lessonsEl = lessons?.map((lesson, index) => {
         const fileExt = lesson.filename.split('.').pop().toLowerCase()
-        docs.push({ uri: `https://capstone-server-kqsi.onrender.com/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() })
+        // docs.push({ uri: `https://capstone-server-kqsi.onrender.com/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() })
+        docs.push({ uri: `http://localhost:3500/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() })
         // setDocs(prev => [...prev, { uri: `http://localhost:3500/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() }])
 
         return <LessonCard
@@ -152,6 +153,7 @@ const Lessons = () => {
             setDeleteID={setDeleteID}
             docs={docs}
             handleViewFile={handleViewFile}
+            show={lesson.show}
         />
     })
 

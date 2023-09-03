@@ -129,8 +129,8 @@ const Layout = () => {
                                 <Typography zIndex="2" variant='caption' >{email}</Typography>
 
                                 <Box mt={2} display="flex" alignItems="center" gap={1}>
-                                    {auth.roles.map(role => {
-                                        return role && <Chip label={Object.keys(ROLES_LIST).find(key => ROLES_LIST[key] == role)} color={role == 5150 ? 'secondary' : 'primary'} size='small' />
+                                    {auth.roles.map((role, index) => {
+                                        return role && <Chip key={index} label={Object.keys(ROLES_LIST).find(key => ROLES_LIST[key] == role)} color={role == 5150 ? 'secondary' : 'primary'} size='small' />
                                     })}
                                 </Box>
                             </Box>

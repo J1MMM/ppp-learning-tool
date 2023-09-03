@@ -38,6 +38,7 @@ const Students = () => {
 
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         let isMounted = true;
         const controller = new AbortController();
 

@@ -1,6 +1,6 @@
 import './App.scss'
 import Layout from './components/Layout'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, ScrollRestoration } from 'react-router-dom'
 import Home from './components/Home'
 import Missing from './components/Missing'
 import RequireAuth from './components/RequireAuth'
@@ -12,6 +12,7 @@ import Lessons from './components/Lessons'
 import Students from './components/Students'
 import LoginComponenet from './components/LoginComponent'
 import SwiperComp from './components/SwiperComp'
+import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   return (
@@ -37,7 +38,6 @@ function App() {
 
           {/* catch all  */}
         </Route>
-
         <Route path='*' element={<Missing />} />
       </Route>
     </Routes>

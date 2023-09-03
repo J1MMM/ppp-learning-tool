@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, ScrollRestoration, useNavigate } from 'react-router-dom';
 import UseLogout from '../hooks/useLogout';
 import useAuth from '../hooks/useAuth';
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button, Grow, Paper, Typography } from '@mui/material';
 import { HiOutlineUserGroup, HiMiniArrowSmallUp, HiMiniArrowUp } from 'react-icons/hi2';
 import { ArrowUpward, FolderShared, FolderSharedOutlined } from '@mui/icons-material';
 import { PiFolderSimpleUserDuotone } from "react-icons/pi";
@@ -22,6 +22,7 @@ import StudentsLeaderborad from './StudentsLeaderborad';
 import { BiBrain, BiPencil, BiSolidPencil } from "react-icons/bi";
 import { GoNumber } from "react-icons/go";
 import { MdOutlineDraw } from "react-icons/md";
+import ScrollToTop from './ScrollToTop';
 
 const Home = () => {
     const { students, users, lessons, setStudents, setUsers, setLessons } = useData();
@@ -38,7 +39,9 @@ const Home = () => {
 
     const isAdmin = Boolean(auth?.roles?.find(role => role === ROLES_LIST.Admin))
 
+
     useEffect(() => {
+        window.scrollTo(0, 0);
         let isMounted = true;
         const controller = new AbortController();
 
@@ -57,7 +60,7 @@ const Home = () => {
 
                 if (isMounted) {
                     setStudents(res1.data);
-                    setLessons(res3.data)
+                    setLessons(res3.data.map(data => ({ ...data, show: true })))
                     isAdmin && setUsers(res2.data)
                     setNoServerRes(false)
                     setStudentsEmpty(false)
@@ -124,7 +127,6 @@ const Home = () => {
     return (
         <Box display="flex" flexDirection="column" gap={2}>
             <Box display="flex" gap={2}>
-
                 <Box
                     className="card-container"
                     display="grid"
@@ -133,10 +135,11 @@ const Home = () => {
                 >
                     {cardEl}
                 </Box>
-
-                <Paper elevation={2} sx={{ bgcolor: "#FFF", width: "100%", borderRadius: 2, overflow: 'hidden', minHeight: '395px' }}>
-                    <Calendar value={date} />
-                </Paper>
+                <Grow in={true} >
+                    <Paper elevation={2} sx={{ bgcolor: "#FFF", width: "100%", borderRadius: 2, overflow: 'hidden', minHeight: '395px' }}>
+                        <Calendar value={date} />
+                    </Paper>
+                </Grow>
             </Box>
 
             <StudentsLeaderborad students={students} studentsEmpty={studentsEmpty} />
