@@ -90,7 +90,7 @@ const StudentsTable = ({
                                 <TableCell sx={{ fontSize: 'small' }}>{student.middlename}</TableCell>
                                 <TableCell sx={{ fontSize: 'small' }}>
                                     <Box display='flex' alignItems='center' gap={1}>
-                                        <UserAvatar fullname={fullname} height={'35px'} width={'35px'} />
+                                        <UserAvatar fullname={fullname} height={'35px'} width={'35px'} fontSize="70%" />
                                         {student.email}
                                     </Box>
                                 </TableCell>

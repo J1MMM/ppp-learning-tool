@@ -4,7 +4,7 @@ import './style.scss'
 import Navbar from '../Navbar';
 import { BsChevronDown } from 'react-icons/bs'
 import useAuth from '../../hooks/useAuth';
-import { Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
+import { Avatar, Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
 import { AccountCircle, ArrowBackIosNewSharp, ArrowCircleDownSharp, ArrowDownward, ArrowDownwardSharp, ArrowDropDown, ContentCut, KeyboardArrowDown, Logout, PersonAdd, VisibilityOff } from '@mui/icons-material';
 import { FiUser } from 'react-icons/fi';
 import { HiUser, HiUsers } from 'react-icons/hi2';
@@ -85,9 +85,10 @@ const Layout = () => {
 
                         {
                             fullname &&
-                            <IconButton onClick={handleClick}>
+                            <IconButton onClick={handleClick} sx={{ borderRadius: 1 }} >
                                 <UserAvatar
                                     fullname={auth.fullname}
+                                    variant="rounded"
                                 />
                             </IconButton>
                         }
@@ -104,13 +105,41 @@ const Layout = () => {
                             MenuListProps={{
                                 'aria-labelledby': 'basic-button',
                             }}
-                        >
 
-                            <MenuItem onClick={() => setOpenDialog(true)}>
-                                <ListItemIcon>
+                        >
+                            <Box
+                                minWidth="300px"
+                                display="flex"
+                                flexDirection="column"
+                                alignItems="center"
+                                // border="1px solid red"
+                                pt={5}
+                                mb={5}
+                            >
+                                <Box bgcolor="primary.main" width="100%" height="100px" position="absolute" zIndex="1" top="-8px" left="0" />
+
+                                <UserAvatar
+                                    fullname={auth.fullname}
+                                    height="70px"
+                                    width="70px"
+                                    border="3px solid #FFF"
+                                    fontSize="2rem"
+                                />
+                                <Typography zIndex="2" variant='h6' mt={1}>{fullname}</Typography>
+                                <Typography zIndex="2" variant='caption' >{email}</Typography>
+
+                                <Box mt={2} display="flex" alignItems="center" gap={1}>
+                                    {auth.roles.map(role => {
+                                        return role && <Chip label={Object.keys(ROLES_LIST).find(key => ROLES_LIST[key] == role)} color={role == 5150 ? 'secondary' : 'primary'} size='small' />
+                                    })}
+                                </Box>
+                            </Box>
+
+                            <MenuItem sx={{ p: 2 }} onClick={() => setOpenDialog(true)}>
+                                <ListItemIcon sx={{ ml: 3 }}>
                                     <Logout />
                                 </ListItemIcon>
-                                <ListItemText>Sign out</ListItemText>
+                                <Typography>Sign out my Account</Typography>
                             </MenuItem>
 
                         </Menu>

@@ -78,13 +78,13 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                                 <TableCell >{student.middlename}</TableCell>
                                 <TableCell >
                                     <Box display='flex' alignItems='center' gap={1}>
-                                        <UserAvatar fullname={fullname} height={'35px'} width={'35px'} />
+                                        <UserAvatar fullname={fullname} height={'35px'} width={'35px'} fontSize="70%" />
                                         {student.email}
                                     </Box>
                                 </TableCell>
                                 {isAdmin && <TableCell >{student.instructor}</TableCell>}
                                 <TableCell>
-                                    <Typography width="fit-content" borderRadius={3} color="#6d64d8" p=".1rem .8rem" bgcolor="#ecf2ff">25 stars</Typography>
+                                    <Typography width="fit-content" borderRadius={3} color="#6d64d8" p=".1rem .8rem" bgcolor="#ecf2ff">{student.stars} {student.stars > 1 ? "stars" : "star"}</Typography>
                                 </TableCell>
                             </TableRow>
                         )

@@ -1,7 +1,7 @@
 import { Avatar } from '@mui/material';
 import React from 'react';
 
-const UserAvatar = ({ fullname, height, width }) => {
+const UserAvatar = ({ fullname, height, width, variant, border, fontSize }) => {
     const aHeight = height || '40px'
     const aWidth = width || '40px'
 
@@ -44,10 +44,12 @@ const UserAvatar = ({ fullname, height, width }) => {
         return {
             sx: {
                 bgcolor: stringToColor(name),
-                fontSize: '70%',
+                fontSize: fontSize,
                 width: aWidth,
                 height: aHeight,
                 fontFamily: 'Poppins, sans-serif',
+                zIndex: 5,
+                border: border
 
             },
             children: `${formattedFullname.split(' ')[0][0]}${formattedFullname.split(' ')[1][0]}`,
@@ -55,7 +57,7 @@ const UserAvatar = ({ fullname, height, width }) => {
     }
 
     return (
-        <Avatar variant='circular' {...stringAvatar(fullname)} />
+        <Avatar variant={variant} {...stringAvatar(fullname)} />
     )
 }
 

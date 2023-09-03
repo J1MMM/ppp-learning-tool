@@ -93,7 +93,7 @@ const Home = () => {
             "title": "Total Students",
             "data": students.length,
             "icon": <HiOutlineUserGroup color={"#FFF"} size={20} />,
-            "subText": "overall number of enrolled students"
+            "subText": isAdmin ? "total count of registered students" : "students registered inside your class"
 
         },
         {

@@ -71,7 +71,7 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                                         <TableCell sx={{ fontSize: 'medium' }}>{user.middlename}</TableCell>
                                         <TableCell sx={{ fontSize: 'medium' }}>
                                             <Box display='flex' alignItems='center' gap={1}>
-                                                <UserAvatar fullname={fullname} height={'35px'} width={'35px'} />
+                                                <UserAvatar fullname={fullname} height={'35px'} width={'35px'} fontSize="70%" />
                                                 {user.email}
                                             </Box>
                                         </TableCell>
