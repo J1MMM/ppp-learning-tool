@@ -4,7 +4,7 @@ import InputFile from './InputFile';
 import { Delete, Description } from '@mui/icons-material';
 import useAxios from '../hooks/useAxios';
 
-const EditLesson = ({ open, onClose, disabled, setDisabled, lessonToEditID, setSnackSev, setSnackMsg, setLessons, setSnackOpen, setEmpty, lessons, newFile, newTitle, setNewFile, setNewTitle }) => {
+const EditLesson = ({ baseURI, open, onClose, disabled, setDisabled, lessonToEditID, setSnackSev, setSnackMsg, setLessons, setSnackOpen, setEmpty, lessons, newFile, newTitle, setNewFile, setNewTitle }) => {
     const axios = useAxios()
 
 
@@ -33,11 +33,13 @@ const EditLesson = ({ open, onClose, disabled, setDisabled, lessonToEditID, setS
         try {
             const response = await axios.put('/upload', formData)
             console.log(response);
-            setLessons(prev => prev?.map(user => {
-                if (user?._id == response?.data?.result?._id) {
-                    return ({ ...response.data.result, show: true })
+            setLessons(prev => prev?.map(lesson => {
+                const fileExt = response.data.result.filename.split('.').pop().toLowerCase()
+
+                if (lesson._id == response.data.result._id) {
+                    return ({ ...response.data.result, show: true, uri: `${baseURI}${response.data.result.filename}`, fileType: fileExt, fileName: response.data.result.filename.split('_').pop() })
                 } else {
-                    return user
+                    return lesson
                 }
             }))
             setSnackMsg(response?.data?.message)
@@ -53,7 +55,6 @@ const EditLesson = ({ open, onClose, disabled, setDisabled, lessonToEditID, setS
         onClose(false)
         setDisabled(false)
     }
-
     return (
         <Dialog open={open} onClose={() => onClose(false)} >
             <form onSubmit={handleEditLesson} style={{ minWidth: '500px', maxWidth: '500px' }}>

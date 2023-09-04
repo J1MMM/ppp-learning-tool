@@ -136,7 +136,7 @@ const LessonCard =
                         <Divider sx={{ position: 'absolute', width: '100%', top: 0, left: 0 }} />
 
                         <Button size='small' onClick={() => handleDownload(filename)}>download</Button>
-                        <Button size='small' onClick={() => handleViewFile(filename, index)}>preview</Button>
+                        <Button size='small' onClick={() => handleViewFile(index)}>preview</Button>
                     </Box>
 
                     <Menu

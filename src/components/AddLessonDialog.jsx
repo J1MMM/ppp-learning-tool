@@ -4,7 +4,7 @@ import useAxios from '../hooks/useAxios';
 import { CloudDownload, CloudUpload, Delete, Description, Done, DownloadDone, FileDownloadDone, FileUpload, FileUploadOutlined, Folder, InsertDriveFile, InsertDriveFileOutlined, UploadFile } from '@mui/icons-material';
 import InputFile from './InputFile';
 
-const AddLessonDialog = ({ open, onClose, disabled, setDisabled, setLessons, setSnackMsg, setSnackOpen, setSnackSev, snackSev, snackOpen, snackMsg, setEmpty }) => {
+const AddLessonDialog = ({ baseURI, open, onClose, disabled, setDisabled, setLessons, setSnackMsg, setSnackOpen, setSnackSev, snackSev, snackOpen, snackMsg, setEmpty }) => {
     const axios = useAxios();
 
     const [title, setTitle] = useState("")
@@ -40,8 +40,11 @@ const AddLessonDialog = ({ open, onClose, disabled, setDisabled, setLessons, set
         try {
             const response = await axios.post('/upload', formData)
 
-            const newData = ({ ...response.data.result, show: true })
-            setLessons(prev => [...prev, newData])
+            const fileExt = response.data.result.filename.split('.').pop().toLowerCase()
+            const fileName = response.data.result.filename.split('_').pop()
+            const newData = ({ ...response.data.result, show: true, uri: `${baseURI}${response.data.result.filename}`, fileType: fileExt, fileName: fileName })
+
+            setLessons(prev => ([...prev, newData]))
             setSnackMsg(response.data.message)
             setSnackOpen(true)
             setSnackSev("success")

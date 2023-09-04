@@ -1,7 +1,7 @@
 import { Box, Button, Card, Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grow, IconButton, Paper, Slide, TextField, Typography } from '@mui/material';
 import React, { forwardRef, useEffect, useState } from 'react';
 import useAxios from '../hooks/useAxios';
-import { Add, ArrowBack, ArrowBackIosNewRounded, ArrowBackIosNewSharp, Close, Download, DownloadOutlined, FileOpen, Folder, FolderOutlined, MoreVert } from '@mui/icons-material';
+import { Add, ArrowBack, ArrowBackIos, ArrowBackIosNewRounded, ArrowBackIosNewSharp, ArrowLeft, ArrowLeftOutlined, ChevronLeft, Close, Download, DownloadOutlined, FileOpen, Folder, FolderOutlined, ForkLeft, MoreVert } from '@mui/icons-material';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import useData from '../hooks/useData';
 import useAuth from '../hooks/useAuth';
@@ -14,15 +14,8 @@ import NoServerResponse from './NoServerResponse';
 import EditLesson from './EditLesson';
 import ConfirmationDialog from './ConfirmationDialog';
 import Unauthorized from './Unauthorized';
-
-import banner1 from '../assets/images/banner1.webp'
-import banner2 from '../assets/images/banner2.svg'
-import banner3 from '../assets/images/banner3.jpg'
-import banner4 from '../assets/images/banner4.jpg'
-import banner5 from '../assets/images/banner5.jpg'
-import banner6 from '../assets/images/banner6.jpg'
-import banner7 from '../assets/images/banner7.jpg'
 import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
+
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -30,6 +23,10 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 
 const Lessons = () => {
+    // const BASE_URI = "http://localhost:3500/view/"
+    const BASE_URI = "https://capstone-server-kqsi.onrender.com/view/"
+
+
     const axiosPrivate = useAxiosPrivate();
     const { lessons, setLessons } = useData()
     const { auth } = useAuth()
@@ -74,7 +71,13 @@ const Lessons = () => {
                     return null;
                 }
                 setEmpty(false)
-                isMounted && setLessons(response.data.map(data => ({ ...data, show: true })))
+                isMounted && setLessons(response.data.map(lesson => {
+                    const fileExt = lesson.filename.split('.').pop().toLowerCase()
+
+                    return { ...lesson, show: true, uri: `${BASE_URI}${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() }
+
+                }))
+
             } catch (err) {
                 if (err.response.status === 401) {
                     setUnAuthorized(true)
@@ -92,6 +95,7 @@ const Lessons = () => {
         }
     }, [])
 
+
     const deleteLesson = async () => {
         setLessons(prev => prev.map(data => (data._id == deletID ? { ...data, show: false } : data)))
 
@@ -104,7 +108,6 @@ const Lessons = () => {
             })
             console.log(res);
 
-            setLessons(prev => prev.filter(item => item._id !== deletID))
             console.log(lessons);
 
             if (lessons.length <= 1) {
@@ -113,6 +116,9 @@ const Lessons = () => {
         } catch (error) {
             console.log(error);
         }
+
+        setLessons(prev => prev.filter(item => item._id !== deletID))
+
     }
 
     const handleEditLesson = (id) => {
@@ -120,21 +126,18 @@ const Lessons = () => {
         setNewTitle(card.title)
     }
 
-    const docs = [];
-    const [activeDocs, setActiveDocs] = useState(docs[0])
+    const [activeDocs, setActiveDocs] = useState(lessons[0])
     const [openVDialog, setOpenVDialog] = useState(false)
 
-    const handleViewFile = (filename, index) => {
-        console.log(docs[index]);
-        setActiveDocs(docs[index])
+    const handleViewFile = (index) => {
+        setActiveDocs(prev => {
+            return lessons[index]
+        })
         setOpenVDialog(true)
     };
 
+
     const lessonsEl = lessons?.map((lesson, index) => {
-        const fileExt = lesson.filename.split('.').pop().toLowerCase()
-        docs.push({ uri: `https://capstone-server-kqsi.onrender.com/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() })
-        // docs.push({ uri: `http://localhost:3500/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() })
-        // setDocs(prev => [...prev, { uri: `http://localhost:3500/view/${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() }])
 
         return <LessonCard
             index={index}
@@ -143,7 +146,6 @@ const Lessons = () => {
             title={lesson.title}
             filename={lesson.filename}
             fullname={lesson.instructor}
-            img={banner1}
             deleteLesson={deleteLesson}
             setEditLessonOpen={setEditLessonOpen}
             setLessonToEditID={setLessonToEditID}
@@ -151,7 +153,6 @@ const Lessons = () => {
             setDeleteModal={setDeleteModal}
             setDeleteFilename={setDeleteFilename}
             setDeleteID={setDeleteID}
-            docs={docs}
             handleViewFile={handleViewFile}
             show={lesson.show}
         />
@@ -207,6 +208,7 @@ const Lessons = () => {
             </Box>
 
             <AddLessonDialog
+                baseURI={BASE_URI}
                 disabled={submitDisabled}
                 setDisabled={setSubmitDisabled}
                 open={addLessonOpen}
@@ -238,6 +240,7 @@ const Lessons = () => {
                 setNewFile={setNewFile}
                 newTitle={newTitle}
                 setNewTitle={setNewTitle}
+                baseURI={BASE_URI}
             />
 
             <SnackBar
@@ -294,26 +297,26 @@ const Lessons = () => {
                 onClose={() => setOpenVDialog(false)}
                 TransitionComponent={Transition}
             >
-                <Box>
+                <Button onClick={() => setOpenVDialog(false)} sx={{ position: 'absolute', top: "3rem", left: 0, zIndex: 10, '&:hover': { color: 'red' } }} size='large'>
+                    <ChevronLeft fontSize='medium' />
+                    back
+                </Button>
 
-
-                    <Button onClick={() => setOpenVDialog(false)} sx={{ position: 'absolute', top: "3rem", left: 0, zIndex: 10, '&:hover': { color: 'red' } }}><Close sx={{ mr: 1 }} /> Close</Button>
-                    <DocViewer
-                        documents={docs}
-                        activeDocument={activeDocs}
-                        pluginRenderers={DocViewerRenderers}
-                        style={{ height: "100%", minHeight: 750 }}
-                        theme={{
-                            primary: "#414AE0",
-                            secondary: "black",
-                            tertiary: "#c8cef7",
-                            textPrimary: "#FFF",
-                            textSecondary: "#5296d8",
-                            textTertiary: "red",
-                            disableThemeScrollbar: false,
-                        }}
-                    />
-                </Box>
+                <DocViewer
+                    documents={lessons}
+                    activeDocument={activeDocs}
+                    pluginRenderers={DocViewerRenderers}
+                    style={{ height: "100%", minHeight: 750 }}
+                    theme={{
+                        primary: "#414AE0",
+                        secondary: "black",
+                        tertiary: "#c8cef7",
+                        textPrimary: "#FFF",
+                        textSecondary: "#5296d8",
+                        textTertiary: "red",
+                        disableThemeScrollbar: false,
+                    }}
+                />
             </Dialog>
 
         </Paper>

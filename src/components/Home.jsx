@@ -25,7 +25,7 @@ import { MdOutlineDraw } from "react-icons/md";
 import ScrollToTop from './ScrollToTop';
 
 const Home = () => {
-    const { students, users, lessons, setStudents, setUsers, setLessons } = useData();
+    const { students, users, setStudents, setUsers } = useData();
     const { auth } = useAuth()
     const axiosPrivate = useAxiosPrivate()
 
@@ -54,13 +54,10 @@ const Home = () => {
                 const res2 = isAdmin ? await axiosPrivate.get('/users', {
                     signal: controller.signal
                 }) : null
-                const res3 = await axiosPrivate.get('/upload', {
-                    signal: controller.signal
-                });
+
 
                 if (isMounted) {
                     setStudents(res1.data);
-                    setLessons(res3.data.map(data => ({ ...data, show: true })))
                     isAdmin && setUsers(res2.data)
                     setNoServerRes(false)
                     setStudentsEmpty(false)
