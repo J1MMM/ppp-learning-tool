@@ -23,8 +23,8 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 
 const Lessons = () => {
-    // const BASE_URI = "http://localhost:3500/view/"
-    const BASE_URI = "https://capstone-server-kqsi.onrender.com/view/"
+    const BASE_URI = "http://localhost:3500/view/"
+    // const BASE_URI = "https://capstone-server-kqsi.onrender.com/view/"
 
 
     const axiosPrivate = useAxiosPrivate();
@@ -74,7 +74,7 @@ const Lessons = () => {
                 isMounted && setLessons(response.data.map(lesson => {
                     const fileExt = lesson.filename.split('.').pop().toLowerCase()
 
-                    return { ...lesson, show: true, uri: `${BASE_URI}${lesson.filename}`, fileType: fileExt, fileName: lesson.filename.split('_').pop() }
+                    return { ...lesson, show: true, uri: lesson.downloadURL, fileType: fileExt, fileName: lesson.filename.split('_').pop() }
 
                 }))
 
@@ -142,10 +142,6 @@ const Lessons = () => {
         return <LessonCard
             index={index}
             key={index}
-            id={lesson._id}
-            title={lesson.title}
-            filename={lesson.filename}
-            fullname={lesson.instructor}
             deleteLesson={deleteLesson}
             setEditLessonOpen={setEditLessonOpen}
             setLessonToEditID={setLessonToEditID}
@@ -155,9 +151,11 @@ const Lessons = () => {
             setDeleteID={setDeleteID}
             handleViewFile={handleViewFile}
             show={lesson.show}
+            lesson={lesson}
         />
     })
 
+    console.log(lessons);
 
     if (noResponse) return <NoServerResponse show={noResponse} />;
     if (unAuthorized) return <Unauthorized show={unAuthorized} />;

@@ -1,4 +1,4 @@
-import { Download, FileOpen, FolderOpen, FolderOpenRounded, FolderOpenSharp, MoreVert, OpenInFullRounded, ViewAgenda, ViewArray } from '@mui/icons-material';
+import { Block, Download, FileOpen, FolderOpen, FolderOpenRounded, FolderOpenSharp, MoreVert, OpenInFullRounded, ViewAgenda, ViewArray } from '@mui/icons-material';
 import { Box, Button, Dialog, Divider, Grow, IconButton, Menu, MenuItem, Paper, Slide, Typography } from '@mui/material';
 import React, { forwardRef, useState } from 'react';
 import useAxios from '../hooks/useAxios';
@@ -17,19 +17,16 @@ import banner10 from '../assets/images/banner10.jpg'
 
 const LessonCard =
     ({
-        id,
+        lesson,
         index,
-        fullname,
-        title,
         setEditLessonOpen,
         setLessonToEditID,
         handleEditLesson,
-        filename,
         setDeleteModal,
         setDeleteFilename,
         setDeleteID,
         handleViewFile,
-        show
+        show,
     }) => {
         const axios = useAxios()
         const [cardElevation, setCardElevation] = useState(3)
@@ -62,6 +59,7 @@ const LessonCard =
                 })
 
                 const url = window.URL.createObjectURL(new Blob([response.data]));
+                // const url = lessons.downloadURL;
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = filename;
@@ -95,7 +93,6 @@ const LessonCard =
                         position: 'relative',
                     }}
                 >
-
                     <Box
                         position="relative"
                         width="100%"
@@ -107,8 +104,8 @@ const LessonCard =
                         p={2}
                         boxSizing="border-box"
                     >
-                        <Typography variant='h6' zIndex={5} color="#FFF">{title}</Typography>
-                        <Typography variant='caption' zIndex={5} color="#FFF">{fullname}</Typography>
+                        <Typography variant='h6' zIndex={5} color="#FFF">{lesson.title}</Typography>
+                        <Typography variant='caption' zIndex={5} color="#FFF">{lesson.fullname}</Typography>
 
                         <IconButton
                             color='common'
@@ -119,7 +116,7 @@ const LessonCard =
                             <MoreVert />
                         </IconButton>
 
-                        <img src={banner[stringToNumber(id)]} style={{ position: 'absolute', objectFit: 'cover', height: '100%', width: '100%', top: 0, left: 0, zIndex: 3, }} draggable="false" />
+                        <img src={banner[stringToNumber(lesson._id)]} style={{ position: 'absolute', objectFit: 'cover', height: '100%', width: '100%', top: 0, left: 0, zIndex: 3, }} draggable="false" />
                         <Box bgcolor="black" position="absolute" height="100%" width="100%" top="0" left="0" sx={{ opacity: .3 }} zIndex={4} />
                     </Box>
 
@@ -135,7 +132,7 @@ const LessonCard =
                     >
                         <Divider sx={{ position: 'absolute', width: '100%', top: 0, left: 0 }} />
 
-                        <Button size='small' onClick={() => handleDownload(filename)}>download</Button>
+                        <Button size='small' onClick={() => handleDownload(lesson.filename)}>download</Button>
                         <Button size='small' onClick={() => handleViewFile(index)}>preview</Button>
                     </Box>
 
@@ -145,11 +142,10 @@ const LessonCard =
                         open={open}
                         onClose={() => setAnchorEl(null)}
                     >
-                        <MenuItem onClick={() => { setEditLessonOpen(true); setLessonToEditID(id); handleEditLesson(id) }}>Edit</MenuItem>
-                        <MenuItem onClick={() => { setDeleteModal(true); setDeleteID(id), setDeleteFilename(filename), setAnchorEl(null) }}>Delete</MenuItem>
+                        <MenuItem onClick={() => { setEditLessonOpen(true); setLessonToEditID(lesson._id); handleEditLesson(lesson._id) }}>Edit</MenuItem>
+                        <MenuItem onClick={() => { setDeleteModal(true); setDeleteID(lesson._id), setDeleteFilename(lesson.filename), setAnchorEl(null) }}>Delete</MenuItem>
 
                     </Menu>
-
                 </Paper>
             </Grow >
         );

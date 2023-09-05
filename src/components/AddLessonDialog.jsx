@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import useAxios from '../hooks/useAxios';
 import { CloudDownload, CloudUpload, Delete, Description, Done, DownloadDone, FileDownloadDone, FileUpload, FileUploadOutlined, Folder, InsertDriveFile, InsertDriveFileOutlined, UploadFile } from '@mui/icons-material';
 import InputFile from './InputFile';
+import { ref, uploadBytes } from 'firebase/storage';
+import { v4 } from 'uuid';
+import { storage } from '../config/firebase';
 
 const AddLessonDialog = ({ baseURI, open, onClose, disabled, setDisabled, setLessons, setSnackMsg, setSnackOpen, setSnackSev, snackSev, snackOpen, snackMsg, setEmpty }) => {
     const axios = useAxios();
@@ -37,8 +40,15 @@ const AddLessonDialog = ({ baseURI, open, onClose, disabled, setDisabled, setLes
         formData.append('title', title)
         formData.append('file', file)
 
+        // firebase uploads 
+        // const fileRef = ref(storage, `lessons/${file.name + v4()}`)
+
+
         try {
+            // const uploadB = await uploadBytes(fileRef, file)
+            // console.log(uploadB);
             const response = await axios.post('/upload', formData)
+            console.log(response);
 
             const fileExt = response.data.result.filename.split('.').pop().toLowerCase()
             const fileName = response.data.result.filename.split('_').pop()
@@ -50,6 +60,10 @@ const AddLessonDialog = ({ baseURI, open, onClose, disabled, setDisabled, setLes
             setSnackSev("success")
             setEmpty(false)
         } catch (error) {
+            setSnackOpen(true)
+            setSnackSev("error")
+            setSnackMsg("Bad Request")
+            setDisabled(false)
             console.error(error);
         }
 
