@@ -64,8 +64,8 @@ const Lessons = () => {
                     return null;
                 }
                 setEmpty(false)
+                console.log(response.data);
                 isMounted && setLessons(response.data.map(lesson => ({ ...lesson, show: true })))
-
             } catch (err) {
                 if (err.response.status === 401) {
                     setUnAuthorized(true)
@@ -77,6 +77,8 @@ const Lessons = () => {
         if (lessons.length == 0) {
             getLessons()
         }
+
+
         return () => {
             isMounted = false;
             isMounted && controller.abort();
@@ -284,8 +286,10 @@ const Lessons = () => {
                 </Button>
 
                 <DocViewer
-                    documents={[{ uri: "http://localhost:3500/view/Dysgraphia-lesson-1.pptx", fileType: "pptx" }]}
+                    documents={lessons}
+                    activeDocument={activeDocs}
                     pluginRenderers={DocViewerRenderers}
+                    prefetchMethod='GET'
                     style={{ height: "100%", minHeight: 750 }}
                     theme={{
                         primary: "#414AE0",

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, ScrollRestoration, useNavigate } from 'react-router-dom';
 import UseLogout from '../hooks/useLogout';
 import useAuth from '../hooks/useAuth';
-import { Box, Button, Grow, Paper, Typography } from '@mui/material';
+import { Box, Button, Grow, Paper, Slide, Typography } from '@mui/material';
 import { HiOutlineUserGroup, HiMiniArrowSmallUp, HiMiniArrowUp } from 'react-icons/hi2';
 import { ArrowUpward, FolderShared, FolderSharedOutlined } from '@mui/icons-material';
 import { PiFolderSimpleUserDuotone } from "react-icons/pi";
@@ -132,11 +132,11 @@ const Home = () => {
                 >
                     {cardEl}
                 </Box>
-                <Grow in={true} >
+                <Slide direction='left' in={true} timeout={{ enter: 300 }}>
                     <Paper elevation={2} sx={{ bgcolor: "#FFF", width: "100%", borderRadius: 2, overflow: 'hidden', minHeight: '395px' }}>
                         <Calendar value={date} />
                     </Paper>
-                </Grow>
+                </Slide>
             </Box>
 
             <StudentsLeaderborad students={students} studentsEmpty={studentsEmpty} />

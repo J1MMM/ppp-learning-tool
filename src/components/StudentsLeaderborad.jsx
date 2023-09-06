@@ -16,7 +16,7 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
     console.log(studentsEmpty);
 
     return (
-        <Slide direction='up' in={true} unmountOnExit>
+        <Slide direction='up' in={true} timeout={{ enter: 500 }}>
             <TableContainer component={Paper} elevation={3} sx={{ position: 'relative', boxSizing: 'border-box', borderRadius: 3, zIndex: 10 }}>
                 <Box
                     bgcolor='#fff'
