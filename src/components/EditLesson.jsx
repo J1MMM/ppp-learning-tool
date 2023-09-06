@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grow, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grow, IconButton, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import InputFile from './InputFile';
 import { Delete, Description } from '@mui/icons-material';
@@ -6,7 +6,6 @@ import useAxios from '../hooks/useAxios';
 
 const EditLesson = ({ baseURI, open, onClose, disabled, setDisabled, lessonToEditID, setSnackSev, setSnackMsg, setLessons, setSnackOpen, setEmpty, lessons, newFile, newTitle, setNewFile, setNewTitle }) => {
     const axios = useAxios()
-
 
     const handleEditLesson = async (e) => {
         e.preventDefault()
@@ -34,10 +33,8 @@ const EditLesson = ({ baseURI, open, onClose, disabled, setDisabled, lessonToEdi
             const response = await axios.put('/upload', formData)
             console.log(response);
             setLessons(prev => prev?.map(lesson => {
-                const fileExt = response.data.result.filename.split('.').pop().toLowerCase()
-
                 if (lesson._id == response.data.result._id) {
-                    return ({ ...response.data.result, show: true, uri: `${baseURI}${response.data.result.filename}`, fileType: fileExt, fileName: response.data.result.filename.split('_').pop() })
+                    return { ...response.data.result, show: true }
                 } else {
                     return lesson
                 }
@@ -117,8 +114,8 @@ const EditLesson = ({ baseURI, open, onClose, disabled, setDisabled, lessonToEdi
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={() => onClose(false)} color='inherit'>Cancel</Button>
-                    <Button type='submit' disabled={disabled}>Submit</Button>
+                    <Button disabled={disabled} onClick={() => onClose(false)} color='inherit' sx={{ mb: 1 }}><Typography>Cancel</Typography></Button>
+                    <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Update</Typography></Button>
                 </DialogActions>
             </form>
         </Dialog >

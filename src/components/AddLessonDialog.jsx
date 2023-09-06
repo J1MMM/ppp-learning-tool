@@ -1,4 +1,4 @@
-import { Box, Button, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grow, IconButton, Popover, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grow, IconButton, Popover, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import useAxios from '../hooks/useAxios';
 import { CloudDownload, CloudUpload, Delete, Description, Done, DownloadDone, FileDownloadDone, FileUpload, FileUploadOutlined, Folder, InsertDriveFile, InsertDriveFileOutlined, UploadFile } from '@mui/icons-material';
@@ -35,24 +35,14 @@ const AddLessonDialog = ({ baseURI, open, onClose, disabled, setDisabled, setLes
             setDisabled(false)
             return 0
         }
-
         const formData = new FormData()
         formData.append('title', title)
         formData.append('file', file)
 
-        // firebase uploads 
-        // const fileRef = ref(storage, `lessons/${file.name + v4()}`)
-
-
         try {
-            // const uploadB = await uploadBytes(fileRef, file)
-            // console.log(uploadB);
             const response = await axios.post('/upload', formData)
             console.log(response);
-
-            const fileExt = response.data.result.filename.split('.').pop().toLowerCase()
-            const fileName = response.data.result.filename.split('_').pop()
-            const newData = ({ ...response.data.result, show: true, uri: `${baseURI}${response.data.result.filename}`, fileType: fileExt, fileName: fileName })
+            const newData = ({ ...response.data.result, show: true })
 
             setLessons(prev => ([...prev, newData]))
             setSnackMsg(response.data.message)
@@ -136,8 +126,8 @@ const AddLessonDialog = ({ baseURI, open, onClose, disabled, setDisabled, setLes
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={() => onClose(false)} color='inherit'>Cancel</Button>
-                    <Button type='submit' disabled={disabled}>Submit</Button>
+                    <Button disabled={disabled} onClick={() => onClose(false)} color='inherit' sx={{ mt: -2 }}><Typography>Cancel</Typography></Button>
+                    <Button type='submit' disabled={disabled} sx={{ mr: 1, mt: -2 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Submit</Typography></Button>
                 </DialogActions>
             </form>
 

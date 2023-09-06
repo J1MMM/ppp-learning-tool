@@ -1,5 +1,5 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
+import { Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { axiosPrivate } from '../api/axios';
 
@@ -220,8 +220,8 @@ const UpdateStudentDialog = ({
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={() => { onClose(false); setPwdVisible(false) }} color='inherit'>Cancel</Button>
-                    <Button type='submit' disabled={disabled}>Update</Button>
+                    <Button disabled={disabled} onClick={() => { onClose(false); setPwdVisible(false) }} color='inherit' sx={{ mb: 1 }}><Typography>Cancel</Typography></Button>
+                    <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Update</Typography></Button>
                 </DialogActions>
             </form>
         </Dialog>

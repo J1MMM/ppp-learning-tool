@@ -9,14 +9,16 @@
     .navbar-container {
         position: relative;
         box-sizing: border-box;
-        width: 200px;
+        width: 100%;
+        max-width: 200px;
         height: 100vh;
+        // border: 1px solid red;
     }
 
     .main-container {
-        flex: 1;
         box-sizing: border-box;
         background-color: #FCFCFD;
+        width: 100%;
         min-height: 100vh;
 
         .header {

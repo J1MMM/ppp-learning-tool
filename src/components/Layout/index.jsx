@@ -70,8 +70,10 @@ const Layout = () => {
 
     return (
         <div className='layout'>
-            <Navbar openDialog={openDialog} setOpenDialog={setOpenDialog} />
-            <div className="navbar-container"></div>
+            <div className="navbar-container">
+                <Navbar openDialog={openDialog} setOpenDialog={setOpenDialog} />
+            </div>
+
             <section className='main-container'>
                 <div className="header">
                     <Box>

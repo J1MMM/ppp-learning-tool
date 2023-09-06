@@ -1,11 +1,9 @@
-import { Box, Button, Card, Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grow, IconButton, Paper, Slide, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, Chip, CircularProgress, Dialog, Grow, Paper, Slide, Typography } from '@mui/material';
 import React, { forwardRef, useEffect, useState } from 'react';
-import useAxios from '../hooks/useAxios';
-import { Add, ArrowBack, ArrowBackIos, ArrowBackIosNewRounded, ArrowBackIosNewSharp, ArrowLeft, ArrowLeftOutlined, ChevronLeft, Close, Download, DownloadOutlined, FileOpen, Folder, FolderOutlined, ForkLeft, MoreVert } from '@mui/icons-material';
+import { Add, ChevronLeft } from '@mui/icons-material';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import useData from '../hooks/useData';
 import useAuth from '../hooks/useAuth';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import LessonCard from './LessonCard';
 import AddLessonDialog from './AddLessonDialog';
 import SnackBar from './SnackBar';
@@ -23,13 +21,8 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 
 const Lessons = () => {
-    const BASE_URI = "http://localhost:3500/view/"
-    // const BASE_URI = "https://capstone-server-kqsi.onrender.com/view/"
-
-
     const axiosPrivate = useAxiosPrivate();
     const { lessons, setLessons } = useData()
-    const { auth } = useAuth()
 
     const [addLessonOpen, setAddLessonOpen] = useState(false)
     const [submitDisabled, setSubmitDisabled] = useState(false)
@@ -50,7 +43,7 @@ const Lessons = () => {
 
     const [deleteModal, setDeleteModal] = useState(false)
     const [deletID, setDeleteID] = useState("")
-    const [deletFilename, setDeleteFilename] = useState("")
+    const [deleteFilename, setDeleteFilename] = useState("")
 
 
 
@@ -71,12 +64,7 @@ const Lessons = () => {
                     return null;
                 }
                 setEmpty(false)
-                isMounted && setLessons(response.data.map(lesson => {
-                    const fileExt = lesson.filename.split('.').pop().toLowerCase()
-
-                    return { ...lesson, show: true, uri: lesson.downloadURL, fileType: fileExt, fileName: lesson.filename.split('_').pop() }
-
-                }))
+                isMounted && setLessons(response.data.map(lesson => ({ ...lesson, show: true })))
 
             } catch (err) {
                 if (err.response.status === 401) {
@@ -103,12 +91,13 @@ const Lessons = () => {
             const res = await axiosPrivate.delete('/upload', {
                 data: {
                     "id": deletID,
-                    "filename": deletFilename
+                    "filePath": deleteFilename
                 }
             })
-            console.log(res);
 
-            console.log(lessons);
+            setSnackMsg(res.data.message)
+            setSnackSev("success")
+            setSnackOpen(true)
 
             if (lessons.length <= 1) {
                 setEmpty(true)
@@ -118,7 +107,6 @@ const Lessons = () => {
         }
 
         setLessons(prev => prev.filter(item => item._id !== deletID))
-
     }
 
     const handleEditLesson = (id) => {
@@ -135,7 +123,6 @@ const Lessons = () => {
         })
         setOpenVDialog(true)
     };
-
 
     const lessonsEl = lessons?.map((lesson, index) => {
 
@@ -154,8 +141,6 @@ const Lessons = () => {
             lesson={lesson}
         />
     })
-
-    console.log(lessons);
 
     if (noResponse) return <NoServerResponse show={noResponse} />;
     if (unAuthorized) return <Unauthorized show={unAuthorized} />;
@@ -206,7 +191,6 @@ const Lessons = () => {
             </Box>
 
             <AddLessonDialog
-                baseURI={BASE_URI}
                 disabled={submitDisabled}
                 setDisabled={setSubmitDisabled}
                 open={addLessonOpen}
@@ -238,7 +222,6 @@ const Lessons = () => {
                 setNewFile={setNewFile}
                 newTitle={newTitle}
                 setNewTitle={setNewTitle}
-                baseURI={BASE_URI}
             />
 
             <SnackBar

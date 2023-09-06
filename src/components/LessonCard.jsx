@@ -1,6 +1,6 @@
-import { Block, Download, FileOpen, FolderOpen, FolderOpenRounded, FolderOpenSharp, MoreVert, OpenInFullRounded, ViewAgenda, ViewArray } from '@mui/icons-material';
-import { Box, Button, Dialog, Divider, Grow, IconButton, Menu, MenuItem, Paper, Slide, Typography } from '@mui/material';
-import React, { forwardRef, useState } from 'react';
+import { MoreVert } from '@mui/icons-material';
+import { Box, Button, Divider, Grow, IconButton, Menu, MenuItem, Paper, Typography } from '@mui/material';
+import React, { useState } from 'react';
 import useAxios from '../hooks/useAxios';
 
 import banner1 from '../assets/images/banner1.jpg'
@@ -52,27 +52,31 @@ const LessonCard =
             return mappedNumber;
         }
 
-        const handleDownload = async (filename) => {
+        const handleDownload = async (filename, url) => {
             try {
-                const response = await axios.get(`/download/${filename}`, {
-                    responseType: 'blob'
-                })
+                const response = await fetch(url);
+                const blob = await response.blob();
 
-                const url = window.URL.createObjectURL(new Blob([response.data]));
-                // const url = lessons.downloadURL;
+                // Create a temporary URL for the blob
+                const blobUrl = URL.createObjectURL(blob);
+
+                // Create an anchor element to trigger the download
                 const a = document.createElement('a');
-                a.href = url;
-                a.download = filename;
-                a.click();
-                window.URL.revokeObjectURL(url);
+                a.href = blobUrl;
+                a.download = filename; // Set the desired file name
+                a.style.display = 'none';
 
-                console.log(response);
+                // Append the anchor element to the body and trigger the download
+                document.body.appendChild(a);
+                a.click();
+
+                // Clean up
+                document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
             } catch (error) {
-                console.log(error);
+                console.error('Error downloading file:', error);
             }
         }
-
-
 
         return (
             <Grow in={show} >
@@ -132,7 +136,7 @@ const LessonCard =
                     >
                         <Divider sx={{ position: 'absolute', width: '100%', top: 0, left: 0 }} />
 
-                        <Button size='small' onClick={() => handleDownload(lesson.filename)}>download</Button>
+                        <Button size='small' onClick={() => handleDownload(lesson.fileName, lesson.uri)}>download</Button>
                         <Button size='small' onClick={() => handleViewFile(index)}>preview</Button>
                     </Box>
 
@@ -143,7 +147,7 @@ const LessonCard =
                         onClose={() => setAnchorEl(null)}
                     >
                         <MenuItem onClick={() => { setEditLessonOpen(true); setLessonToEditID(lesson._id); handleEditLesson(lesson._id) }}>Edit</MenuItem>
-                        <MenuItem onClick={() => { setDeleteModal(true); setDeleteID(lesson._id), setDeleteFilename(lesson.filename), setAnchorEl(null) }}>Delete</MenuItem>
+                        <MenuItem onClick={() => { setDeleteModal(true); setDeleteID(lesson._id), setDeleteFilename(lesson.filePath), setAnchorEl(null) }}>Delete</MenuItem>
 
                     </Menu>
                 </Paper>
