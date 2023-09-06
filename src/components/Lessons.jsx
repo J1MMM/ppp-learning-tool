@@ -284,8 +284,7 @@ const Lessons = () => {
                 </Button>
 
                 <DocViewer
-                    documents={lessons}
-                    activeDocument={activeDocs}
+                    documents={[{ uri: "http://localhost:3500/view/Dysgraphia-lesson-1.pptx", fileType: "pptx" }]}
                     pluginRenderers={DocViewerRenderers}
                     style={{ height: "100%", minHeight: 750 }}
                     theme={{

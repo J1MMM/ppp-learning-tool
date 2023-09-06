@@ -110,7 +110,7 @@ const Layout = () => {
 
                         >
                             <Box
-                                minWidth="300px"
+                                minWidth="250px"
                                 display="flex"
                                 flexDirection="column"
                                 alignItems="center"
@@ -137,11 +137,11 @@ const Layout = () => {
                                 </Box>
                             </Box>
 
-                            <MenuItem sx={{ p: 2 }} onClick={() => setOpenDialog(true)}>
-                                <ListItemIcon sx={{ ml: 3 }}>
+                            <MenuItem sx={{ p: 1, }} onClick={() => setOpenDialog(true)}>
+                                <ListItemIcon sx={{ ml: 7 }}>
                                     <Logout />
                                 </ListItemIcon>
-                                <Typography>Sign out my Account</Typography>
+                                <Typography>Sign out </Typography>
                             </MenuItem>
 
                         </Menu>
