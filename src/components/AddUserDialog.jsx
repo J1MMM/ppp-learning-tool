@@ -65,6 +65,7 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                         gap={2}
                     >
                         <TextField
+                            disabled={disabled}
                             autoFocus
                             margin="dense"
                             id="fname"
@@ -77,6 +78,7 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                             onChange={(e) => setFname(e.target.value)}
                         />
                         <TextField
+                            disabled={disabled}
                             required
                             autoFocus
                             margin="dense"
@@ -89,6 +91,7 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                             onChange={(e) => setLname(e.target.value)}
                         />
                         <TextField
+                            disabled={disabled}
                             autoFocus
                             margin="dense"
                             id="mname"
@@ -107,6 +110,7 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                         gap={2}
                     >
                         <TextField
+                            disabled={disabled}
                             required
                             autoFocus
                             margin="dense"
@@ -122,6 +126,7 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                         <FormControl fullWidth variant="outlined" margin='dense' >
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <OutlinedInput
+                                disabled={disabled}
                                 id="pwd"
                                 type={pwdVisible ? 'text' : 'password'}
                                 value={pwd}
@@ -130,6 +135,7 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                                 endAdornment={
                                     <InputAdornment position="end" >
                                         <IconButton
+                                            disabled={disabled}
                                             edge="end"
                                             onClick={() => setPwdVisible(!pwdVisible)}
                                         >

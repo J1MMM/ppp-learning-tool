@@ -2,7 +2,7 @@ import { DownloadDone, FileUploadOutlined } from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 
-const InputFile = ({ file, setFile }) => {
+const InputFile = ({ file, setFile, disabled }) => {
     const handleDrop = (e) => {
         e.preventDefault()
         setFile(e.dataTransfer.files[0]);
@@ -21,7 +21,7 @@ const InputFile = ({ file, setFile }) => {
             alignItems="center"
             gap={1}
             borderRadius={1}
-            onClick={() => document.querySelector('#input-file').click()}
+            onClick={() => !disabled && document.querySelector('#input-file').click()}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
         >

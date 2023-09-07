@@ -90,6 +90,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                         gap={2}
                     >
                         <TextField
+                            disabled={disabled}
                             autoFocus
                             margin="dense"
                             id="fname"
@@ -102,6 +103,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                             onChange={(e) => setFname(e.target.value)}
                         />
                         <TextField
+                            disabled={disabled}
                             required
                             autoFocus
                             margin="dense"
@@ -114,6 +116,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                             onChange={(e) => setLname(e.target.value)}
                         />
                         <TextField
+                            disabled={disabled}
                             autoFocus
                             margin="dense"
                             id="mname"
@@ -132,6 +135,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                         gap={2}
                     >
                         <TextField
+                            disabled={disabled}
                             required
                             autoFocus
                             margin="dense"
@@ -147,6 +151,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                         <FormControl fullWidth variant="outlined" margin='dense'>
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <OutlinedInput
+                                disabled={disabled}
                                 id="pwd"
                                 type={pwdVisible ? 'text' : 'password'}
                                 value={pwd}
@@ -155,6 +160,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                                 endAdornment={
                                     <InputAdornment position="end" >
                                         <IconButton
+                                            disabled={disabled}
                                             edge="end"
                                             onClick={() => setPwdVisible(!pwdVisible)}
                                         >
@@ -174,7 +180,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                                 required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
-                                    <Checkbox checked={dyslexia} name='dyslexia' onChange={disabilitiesChange} />
+                                    <Checkbox disabled={disabled} checked={dyslexia} name='dyslexia' onChange={disabilitiesChange} />
                                 }
                                 label="Dyslexia" />
 
@@ -182,7 +188,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                                 required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
-                                    <Checkbox checked={dysgraphia} name='dysgraphia' onChange={disabilitiesChange} />
+                                    <Checkbox disabled={disabled} checked={dysgraphia} name='dysgraphia' onChange={disabilitiesChange} />
                                 }
                                 label="Dysgraphia" />
 
@@ -190,7 +196,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                                 required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
-                                    <Checkbox checked={dyscalculia} name='dyscalculia' onChange={disabilitiesChange} />
+                                    <Checkbox disabled={disabled} checked={dyscalculia} name='dyscalculia' onChange={disabilitiesChange} />
                                 }
                                 label="Dyscalculia" />
                         </FormGroup>

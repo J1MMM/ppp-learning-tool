@@ -35,7 +35,7 @@ const PersistLogin = () => {
         <>
             {isLoading ?
                 <Box sx={{ display: 'flex', width: '100%', height: '100vh', justifyContent: 'center', alignItems: 'center' }}>
-                    <CircularProgress />
+                    <CircularProgress size={50} />
                 </Box>
                 : <Outlet />
 

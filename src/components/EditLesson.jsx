@@ -4,7 +4,7 @@ import InputFile from './InputFile';
 import { Delete, Description } from '@mui/icons-material';
 import useAxios from '../hooks/useAxios';
 
-const EditLesson = ({ baseURI, open, onClose, disabled, setDisabled, lessonToEditID, setSnackSev, setSnackMsg, setLessons, setSnackOpen, setEmpty, lessons, newFile, newTitle, setNewFile, setNewTitle }) => {
+const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEditID, setSnackSev, setSnackMsg, setLessons, setSnackOpen, setEmpty, lessons, newFile, newTitle, setNewFile, setNewTitle }) => {
     const axios = useAxios()
 
     const handleEditLesson = async (e) => {
@@ -34,7 +34,7 @@ const EditLesson = ({ baseURI, open, onClose, disabled, setDisabled, lessonToEdi
             console.log(response);
             setLessons(prev => prev?.map(lesson => {
                 if (lesson._id == response.data.result._id) {
-                    return { ...response.data.result, show: true }
+                    return { ...response.data.result, show: true, uri: `${baseURL}${response.data.result._id}` }
                 } else {
                     return lesson
                 }
@@ -64,6 +64,7 @@ const EditLesson = ({ baseURI, open, onClose, disabled, setDisabled, lessonToEdi
                         gap={2}
                     >
                         <TextField
+                            disabled={disabled}
                             autoFocus
                             margin="dense"
                             id="title"
@@ -75,14 +76,14 @@ const EditLesson = ({ baseURI, open, onClose, disabled, setDisabled, lessonToEdi
                             onChange={(e) => setNewTitle(e.target.value)}
                         />
 
-                        <InputFile file={newFile} setFile={setNewFile} />
+                        <InputFile file={newFile} setFile={setNewFile} disabled={disabled} />
 
                         {newFile && <Grow in={newFile ? true : false} >
                             <Box
                                 width="100%"
                                 p={1}
                                 boxSizing="border-box"
-                                bgcolor="primary.main"
+                                bgcolor={disabled ? "InactiveCaptionText" : "primary.main"}
                                 display="flex"
                                 justifyContent="space-between"
                                 alignItems="center"
@@ -104,7 +105,7 @@ const EditLesson = ({ baseURI, open, onClose, disabled, setDisabled, lessonToEdi
                                 >
                                     <Typography variant='body2' color="#FFF" ml={1}>{(newFile?.size / 1024).toFixed(2)} KB</Typography>
 
-                                    <IconButton onClick={() => setNewFile(null)}>
+                                    <IconButton disabled={disabled} onClick={() => setNewFile(null)}>
                                         <Delete color='common' />
                                     </IconButton>
                                 </Box>

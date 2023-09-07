@@ -112,6 +112,7 @@ const UpdateStudentDialog = ({
                         gap={1}
                     >
                         <TextField
+                            disabled={disabled}
                             required
                             autoFocus
                             margin="dense"
@@ -125,6 +126,7 @@ const UpdateStudentDialog = ({
 
                         />
                         <TextField
+                            disabled={disabled}
                             required
                             autoFocus
                             margin="dense"
@@ -137,6 +139,7 @@ const UpdateStudentDialog = ({
                             onChange={(e) => setUpdateLname(e.target.value)}
                         />
                         <TextField
+                            disabled={disabled}
                             autoFocus
                             margin="dense"
                             id="mname"
@@ -155,6 +158,7 @@ const UpdateStudentDialog = ({
                         gap={1}
                     >
                         <TextField
+                            disabled={disabled}
                             required
                             autoFocus
                             margin="dense"
@@ -170,6 +174,7 @@ const UpdateStudentDialog = ({
                         <FormControl fullWidth variant="outlined" margin='dense' sx={{ mt: 1 }}>
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <OutlinedInput
+                                disabled={disabled}
                                 id="pwd"
                                 type={pwdVisible ? 'text' : 'password'}
                                 value={updatePwd}
@@ -177,6 +182,7 @@ const UpdateStudentDialog = ({
                                 endAdornment={
                                     <InputAdornment position="end" >
                                         <IconButton
+                                            disabled={disabled}
                                             edge="end"
                                             onClick={() => setPwdVisible(!pwdVisible)}
                                         >
@@ -196,7 +202,7 @@ const UpdateStudentDialog = ({
                                 required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
-                                    <Checkbox checked={dyslexia} name='dyslexia' onChange={disabilitiesChange} />
+                                    <Checkbox disabled={disabled} checked={dyslexia} name='dyslexia' onChange={disabilitiesChange} />
                                 }
                                 label="Dyslexia" />
 
@@ -204,7 +210,7 @@ const UpdateStudentDialog = ({
                                 required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
-                                    <Checkbox checked={dysgraphia} name='dysgraphia' onChange={disabilitiesChange} />
+                                    <Checkbox disabled={disabled} checked={dysgraphia} name='dysgraphia' onChange={disabilitiesChange} />
                                 }
                                 label="Dysgraphia" />
 
@@ -212,7 +218,7 @@ const UpdateStudentDialog = ({
                                 required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
-                                    <Checkbox checked={dyscalculia} name='dyscalculia' onChange={disabilitiesChange} />
+                                    <Checkbox disabled={disabled} checked={dyscalculia} name='dyscalculia' onChange={disabilitiesChange} />
                                 }
                                 label="Dyscalculia" />
                         </FormGroup>

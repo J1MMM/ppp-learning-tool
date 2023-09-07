@@ -22,7 +22,6 @@ import StudentsLeaderborad from './StudentsLeaderborad';
 import { BiBrain, BiPencil, BiSolidPencil } from "react-icons/bi";
 import { GoNumber } from "react-icons/go";
 import { MdOutlineDraw } from "react-icons/md";
-import ScrollToTop from './ScrollToTop';
 
 const Home = () => {
     const { students, users, setStudents, setUsers } = useData();

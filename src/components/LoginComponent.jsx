@@ -14,6 +14,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import SnackBar from './SnackBar'
 
 const LOGIN_URL = '/auth';
 
@@ -30,13 +31,17 @@ const LoginComponenet = () => {
     const [errMsg, setErrMsg] = useState('')
     const [pwdVisible, setPwdVisible] = useState(false)
     const [formDisabled, setFormDisabled] = useState(false)
+    const [snackOpen, setSnackOpen] = useState(false)
+    const [snackSev, setSnackSev] = useState("error")
 
     useEffect(() => {
+        setSnackOpen(false)
         setErrMsg('')
     }, [email, pwd])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setFormDisabled(true)
         try {
             const response = await axios.post(LOGIN_URL,
                 JSON.stringify({ email, pwd }),
@@ -45,7 +50,6 @@ const LoginComponenet = () => {
                     withCredentials: true
                 }
             )
-            setFormDisabled(true)
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
             const fullname = response?.data?.fullname;
@@ -56,6 +60,7 @@ const LoginComponenet = () => {
             navigate(from, { replace: true })
 
         } catch (error) {
+            setSnackOpen(true)
             if (!error?.response) {
                 setErrMsg('No Server Response')
             } else if (error.response?.status == 400) {
@@ -66,6 +71,7 @@ const LoginComponenet = () => {
                 setErrMsg('Login Failed')
             }
         }
+        setFormDisabled(false)
     }
 
     if (auth?.accessToken) {
@@ -100,37 +106,79 @@ const LoginComponenet = () => {
 
     return (
         <Box
+            sx={{
+                minHeight: {
+                    xs: "95vh",
+                    sm: "none"
+                },
+            }}
             display="flex"
             alignItems="center"
             bgcolor="lightgrey"
             width="100%"
             height="100vh"
+            boxSizing="border-box"
+            overflow="hidden"
+            p={2}
+
         >
             <Container
                 maxWidth='md'
                 sx={{
+                    boxSizing: 'border-box',
                     bgcolor: 'white',
-                    height: '90%',
+                    height: '100%',
+                    gridTemplateColumns: {
+                        xs: "1fr",
+                        sm: "1fr 1fr",
+                    },
+                    minHeight: {
+                        xs: "450px",
+                        sm: "none"
+                    },
+                    maxHeight: {
+                        xs: "450px",
+                        sm: "700px",
+                    },
+                    p: {
+                        xs: 1,
+                        sm: 3
+                    },
+                    mt: {
+                        xs: -10,
+                        sm: 0
+                    },
+                    justifyItems: "center",
                     borderRadius: 3,
-                    display: 'flex',
-                    gap: 3,
-                    p: 3,
                     boxShadow: '10px 10px 25px -9px rgba(0,0,0,0.36)',
                     WebkitBoxShadow: '10px 10px 25px -9px rgba(0,0,0,0.36)',
-                    MozBoxShadow: '10px 10px 25px -9px rgba(0,0,0,0.36)'
+                    MozBoxShadow: '10px 10px 25px -9px rgba(0,0,0,0.36)',
+                    display: 'grid',
+                    position: 'relative'
                 }}
 
             >
                 <Box
+                    boxSizing="border-box"
                     bgcolor="primary.main"
                     height="100%"
-                    width="457px"
+                    width="100%"
                     borderRadius={3}
                     p={3}
-                    boxSizing="border-box"
-                    display="flex"
                     alignItems="center"
-
+                    position="relative"
+                    sx={{
+                        maxWidth: {
+                            xs: "150px",
+                            sm: "350px",
+                            md: "400px",
+                            lg: "457px"
+                        },
+                        display: {
+                            xs: "none",
+                            sm: "flex"
+                        }
+                    }}
                 >
 
                     <Swiper
@@ -148,37 +196,40 @@ const LoginComponenet = () => {
                         className="mySwiper"
                         style={{
                             height: '100%',
+                            width: '100%',
+                            maxWidth: "457px",
                             "--swiper-pagination-color": "#FFD500",
                         }}
+
                     >
                         {slideEl}
                     </Swiper>
 
                 </Box>
                 <Box
+                    boxSizing="border-box"
                     height="100%"
-                    width="80%"
+                    width="100%"
+                    maxWidth="371px"
                     display="flex"
                     flexDirection="column"
                     justifyContent="center"
                     alignItems="baseline"
                     borderRadius={3}
                     p={3}
-                    boxSizing="border-box"
                 >
-                    <img src={pppLogo} style={{ width: '130px' }} />
+                    <img src={pppLogo} style={{ width: '100%', maxWidth: '130px' }} />
                     <Typography variant='h5' mt={3} fontWeight={500} color="#424242">Get Started Now</Typography>
                     <Typography
                         variant='caption'
                         mb={3}
+                        sx={{
+                            fontSize: {
+                                xs: '10px',
+                                sm: ''
+                            }
+                        }}
                     >Enter your credentials to access your account</Typography>
-
-                    <Collapse in={errMsg ? true : false} sx={{ width: '100%' }}>
-                        <Alert
-                            severity="error"
-                            sx={{ mb: 3 }}
-                        >{errMsg}</Alert>
-                    </Collapse>
 
                     <form style={{ width: '100%' }} onSubmit={handleSubmit}>
                         <TextField
@@ -208,6 +259,7 @@ const LoginComponenet = () => {
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <IconButton
+                                            disabled={formDisabled}
                                             edge="end"
                                             onClick={() => setPwdVisible(!pwdVisible)}
                                         >
@@ -233,24 +285,17 @@ const LoginComponenet = () => {
                             type='submit'
                             disabled={formDisabled}
                         >Login</Button>
-
-                        {/* <Typography variant='subtitle2' textAlign='center' color="#424242" my={1}>OR</Typography>
-
-                        <Button
-                            variant='outlined'
-                            fullWidth
-                            size='large'
-                            sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-                            disabled={formDisabled}
-                        >
-                            <GoogleIcon />
-                            Sign in with Google</Button> */}
-
                     </form>
-
                 </Box>
             </Container>
 
+            <SnackBar
+                msg={errMsg}
+                open={snackOpen}
+                onClose={setSnackOpen}
+                severity={snackSev}
+                position={{ horizontal: 'right', vertical: 'top' }}
+            />
         </Box>
     );
 }

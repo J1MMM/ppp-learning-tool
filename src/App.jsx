@@ -12,7 +12,6 @@ import Lessons from './components/Lessons'
 import Students from './components/Students'
 import LoginComponenet from './components/LoginComponent'
 import SwiperComp from './components/SwiperComp'
-import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   return (

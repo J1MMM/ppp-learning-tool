@@ -3,11 +3,8 @@ import React, { useState } from 'react';
 import useAxios from '../hooks/useAxios';
 import { CloudDownload, CloudUpload, Delete, Description, Done, DownloadDone, FileDownloadDone, FileUpload, FileUploadOutlined, Folder, InsertDriveFile, InsertDriveFileOutlined, UploadFile } from '@mui/icons-material';
 import InputFile from './InputFile';
-import { ref, uploadBytes } from 'firebase/storage';
-import { v4 } from 'uuid';
-import { storage } from '../config/firebase';
 
-const AddLessonDialog = ({ baseURI, open, onClose, disabled, setDisabled, setLessons, setSnackMsg, setSnackOpen, setSnackSev, snackSev, snackOpen, snackMsg, setEmpty }) => {
+const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLessons, setSnackMsg, setSnackOpen, setSnackSev, snackSev, snackOpen, snackMsg, setEmpty, }) => {
     const axios = useAxios();
 
     const [title, setTitle] = useState("")
@@ -42,7 +39,7 @@ const AddLessonDialog = ({ baseURI, open, onClose, disabled, setDisabled, setLes
         try {
             const response = await axios.post('/upload', formData)
             console.log(response);
-            const newData = ({ ...response.data.result, show: true })
+            const newData = ({ ...response.data.result, show: true, uri: `${baseURL}${response.data.result._id}` })
 
             setLessons(prev => ([...prev, newData]))
             setSnackMsg(response.data.message)
@@ -75,6 +72,7 @@ const AddLessonDialog = ({ baseURI, open, onClose, disabled, setDisabled, setLes
                         gap={2}
                     >
                         <TextField
+                            disabled={disabled}
                             autoFocus
                             margin="dense"
                             id="title"
@@ -86,14 +84,14 @@ const AddLessonDialog = ({ baseURI, open, onClose, disabled, setDisabled, setLes
                             onChange={(e) => setTitle(e.target.value)}
                         />
                         {/* input file */}
-                        <InputFile file={file} setFile={setFile} />
+                        <InputFile file={file} setFile={setFile} disabled={disabled} />
 
                         {file && <Grow in={file ? true : false} >
                             <Box
                                 width="100%"
                                 p={1}
                                 boxSizing="border-box"
-                                bgcolor="primary.main"
+                                bgcolor={disabled ? "InactiveCaptionText" : "primary.main"}
                                 display="flex"
                                 justifyContent="space-between"
                                 alignItems="center"
@@ -115,7 +113,7 @@ const AddLessonDialog = ({ baseURI, open, onClose, disabled, setDisabled, setLes
                                 >
                                     <Typography variant='body2' color="#FFF" ml={1}>{(file?.size / 1024).toFixed(2)} KB</Typography>
 
-                                    <IconButton onClick={() => setFile(null)}>
+                                    <IconButton disabled={disabled} onClick={() => !disabled && setFile(null)}>
                                         <Delete color='common' />
                                     </IconButton>
                                 </Box>

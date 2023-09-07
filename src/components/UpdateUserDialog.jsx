@@ -89,6 +89,7 @@ const UpdateUserDialog = ({
                         gap={1}
                     >
                         <TextField
+                            disabled={disabled}
                             required
                             autoFocus
                             margin="dense"
@@ -102,6 +103,7 @@ const UpdateUserDialog = ({
 
                         />
                         <TextField
+                            disabled={disabled}
                             required
                             autoFocus
                             margin="dense"
@@ -114,6 +116,7 @@ const UpdateUserDialog = ({
                             onChange={(e) => setUpdateLname(e.target.value)}
                         />
                         <TextField
+                            disabled={disabled}
                             autoFocus
                             margin="dense"
                             id="mname"
@@ -132,6 +135,7 @@ const UpdateUserDialog = ({
                         gap={1}
                     >
                         <TextField
+                            disabled={disabled}
                             required
                             autoFocus
                             margin="dense"
@@ -147,6 +151,7 @@ const UpdateUserDialog = ({
                         <FormControl fullWidth variant="outlined" margin='dense' sx={{ mt: 1 }}>
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <OutlinedInput
+                                disabled={disabled}
                                 id="pwd"
                                 type={pwdVisible ? 'text' : 'password'}
                                 value={updatePwd}
@@ -154,6 +159,7 @@ const UpdateUserDialog = ({
                                 endAdornment={
                                     <InputAdornment position="end" >
                                         <IconButton
+                                            disabled={disabled}
                                             edge="end"
                                             onClick={() => setPwdVisible(!pwdVisible)}
                                         >

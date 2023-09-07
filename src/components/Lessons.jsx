@@ -21,6 +21,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 
 const Lessons = () => {
+    const BASE_URL = 'https://capstone-server-kqsi.onrender.com/view/'
     const axiosPrivate = useAxiosPrivate();
     const { lessons, setLessons } = useData()
 
@@ -64,8 +65,7 @@ const Lessons = () => {
                     return null;
                 }
                 setEmpty(false)
-                console.log(response.data);
-                isMounted && setLessons(response.data.map(lesson => ({ ...lesson, show: true })))
+                isMounted && setLessons(response.data.map(lesson => ({ ...lesson, show: true, uri: `${BASE_URL}${lesson._id}` })))
             } catch (err) {
                 if (err.response.status === 401) {
                     setUnAuthorized(true)
@@ -85,6 +85,7 @@ const Lessons = () => {
         }
     }, [])
 
+    console.log(lessons);
 
     const deleteLesson = async () => {
         setLessons(prev => prev.map(data => (data._id == deletID ? { ...data, show: false } : data)))
@@ -205,7 +206,7 @@ const Lessons = () => {
                 snackOpen={snackOpen}
                 snackSev={snackSev}
                 setEmpty={setEmpty}
-
+                baseURL={BASE_URL}
             />
 
             <EditLesson
@@ -224,6 +225,7 @@ const Lessons = () => {
                 setNewFile={setNewFile}
                 newTitle={newTitle}
                 setNewTitle={setNewTitle}
+                baseURL={BASE_URL}
             />
 
             <SnackBar
@@ -297,10 +299,11 @@ const Lessons = () => {
                         tertiary: "#c8cef7",
                         textPrimary: "#FFF",
                         textSecondary: "#5296d8",
-                        textTertiary: "red",
+                        textTertiary: "black",
                         disableThemeScrollbar: false,
                     }}
                 />
+
             </Dialog>
 
         </Paper>
