@@ -88,6 +88,12 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                     <Box
                         display="flex"
                         gap={2}
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            }
+                        }}
                     >
                         <TextField
                             disabled={disabled}
@@ -133,6 +139,12 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                         mt={1}
                         display="flex"
                         gap={2}
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            }
+                        }}
                     >
                         <TextField
                             disabled={disabled}

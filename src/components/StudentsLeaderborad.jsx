@@ -13,8 +13,6 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
     const isAdmin = auth.roles.includes(ROLES_LIST.Admin);
     const navigate = useNavigate()
 
-    console.log(studentsEmpty);
-
     return (
         <Slide direction='up' in={true} timeout={{ enter: 500 }}>
             <TableContainer component={Paper} elevation={3} sx={{ position: 'relative', boxSizing: 'border-box', borderRadius: 3, zIndex: 10 }}>
@@ -29,13 +27,25 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                     top='0'
                     left='0'
                     zIndex='99'
+
+                    sx={{
+                        flexDirection: {
+                            xs: "column",
+                            sm: "row"
+                        },
+                        gap: {
+                            xs: 2,
+                            sm: 0
+                        }
+
+                    }}
                 >
                     <Box>
                         <Box display='flex' alignItems='center' gap={1} mb={-.5}>
                             <Typography variant='h5' >Students Leaderboard</Typography>
                             <Chip label={`${students.length == 0 ? 'Empty' : students.length > 1 ? `${students.length} Students` : `${students.length} Student`}`} sx={{ fontFamily: 'Poppins, sans-serif', color: 'primary.main' }} size='small' />
                         </Box>
-                        <Typography variant='caption' color='InactiveCaptionText' >Overview of Student Performance and Achievements.</Typography>
+                        <Typography variant='caption' color='InactiveCaptionText' sx={{ fontSize: { xs: 9, sm: 12 } }} >Overview of Student Performance and Achievements.</Typography>
                     </Box>
 
                     <Button
@@ -53,12 +63,12 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                 <Table sx={{ minWidth: 650, position: 'relative' }} aria-label="simple table" >
                     <TableHead sx={{ bgcolor: '#FCFCFD' }}>
                         <TableRow>
-                            <TableCell sx={{ color: 'grey', fontSize: 'small' }}>First Name</TableCell>
-                            <TableCell sx={{ color: 'grey', fontSize: 'small' }}>Last Name</TableCell>
-                            <TableCell sx={{ color: 'grey', fontSize: 'small' }}>Middle Name</TableCell>
-                            <TableCell sx={{ color: 'grey', fontSize: 'small' }}>Email</TableCell>
-                            {isAdmin && <TableCell sx={{ color: 'grey', fontSize: 'small' }} >Instructor</TableCell>}
-                            <TableCell sx={{ color: 'grey', fontSize: 'small' }} >Stars Collected</TableCell>
+                            <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "3.5rem" }}>First Name</TableCell>
+                            <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "3.5rem" }}>Lastname</TableCell>
+                            <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "4.5rem" }}>Middle Name</TableCell>
+                            <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "3.5rem" }}>Email</TableCell>
+                            {isAdmin && <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "3.5rem" }} >Instructor</TableCell>}
+                            <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Stars Collected</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -74,18 +84,18 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                                     key={index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell >{student.firstname}</TableCell>
-                                    <TableCell >{student.lastname}</TableCell>
-                                    <TableCell >{student.middlename}</TableCell>
-                                    <TableCell >
+                                    <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >{student.firstname}</TableCell>
+                                    <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" } }}>{student.lastname}</TableCell>
+                                    <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" } }}>{student.middlename}</TableCell>
+                                    <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" } }}>
                                         <Box display='flex' alignItems='center' gap={1}>
                                             <UserAvatar fullname={fullname} height={'35px'} width={'35px'} fontSize="70%" />
                                             {student.email}
                                         </Box>
                                     </TableCell>
-                                    {isAdmin && <TableCell >{student.instructor}</TableCell>}
-                                    <TableCell>
-                                        <Typography width="fit-content" borderRadius={3} color="#6d64d8" p=".1rem .8rem" bgcolor="#ecf2ff">{student.stars} {student.stars > 1 ? "stars" : "star"}</Typography>
+                                    {isAdmin && <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>{student.instructor}</TableCell>}
+                                    <TableCell >
+                                        <Typography width="fit-content" borderRadius={3} color="#6d64d8" p=".1rem .8rem" bgcolor="#ecf2ff" sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "2rem", sm: "2rem", md: "none" } }}>{student.stars} {student.stars > 1 ? "stars" : "star"}</Typography>
                                     </TableCell>
                                 </TableRow>
                             )

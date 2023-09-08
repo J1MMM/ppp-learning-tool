@@ -85,8 +85,6 @@ const Lessons = () => {
         }
     }, [])
 
-    console.log(lessons);
-
     const deleteLesson = async () => {
         setLessons(prev => prev.map(data => (data._id == deletID ? { ...data, show: false } : data)))
 
@@ -106,6 +104,9 @@ const Lessons = () => {
                 setEmpty(true)
             }
         } catch (error) {
+            setSnackMsg(error.message)
+            setSnackSev("error")
+            setSnackOpen(true)
             console.log(error);
         }
 
@@ -164,8 +165,15 @@ const Lessons = () => {
                 pb={1}
                 boxSizing='border-box'
                 zIndex='99'
+                sx={{
+                    flexDirection: {
+                        xs: "column",
+                        sm: "column",
+                        md: "row"
+                    }
+                }}
             >
-                <Box>
+                <Box sx={{ mb: { xs: 1, sm: 1, md: 0 } }} >
                     <Box display='flex' alignItems='center' gap={1} mb={-.5}>
                         <Typography variant='h5' >Lessons Management</Typography>
                         <Chip label={`${lessons.length == 0 ? 'Empty' : lessons.length > 1 ? `${lessons.length} Lessons` : `${lessons.length} Lesson`}`} sx={{ fontFamily: 'Poppins, sans-serif', color: 'primary.main' }} size='small' />

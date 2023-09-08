@@ -87,6 +87,12 @@ const UpdateUserDialog = ({
                     <Box
                         display="flex"
                         gap={1}
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            }
+                        }}
                     >
                         <TextField
                             disabled={disabled}
@@ -133,6 +139,12 @@ const UpdateUserDialog = ({
                         mt={1}
                         display='flex'
                         gap={1}
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            }
+                        }}
                     >
                         <TextField
                             disabled={disabled}

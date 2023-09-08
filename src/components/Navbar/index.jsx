@@ -10,6 +10,7 @@ import { FiUser, FiHome, FiUsers, FiLogOut } from 'react-icons/fi'
 import { GrGroup } from 'react-icons/gr'
 import './style.scss'
 import UseLogout from '../../hooks/useLogout';
+import { Box } from '@mui/material';
 
 const Navbar = ({ setOpenDialog }) => {
     const { auth } = useAuth();
@@ -46,7 +47,6 @@ const Navbar = ({ setOpenDialog }) => {
                         <span>Users List</span>
                     </NavLink>
                 }
-
             </nav>
 
             <button className='sign-out-btn' onClick={() => setOpenDialog(true)}>

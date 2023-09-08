@@ -34,7 +34,7 @@ const InputFile = ({ file, setFile, disabled }) => {
                     :
                     <>
                         <FileUploadOutlined sx={{ width: '3rem', height: '3rem' }} color='disabled' />
-                        <Typography variant='h5' color="InactiveCaptionText">Drag and drop file here</Typography>
+                        <Typography variant='h5' color="InactiveCaptionText" sx={{ fontSize: { xs: 18, md: 24 } }}>Drag and drop file here</Typography>
                         <Typography variant='body2' mt={-1} color="InactiveCaptionText">or <span style={{ color: "#434CE6" }}>browse</span> file from device</Typography>
                     </>
             }

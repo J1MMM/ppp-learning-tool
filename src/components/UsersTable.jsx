@@ -23,8 +23,14 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                         top='0'
                         left='0'
                         zIndex='99'
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            },
+                        }}
                     >
-                        <Box>
+                        <Box sx={{ mb: { xs: 2, sm: 0 } }}>
                             <Box display='flex' alignItems='center' gap={1} mb={-.5}>
                                 <Typography variant='h5' >Users Management</Typography>
                                 <Chip label={`${users?.length} ${users.length <= 1 ? 'User' : 'Users'}`} sx={{ fontFamily: 'Poppins, sans-serif', color: 'primary.main' }} size='small' />
@@ -37,6 +43,7 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                             size='small'
                             onClick={() => setAddUserModal(true)} sx={{ mb: 2 }}
 
+
                         >
                             <Add />
                             <Typography pr={1} variant='button'>
@@ -47,12 +54,12 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                     <Table sx={{ minWidth: 650, position: 'relative' }} aria-label="simple table" >
                         <TableHead sx={{ bgcolor: '#FCFCFD' }}>
                             <TableRow>
-                                <TableCell sx={{ color: 'grey', fontSize: 'medium' }}>First Name</TableCell>
-                                <TableCell sx={{ color: 'grey', fontSize: 'medium' }}>Last Name</TableCell>
-                                <TableCell sx={{ color: 'grey', fontSize: 'medium' }}>Middle Name</TableCell>
-                                <TableCell sx={{ color: 'grey', fontSize: 'medium' }}>Email</TableCell>
-                                <TableCell sx={{ color: 'grey', fontSize: 'medium' }}>Roles</TableCell>
-                                <TableCell sx={{ color: 'grey', fontSize: 'medium' }} >Actions</TableCell>
+                                <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>First Name</TableCell>
+                                <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Last Name</TableCell>
+                                <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Middle Name</TableCell>
+                                <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Email</TableCell>
+                                <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Roles</TableCell>
+                                <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -66,16 +73,16 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                                         key={index}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
-                                        <TableCell sx={{ fontSize: 'medium' }}>{user.firstname}</TableCell>
-                                        <TableCell sx={{ fontSize: 'medium' }}>{user.lastname}</TableCell>
-                                        <TableCell sx={{ fontSize: 'medium' }}>{user.middlename}</TableCell>
-                                        <TableCell sx={{ fontSize: 'medium' }}>
+                                        <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>{user.firstname}</TableCell>
+                                        <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>{user.lastname}</TableCell>
+                                        <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>{user.middlename}</TableCell>
+                                        <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
                                             <Box display='flex' alignItems='center' gap={1}>
                                                 <UserAvatar fullname={fullname} height={'35px'} width={'35px'} fontSize="70%" />
                                                 {user.email}
                                             </Box>
                                         </TableCell>
-                                        <TableCell sx={{ fontSize: 'medium' }}>
+                                        <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
                                             <Chip label={role} sx={{ fontFamily: 'Poppins, sans-serif', color: role === 'Admin' ? 'primary.main' : 'InactiveCaptionText', bgcolor: '#EFF4FF' }} />
                                         </TableCell>
                                         <TableCell  >

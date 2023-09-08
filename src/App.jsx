@@ -1,6 +1,6 @@
 import './App.scss'
 import Layout from './components/Layout'
-import { Route, Routes, ScrollRestoration } from 'react-router-dom'
+import { Route, Routes, ScrollRestoration, useLocation } from 'react-router-dom'
 import Home from './components/Home'
 import Missing from './components/Missing'
 import RequireAuth from './components/RequireAuth'
@@ -12,8 +12,34 @@ import Lessons from './components/Lessons'
 import Students from './components/Students'
 import LoginComponenet from './components/LoginComponent'
 import SwiperComp from './components/SwiperComp'
+import { useEffect } from 'react'
 
 function App() {
+  const location = useLocation()
+
+  useEffect(() => {
+    document.title = getPageTitle(location.pathname);
+  }, [location.pathname]);
+
+  const getPageTitle = (pathname) => {
+    switch (pathname) {
+      case '/':
+        return 'dashboard';
+      case '/users':
+        return 'users management';
+      case '/students':
+        return 'students management';
+      case '/login':
+        return 'users login';
+      case '/lessons':
+        return 'lessons management';
+      case '/unauthorized':
+        return 'unauthorized user';
+      default:
+        return 'page not found';
+    }
+  };
+
   return (
     <Routes>
       <Route element={<PersistLogin />}>

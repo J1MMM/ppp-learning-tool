@@ -16,12 +16,17 @@ const OverviewCard = ({ index, data }) => {
                 elevation={2}
                 sx={{
                     borderRadius: 2,
+                    width: "100%",
+                    maxWidth: {
+                        sm: 300
+                    },
                     minWidth: 300,
                     p: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     bgcolor: index == 0 ? "primary.main" : "#FFF",
-                    position: 'relative'
+                    position: 'relative',
+                    boxSizing: 'border-box'
                 }}
 
             >
@@ -34,7 +39,7 @@ const OverviewCard = ({ index, data }) => {
                         {data.icon}
                     </Box>
                 </Box>
-                <Typography variant='h4' mt={3} fontWeight="500" color={index == 0 ? "#FFF" : "#000"}>{data.data.toLocaleString()}</Typography>
+                <Typography variant='h4' fontWeight="500" sx={{ mt: { xs: 0, sm: 3 } }} color={index == 0 ? "#FFF" : "#000"}>{data.data.toLocaleString()}</Typography>
                 <Typography variant='caption' mt={"auto"} color={index == 0 ? "#FFF" : "InactiveCaptionText"}>{data.subText}</Typography>
             </Paper >
         </Grow>

@@ -74,9 +74,7 @@ const LoginComponenet = () => {
         setFormDisabled(false)
     }
 
-    if (auth?.accessToken) {
-        return <Navigate to="/" />
-    }
+
 
     const slides = [
         {
@@ -103,6 +101,10 @@ const LoginComponenet = () => {
             </SwiperSlide>
         )
     })
+
+    if (auth?.accessToken) {
+        return <Navigate to="/" />
+    }
 
     return (
         <Box

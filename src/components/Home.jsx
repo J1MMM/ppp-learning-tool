@@ -38,14 +38,12 @@ const Home = () => {
 
     const isAdmin = Boolean(auth?.roles?.find(role => role === ROLES_LIST.Admin))
 
-
     useEffect(() => {
         window.scrollTo(0, 0);
         let isMounted = true;
         const controller = new AbortController();
 
         const getData = async () => {
-            console.log("get data");
             try {
                 const res1 = await axiosPrivate.get('/students', {
                     signal: controller.signal
@@ -122,12 +120,26 @@ const Home = () => {
     if (noServerRes) return <NoServerResponse show={noServerRes} />;
     return (
         <Box display="flex" flexDirection="column" gap={2}>
-            <Box display="flex" gap={2}>
+            <Box
+                display="flex"
+                gap={2}
+                sx={{
+                    flexDirection: {
+                        xs: "column",
+                        sm: "row"
+                    }
+                }}
+            >
                 <Box
                     className="card-container"
                     display="grid"
-                    gridTemplateColumns="1fr 1fr"
                     gap={2}
+                    sx={{
+                        gridTemplateColumns: {
+                            sm: " 1fr",
+                            md: "1fr 1fr"
+                        }
+                    }}
                 >
                     {cardEl}
                 </Box>

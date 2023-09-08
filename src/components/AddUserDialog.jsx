@@ -63,6 +63,12 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                     <Box
                         display="flex"
                         gap={2}
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            }
+                        }}
                     >
                         <TextField
                             disabled={disabled}
@@ -108,6 +114,12 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                         mt={1}
                         display='flex'
                         gap={2}
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            }
+                        }}
                     >
                         <TextField
                             disabled={disabled}

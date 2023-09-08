@@ -44,6 +44,9 @@ const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEdi
             setSnackSev("success")
             setEmpty(false)
         } catch (error) {
+            setSnackMsg(error?.message)
+            setSnackOpen(true)
+            setSnackSev("error")
             console.error(error);
         }
 
@@ -54,71 +57,73 @@ const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEdi
     }
     return (
         <Dialog open={open} onClose={() => onClose(false)} >
-            <form onSubmit={handleEditLesson} style={{ minWidth: '500px', maxWidth: '500px' }}>
-                <DialogTitle variant='h5' >Edit Lesson</DialogTitle>
-                <Divider />
-                <DialogContent>
-                    <Box
-                        display="flex"
-                        flexDirection="column"
-                        gap={2}
-                    >
-                        <TextField
-                            disabled={disabled}
-                            autoFocus
-                            margin="dense"
-                            id="title"
-                            label="Lesson Title"
-                            type="text"
-                            fullWidth
-                            variant="outlined"
-                            value={newTitle}
-                            onChange={(e) => setNewTitle(e.target.value)}
-                        />
+            <Box sx={{ minWidth: { md: "500px" } }}>
+                <form onSubmit={handleEditLesson} style={{ width: "100%" }}>
+                    <DialogTitle variant='h5' >Edit Lesson</DialogTitle>
+                    <Divider />
+                    <DialogContent>
+                        <Box
+                            display="flex"
+                            flexDirection="column"
+                            gap={2}
+                        >
+                            <TextField
+                                disabled={disabled}
+                                autoFocus
+                                margin="dense"
+                                id="title"
+                                label="Lesson Title"
+                                type="text"
+                                fullWidth
+                                variant="outlined"
+                                value={newTitle}
+                                onChange={(e) => setNewTitle(e.target.value)}
+                            />
 
-                        <InputFile file={newFile} setFile={setNewFile} disabled={disabled} />
+                            <InputFile file={newFile} setFile={setNewFile} disabled={disabled} />
 
-                        {newFile && <Grow in={newFile ? true : false} >
-                            <Box
-                                width="100%"
-                                p={1}
-                                boxSizing="border-box"
-                                bgcolor={disabled ? "InactiveCaptionText" : "primary.main"}
-                                display="flex"
-                                justifyContent="space-between"
-                                alignItems="center"
-                                borderRadius={1}
-                            >
+                            {newFile && <Grow in={newFile ? true : false} >
                                 <Box
+                                    width="100%"
+                                    p={1}
+                                    boxSizing="border-box"
+                                    bgcolor={disabled ? "InactiveCaptionText" : "primary.main"}
                                     display="flex"
+                                    justifyContent="space-between"
                                     alignItems="center"
-                                    maxWidth="280px"
-                                    overflow="hidden"
+                                    borderRadius={1}
                                 >
-                                    <Description color='common' />
-                                    <Typography variant='body2' color="#FFF" ml={1}>{newFile?.name}</Typography>
+                                    <Box
+                                        display="flex"
+                                        alignItems="center"
+                                        maxWidth="280px"
+                                        overflow="hidden"
+                                    >
+                                        <Description color='common' />
+                                        <Typography variant='body2' color="#FFF" ml={1}>{newFile?.name}</Typography>
+                                    </Box>
+
+                                    <Box
+                                        display="flex"
+                                        alignItems="center"
+                                    >
+                                        <Typography variant='body2' color="#FFF" ml={1}>{(newFile?.size / 1024).toFixed(2)} KB</Typography>
+
+                                        <IconButton disabled={disabled} onClick={() => setNewFile(null)}>
+                                            <Delete color='common' />
+                                        </IconButton>
+                                    </Box>
                                 </Box>
+                            </Grow>}
+                        </Box>
+                    </DialogContent>
 
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                >
-                                    <Typography variant='body2' color="#FFF" ml={1}>{(newFile?.size / 1024).toFixed(2)} KB</Typography>
-
-                                    <IconButton disabled={disabled} onClick={() => setNewFile(null)}>
-                                        <Delete color='common' />
-                                    </IconButton>
-                                </Box>
-                            </Box>
-                        </Grow>}
-                    </Box>
-                </DialogContent>
-
-                <DialogActions>
-                    <Button disabled={disabled} onClick={() => onClose(false)} color='inherit' sx={{ mb: 1 }}><Typography>Cancel</Typography></Button>
-                    <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Update</Typography></Button>
-                </DialogActions>
-            </form>
+                    <DialogActions>
+                        <Button disabled={disabled} onClick={() => onClose(false)} color='inherit' sx={{ mb: 1 }}><Typography>Cancel</Typography></Button>
+                        <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Update</Typography></Button>
+                    </DialogActions>
+                </form>
+            </Box>
         </Dialog >
     );
 }

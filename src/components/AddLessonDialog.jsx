@@ -49,7 +49,7 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
         } catch (error) {
             setSnackOpen(true)
             setSnackSev("error")
-            setSnackMsg("Bad Request")
+            setSnackMsg(error?.message)
             setDisabled(false)
             console.error(error);
         }
@@ -62,75 +62,81 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
 
     return (
         <Dialog open={open} onClose={() => onClose(false)} >
-            <form onSubmit={handleAddLesson} style={{ minWidth: '500px', maxWidth: '500px' }}>
-                <DialogTitle variant='h5' >Add Lesson</DialogTitle>
-                <Divider />
-                <DialogContent>
-                    <Box
-                        display="flex"
-                        flexDirection="column"
-                        gap={2}
-                    >
-                        <TextField
-                            disabled={disabled}
-                            autoFocus
-                            margin="dense"
-                            id="title"
-                            label="Lesson Title"
-                            type="text"
-                            fullWidth
-                            variant="outlined"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
-                        {/* input file */}
-                        <InputFile file={file} setFile={setFile} disabled={disabled} />
+            <Box
+                sx={{
+                    minWidth: {
+                        md: "500px"
+                    }
+                }}
+            >
 
-                        {file && <Grow in={file ? true : false} >
-                            <Box
-                                width="100%"
-                                p={1}
-                                boxSizing="border-box"
-                                bgcolor={disabled ? "InactiveCaptionText" : "primary.main"}
-                                display="flex"
-                                justifyContent="space-between"
-                                alignItems="center"
-                                borderRadius={1}
-                            >
+                <form onSubmit={handleAddLesson} style={{ width: "100%" }}>
+                    <DialogTitle variant='h5' >Add Lesson</DialogTitle>
+                    <Divider />
+                    <DialogContent>
+                        <Box
+                            display="flex"
+                            flexDirection="column"
+                            gap={2}
+                        >
+                            <TextField
+                                disabled={disabled}
+                                autoFocus
+                                margin="dense"
+                                id="title"
+                                label="Lesson Title"
+                                type="text"
+                                fullWidth
+                                variant="outlined"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                            />
+                            {/* input file */}
+                            <InputFile file={file} setFile={setFile} disabled={disabled} />
+
+                            {file && <Grow in={file ? true : false} >
                                 <Box
+                                    width="100%"
+                                    p={1}
+                                    boxSizing="border-box"
+                                    bgcolor={disabled ? "InactiveCaptionText" : "primary.main"}
                                     display="flex"
+                                    justifyContent="space-between"
                                     alignItems="center"
-                                    maxWidth="280px"
-                                    overflow="hidden"
+                                    borderRadius={1}
                                 >
-                                    <Description color='common' />
-                                    <Typography variant='body2' color="#FFF" ml={1}>{file?.name}</Typography>
+                                    <Box
+                                        display="flex"
+                                        alignItems="center"
+                                        maxWidth="280px"
+                                        overflow="hidden"
+                                    >
+                                        <Description color='common' />
+                                        <Typography variant='body2' color="#FFF" ml={1}>{file?.name}</Typography>
+                                    </Box>
+
+                                    <Box
+                                        display="flex"
+                                        alignItems="center"
+                                    >
+                                        <Typography variant='body2' color="#FFF" ml={1}>{(file?.size / 1024).toFixed(2)} KB</Typography>
+
+                                        <IconButton disabled={disabled} onClick={() => !disabled && setFile(null)}>
+                                            <Delete color='common' />
+                                        </IconButton>
+                                    </Box>
                                 </Box>
+                            </Grow>}
 
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                >
-                                    <Typography variant='body2' color="#FFF" ml={1}>{(file?.size / 1024).toFixed(2)} KB</Typography>
+                        </Box>
+                    </DialogContent>
 
-                                    <IconButton disabled={disabled} onClick={() => !disabled && setFile(null)}>
-                                        <Delete color='common' />
-                                    </IconButton>
-                                </Box>
-                            </Box>
-                        </Grow>}
-
-                    </Box>
-                </DialogContent>
-
-                <DialogActions>
-                    <Button disabled={disabled} onClick={() => onClose(false)} color='inherit' sx={{ mt: -2 }}><Typography>Cancel</Typography></Button>
-                    <Button type='submit' disabled={disabled} sx={{ mr: 1, mt: -2 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Submit</Typography></Button>
-                </DialogActions>
-            </form>
-
-
-
+                    <DialogActions>
+                        <Button disabled={disabled} onClick={() => onClose(false)} color='inherit' sx={{ mt: -2 }}><Typography>Cancel</Typography></Button>
+                        <Button type='submit' disabled={disabled} sx={{ mr: 1, mt: -2 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Submit</Typography></Button>
+                    </DialogActions>
+                </form>
+            </Box>
         </Dialog >
     );
 }
