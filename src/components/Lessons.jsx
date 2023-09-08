@@ -59,6 +59,7 @@ const Lessons = () => {
                 const response = await axiosPrivate.get('/upload', {
                     signal: controller.signal
                 });
+                console.log(response.data);
                 setNoResponse(false)
                 if (response.data.length == 0) {
                     setEmpty(true)

@@ -38,7 +38,6 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
 
         try {
             const response = await axios.post('/upload', formData)
-            console.log(response);
             const newData = ({ ...response.data.result, show: true, uri: `${baseURL}${response.data.result._id}` })
 
             setLessons(prev => ([...prev, newData]))
@@ -59,7 +58,6 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
         onClose(false)
         setDisabled(false)
     }
-
     return (
         <Dialog open={open} onClose={() => onClose(false)} >
             <Box
@@ -104,6 +102,7 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
                                     justifyContent="space-between"
                                     alignItems="center"
                                     borderRadius={1}
+
                                 >
                                     <Box
                                         display="flex"
@@ -112,14 +111,14 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
                                         overflow="hidden"
                                     >
                                         <Description color='common' />
-                                        <Typography variant='body2' color="#FFF" ml={1}>{file?.name}</Typography>
+                                        <Typography variant='body2' color="#FFF" ml={1} sx={{ fontSize: { xs: 10, sm: 14 }, maxWidth: { xs: "5rem", sm: "none" } }}>{file?.name}</Typography>
                                     </Box>
 
                                     <Box
                                         display="flex"
                                         alignItems="center"
                                     >
-                                        <Typography variant='body2' color="#FFF" ml={1}>{(file?.size / 1024).toFixed(2)} KB</Typography>
+                                        <Typography variant='body2' color="#FFF" ml={1} sx={{ fontSize: { xs: 10, sm: 14 } }}>{(file?.size / 1024).toFixed(2)} KB</Typography>
 
                                         <IconButton disabled={disabled} onClick={() => !disabled && setFile(null)}>
                                             <Delete color='common' />

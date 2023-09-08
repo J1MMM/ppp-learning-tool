@@ -29,7 +29,7 @@ const InputFile = ({ file, setFile, disabled }) => {
                 file ?
                     <>
                         <DownloadDone sx={{ width: '3rem', height: '3rem' }} color='disabled' />
-                        <Typography variant='h5' color="InactiveCaptionText">File Attached Successfully!</Typography>
+                        <Typography variant='h5' color="InactiveCaptionText" sx={{ fontSize: { xs: 16, md: 24 } }}>File Attached Successfully!</Typography>
                     </>
                     :
                     <>
@@ -45,7 +45,7 @@ const InputFile = ({ file, setFile, disabled }) => {
                 type="file"
                 accept='.ppt, .pptm, .pptx, .doc, .docx, .pdf, .jpg, .jpeg, .png, .txt'
                 onChange={(e) => {
-                    if (!e.target?.files[0]) return null;
+                    if (!e.target?.files[0]) return;
 
                     setFile(e.target?.files[0])
                 }}

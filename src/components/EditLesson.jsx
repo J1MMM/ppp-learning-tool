@@ -100,14 +100,14 @@ const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEdi
                                         overflow="hidden"
                                     >
                                         <Description color='common' />
-                                        <Typography variant='body2' color="#FFF" ml={1}>{newFile?.name}</Typography>
+                                        <Typography variant='body2' color="#FFF" ml={1} sx={{ fontSize: { xs: 10, sm: 14 }, maxWidth: { xs: "5rem", sm: "none" } }}>{newFile?.name}</Typography>
                                     </Box>
 
                                     <Box
                                         display="flex"
                                         alignItems="center"
                                     >
-                                        <Typography variant='body2' color="#FFF" ml={1}>{(newFile?.size / 1024).toFixed(2)} KB</Typography>
+                                        <Typography variant='body2' color="#FFF" ml={1} sx={{ fontSize: { xs: 10, sm: 14 }, maxWidth: { xs: "5rem", sm: "none" } }}>{(newFile?.size / 1024).toFixed(2)} KB</Typography>
 
                                         <IconButton disabled={disabled} onClick={() => setNewFile(null)}>
                                             <Delete color='common' />

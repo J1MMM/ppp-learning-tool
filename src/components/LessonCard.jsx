@@ -109,7 +109,7 @@ const LessonCard =
                         boxSizing="border-box"
                     >
                         <Typography variant='h6' zIndex={5} color="#FFF">{lesson.title}</Typography>
-                        <Typography variant='caption' zIndex={5} color="#FFF">{lesson.fullname}</Typography>
+                        <Typography variant='caption' zIndex={5} color="#FFF">{lesson.instructor}</Typography>
 
                         <IconButton
                             color='common'
