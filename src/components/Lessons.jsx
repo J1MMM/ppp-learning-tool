@@ -153,16 +153,16 @@ const Lessons = () => {
         />
     })
     // custom renderer 
-    const MyCustomPNGRenderer = ({ mainState: { currentDocument } }) => {
+    const MyCustomVideoRenderer = ({ mainState: { currentDocument } }) => {
         if (!currentDocument) return null;
         return (
-            <video controls autoPlay width="100%" height="100%" style={{ backgroundColor: 'black' }}>
+            <video controls autoPlay width="100%" height="auto" style={{ backgroundColor: 'black' }}>
                 <source src={currentDocument.fileData} type='video/mp4' />
             </video>
         );
     };
-    MyCustomPNGRenderer.fileTypes = ["mp4", "video/mp4"];
-    MyCustomPNGRenderer.weight = 1;
+    MyCustomVideoRenderer.fileTypes = ["mp4", "video/mp4"];
+    MyCustomVideoRenderer.weight = 1;
 
     if (noResponse) return <NoServerResponse show={noResponse} />;
     if (unAuthorized) return <Unauthorized show={unAuthorized} />;
@@ -317,7 +317,7 @@ const Lessons = () => {
                 </Button>
 
                 <DocViewer
-                    pluginRenderers={[MyCustomPNGRenderer, ...DocViewerRenderers]}
+                    pluginRenderers={[MyCustomVideoRenderer, ...DocViewerRenderers]}
                     documents={lessons}
                     activeDocument={activeDocs}
                     prefetchMethod='GET'
