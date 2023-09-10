@@ -13,6 +13,7 @@ import EditLesson from './EditLesson';
 import ConfirmationDialog from './ConfirmationDialog';
 import Unauthorized from './Unauthorized';
 import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
+import videoSrc from '../assets/test.mp4'
 
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -123,10 +124,15 @@ const Lessons = () => {
     const [openVDialog, setOpenVDialog] = useState(false)
 
     const handleViewFile = (index) => {
+        const fileExtention = lessons[index].fileType;
+        console.log(fileExtention);
+
         setActiveDocs(prev => {
             return lessons[index]
         })
         setOpenVDialog(true)
+
+
     };
 
     const lessonsEl = lessons?.map((lesson, index) => {
@@ -146,6 +152,17 @@ const Lessons = () => {
             lesson={lesson}
         />
     })
+    // custom renderer 
+    const MyCustomPNGRenderer = ({ mainState: { currentDocument } }) => {
+        if (!currentDocument) return null;
+        return (
+            <video controls autoPlay width="100%" height="100%" style={{ backgroundColor: 'black' }}>
+                <source src={currentDocument.fileData} type='video/mp4' />
+            </video>
+        );
+    };
+    MyCustomPNGRenderer.fileTypes = ["mp4", "video/mp4"];
+    MyCustomPNGRenderer.weight = 1;
 
     if (noResponse) return <NoServerResponse show={noResponse} />;
     if (unAuthorized) return <Unauthorized show={unAuthorized} />;
@@ -290,6 +307,9 @@ const Lessons = () => {
                 open={openVDialog}
                 onClose={() => setOpenVDialog(false)}
                 TransitionComponent={Transition}
+                sx={{
+                    bgcolor: 'black',
+                }}
             >
                 <Button onClick={() => setOpenVDialog(false)} sx={{ position: 'absolute', top: "3rem", left: 0, zIndex: 10, '&:hover': { color: 'red' } }} size='large'>
                     <ChevronLeft fontSize='medium' />
@@ -297,9 +317,9 @@ const Lessons = () => {
                 </Button>
 
                 <DocViewer
+                    pluginRenderers={[MyCustomPNGRenderer, ...DocViewerRenderers]}
                     documents={lessons}
                     activeDocument={activeDocs}
-                    pluginRenderers={DocViewerRenderers}
                     prefetchMethod='GET'
                     style={{ height: "100%", minHeight: 750 }}
                     theme={{
@@ -312,7 +332,6 @@ const Lessons = () => {
                         disableThemeScrollbar: false,
                     }}
                 />
-
             </Dialog>
 
         </Paper>

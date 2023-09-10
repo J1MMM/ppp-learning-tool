@@ -43,7 +43,7 @@ const InputFile = ({ file, setFile, disabled }) => {
                 id='input-file'
                 name='file'
                 type="file"
-                accept='.ppt, .pptm, .pptx, .doc, .docx, .pdf, .jpg, .jpeg, .png, .txt'
+                accept='.ppt, .pptm, .pptx, .doc, .docx, .pdf, .jpg, .jpeg, .png, .txt, .mp4'
                 onChange={(e) => {
                     if (!e.target?.files[0]) return;
 

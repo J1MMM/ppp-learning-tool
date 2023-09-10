@@ -12,7 +12,7 @@ const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEdi
         setDisabled(true)
 
         if (newFile) {
-            const allowedExt = ['ppt', 'pptx', 'pptm', 'doc', 'docx', 'pdf', 'jpg', 'jpeg', 'png', 'txt']
+            const allowedExt = ['ppt', 'pptx', 'pptm', 'doc', 'docx', 'pdf', 'jpg', 'jpeg', 'png', 'txt', 'mp4']
             const fileExt = newFile?.name.split('.').pop().toLowerCase()
 
             if (!allowedExt.includes(fileExt)) {
@@ -120,7 +120,7 @@ const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEdi
 
                     <DialogActions>
                         <Button disabled={disabled} onClick={() => onClose(false)} color='inherit' sx={{ mb: 1 }}><Typography>Cancel</Typography></Button>
-                        <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Update</Typography></Button>
+                        <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>save</Typography></Button>
                     </DialogActions>
                 </form>
             </Box>

@@ -23,7 +23,7 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
             return null
         }
 
-        const allowedExt = ['ppt', 'pptx', 'pptm', 'doc', 'docx', 'pdf', 'jpg', 'jpeg', 'png', 'txt']
+        const allowedExt = ['ppt', 'pptx', 'pptm', 'doc', 'docx', 'pdf', 'jpg', 'jpeg', 'png', 'txt', 'mp4']
         const fileExt = file.name.split('.').pop().toLowerCase()
         if (!allowedExt.includes(fileExt)) {
             setSnackOpen(true)
