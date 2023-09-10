@@ -24,7 +24,6 @@ const LoginComponenet = () => {
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
-    const userRef = useRef();
 
     const [email, setEmail] = useState('')
     const [pwd, setPwd] = useState('')
@@ -38,6 +37,7 @@ const LoginComponenet = () => {
         setSnackOpen(false)
         setErrMsg('')
     }, [email, pwd])
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -235,6 +235,7 @@ const LoginComponenet = () => {
 
                     <form style={{ width: '100%' }} onSubmit={handleSubmit}>
                         <TextField
+                            autoFocus
                             label="Email"
                             variant="outlined"
                             fullWidth
