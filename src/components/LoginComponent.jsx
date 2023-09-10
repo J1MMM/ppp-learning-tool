@@ -235,6 +235,7 @@ const LoginComponenet = () => {
 
                     <form style={{ width: '100%' }} onSubmit={handleSubmit}>
                         <TextField
+                            autoComplete='off'
                             autoFocus
                             label="Email"
                             variant="outlined"
@@ -251,7 +252,7 @@ const LoginComponenet = () => {
                         <FormControl fullWidth variant="outlined" sx={{ mt: 3 }}>
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <OutlinedInput
-                                autoFocus
+                                autoComplete='off'
                                 id="password"
                                 type={pwdVisible ? 'text' : 'password'}
                                 name='pwd'
