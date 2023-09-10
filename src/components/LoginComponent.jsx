@@ -235,7 +235,6 @@ const LoginComponenet = () => {
 
                     <form style={{ width: '100%' }} onSubmit={handleSubmit}>
                         <TextField
-                            autoComplete='off'
                             autoFocus
                             label="Email"
                             variant="outlined"
