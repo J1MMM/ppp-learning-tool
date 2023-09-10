@@ -251,6 +251,7 @@ const LoginComponenet = () => {
                         <FormControl fullWidth variant="outlined" sx={{ mt: 3 }}>
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <OutlinedInput
+                                autoFocus
                                 id="password"
                                 type={pwdVisible ? 'text' : 'password'}
                                 name='pwd'
