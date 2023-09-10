@@ -156,7 +156,7 @@ const Lessons = () => {
     const MyCustomVideoRenderer = ({ mainState: { currentDocument } }) => {
         if (!currentDocument) return null;
         return (
-            <video controls autoPlay width="100%" height="auto" style={{ backgroundColor: 'black' }}>
+            <video controls autoPlay width="100%" height="100%" style={{ backgroundColor: 'black' }}>
                 <source src={currentDocument.fileData} type='video/mp4' />
             </video>
         );
@@ -315,13 +315,12 @@ const Lessons = () => {
                     <ChevronLeft fontSize='medium' />
                     back
                 </Button>
-
                 <DocViewer
                     pluginRenderers={[MyCustomVideoRenderer, ...DocViewerRenderers]}
                     documents={lessons}
                     activeDocument={activeDocs}
                     prefetchMethod='GET'
-                    style={{ height: "100%", minHeight: 750 }}
+                    style={{ height: "100vh" }}
                     theme={{
                         primary: "#414AE0",
                         secondary: "black",
@@ -333,7 +332,6 @@ const Lessons = () => {
                     }}
                 />
             </Dialog>
-
         </Paper>
     );
 }
