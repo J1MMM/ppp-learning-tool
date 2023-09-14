@@ -21,6 +21,7 @@ const ConfirmationDialog = ({ open, setOpen, title, content, confirm }) => {
             <DialogActions>
                 <Button size='small' onClick={() => setOpen(false)} color='secondary'>Cancel</Button>
                 <Button
+                    autoFocus
                     size='small'
                     onClick={() => {
                         setOpen(false)

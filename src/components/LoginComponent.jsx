@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import pppLogo from '../assets/images/ppp-logo.svg'
-import { Link, Box, Button, Container, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography, Alert, Collapse } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Link, Box, Button, Container, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography, Alert, Collapse, Dialog } from '@mui/material';
+import { Email, Mail, MailLockOutlined, MailOutline, Message, Visibility, VisibilityOff } from '@mui/icons-material';
 import useAuth from '../hooks/useAuth';
 
 import img1 from '../assets/images/login-slide1.svg'
@@ -24,7 +24,6 @@ const LoginComponenet = () => {
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
-
     const [email, setEmail] = useState('')
     const [pwd, setPwd] = useState('')
     const [errMsg, setErrMsg] = useState('')
@@ -32,6 +31,8 @@ const LoginComponenet = () => {
     const [formDisabled, setFormDisabled] = useState(false)
     const [snackOpen, setSnackOpen] = useState(false)
     const [snackSev, setSnackSev] = useState("error")
+
+    const [fgpModal, setfgpModal] = useState(false)
 
     useEffect(() => {
         setSnackOpen(false)
@@ -71,6 +72,33 @@ const LoginComponenet = () => {
                 setErrMsg('Login Failed')
             }
         }
+        setFormDisabled(false)
+    }
+
+    const fgpSubmit = async (e) => {
+        e.preventDefault()
+        setFormDisabled(true)
+        try {
+            const response = await axios.post(`/reset-password`, {
+                data: {
+                    "email": email
+                }
+            });
+            console.log(response.data);
+            setErrMsg(response.data?.message)
+            setSnackOpen(true)
+            setSnackSev('success')
+
+        } catch (err) {
+            setErrMsg(err.response.data.message)
+            setSnackOpen(true)
+            setSnackSev('error')
+            console.error(err);
+            setFormDisabled(false)
+
+        }
+
+        setfgpModal(false)
         setFormDisabled(false)
     }
 
@@ -275,10 +303,11 @@ const LoginComponenet = () => {
                             />
                         </FormControl>
                         <Link
-                            href="#forgot-password"
+                            href="#"
                             variant='subtitle2'
                             mt={1}
-                            sx={{ textDecoration: 'none', float: 'right' }}
+                            sx={{ textDecoration: 'none', float: 'right', color: formDisabled && 'lightgrey', pointerEvents: formDisabled && 'none' }}
+                            onClick={() => setfgpModal(true)}
                         >Forgot password?</Link>
 
                         <Button
@@ -300,6 +329,56 @@ const LoginComponenet = () => {
                 severity={snackSev}
                 position={{ horizontal: 'right', vertical: 'top' }}
             />
+            <Dialog open={fgpModal} onClose={() => setfgpModal(false)}>
+                <Box
+                    sx={{
+                        minWidth: {
+                            md: "400px"
+                        },
+                        display: "flex",
+                        flexDirection: "column",
+                        p: {
+                            xs: 3,
+                            sm: 3,
+                            md: 5
+                        },
+
+                    }}
+                >
+                    <Typography variant='h4' sx={{ fontSize: { xs: 26, sm: 28, md: 30 } }}>
+                        Forgot Password
+                    </Typography>
+                    <Typography variant='body1' mb={2} sx={{ fontSize: { xs: 12, sm: 14 } }}>
+                        You will receive link for reseting your password.
+                    </Typography>
+                    <form onSubmit={fgpSubmit}>
+                        <TextField
+                            autoFocus
+                            label="Email"
+                            variant="outlined"
+                            fullWidth
+                            name='email'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            type='email'
+                            disabled={formDisabled ? true : false}
+                        />
+                        <Button
+                            variant='contained'
+                            fullWidth
+                            sx={{ mt: 3 }}
+                            size='large'
+                            type='submit'
+                            disabled={formDisabled}
+
+                        >
+                            <Mail sx={{ mr: 1 }} />
+                            Send
+                        </Button>
+                    </form>
+                </Box>
+            </Dialog>
         </Box>
     );
 }

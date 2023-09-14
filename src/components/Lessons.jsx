@@ -55,7 +55,6 @@ const Lessons = () => {
         const controller = new AbortController();
 
         const getLessons = async () => {
-            console.log("get Lessons");
             try {
                 const response = await axiosPrivate.get('/upload', {
                     signal: controller.signal
@@ -89,6 +88,7 @@ const Lessons = () => {
 
     const deleteLesson = async () => {
         setLessons(prev => prev.map(data => (data._id == deletID ? { ...data, show: false } : data)))
+        setLessons(prev => prev.filter(item => item._id !== deletID))
 
         try {
             const res = await axiosPrivate.delete('/upload', {
@@ -112,7 +112,6 @@ const Lessons = () => {
             console.log(error);
         }
 
-        setLessons(prev => prev.filter(item => item._id !== deletID))
     }
 
     const handleEditLesson = (id) => {
@@ -124,9 +123,6 @@ const Lessons = () => {
     const [openVDialog, setOpenVDialog] = useState(false)
 
     const handleViewFile = (index) => {
-        const fileExtention = lessons[index].fileType;
-        console.log(fileExtention);
-
         setActiveDocs(prev => {
             return lessons[index]
         })

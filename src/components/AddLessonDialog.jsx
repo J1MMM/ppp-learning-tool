@@ -66,6 +66,7 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
                         md: "500px"
                     }
                 }}
+
             >
 
                 <form onSubmit={handleAddLesson} style={{ width: "100%" }}>

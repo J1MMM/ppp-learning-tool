@@ -13,6 +13,8 @@ import Students from './components/Students'
 import LoginComponenet from './components/LoginComponent'
 import SwiperComp from './components/SwiperComp'
 import { useEffect } from 'react'
+import ResetPassword from './components/resetPassword'
+import VerifyResetToken from './components/VerifyResetToken'
 
 function App() {
   const location = useLocation()
@@ -33,6 +35,8 @@ function App() {
         return 'users login';
       case '/lessons':
         return 'lessons management';
+      case '/reset-password/:id/:token':
+        return 'reset password';
       case '/unauthorized':
         return 'unauthorized user';
       default:
@@ -48,6 +52,10 @@ function App() {
         <Route path='/login' element={<LoginComponenet />} />
         <Route path='/unauthorized' element={<Unauthorized />} />
 
+        {/* reset password  */}
+        <Route element={<VerifyResetToken />}>
+          <Route path='/reset-password/:token' element={<ResetPassword />} />
+        </Route>
         {/* protected routes  */}
         <Route path='/' element={<Layout />}>
           {/* admin and teaches allowed  */}
