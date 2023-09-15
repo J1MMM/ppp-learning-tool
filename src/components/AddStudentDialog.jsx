@@ -47,11 +47,11 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
 
         try {
             const response = await axiosPrivate.post('/students', {
-                "firstname": fname.trimStart(),
-                "lastname": lname.trimStart(),
-                "middlename": mname.trimStart(),
-                "email": email.trimStart(),
-                "password": pwd.trimStart(),
+                "firstname": fname.trimStart().trimEnd(),
+                "lastname": lname.trimStart().trimEnd(),
+                "middlename": mname.trimStart().trimEnd(),
+                "email": email.trimStart().trimEnd(),
+                "password": pwd.trimStart().trimEnd(),
                 "learning_disabilities": selectedDisabilities
             })
 

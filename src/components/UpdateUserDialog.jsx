@@ -49,11 +49,11 @@ const UpdateUserDialog = ({
         try {
             const response = await axiosPrivate.put('users', {
                 "id": updateUserId,
-                "firstname": updateFname.trimStart(),
-                "lastname": updateLname.trimStart(),
-                "middlename": updateMname,
-                "email": updateEmail.trimStart(),
-                "password": updatePwd
+                "firstname": updateFname.trimStart().trimEnd(),
+                "lastname": updateLname.trimStart().trimEnd(),
+                "middlename": updateMname?.trimStart()?.trimEnd(),
+                "email": updateEmail.trimStart().trimEnd(),
+                "password": updatePwd?.trimStart()?.trimEnd()
             })
 
             setUsers(prev => prev?.map(user => {

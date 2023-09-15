@@ -59,11 +59,11 @@ const UpdateStudentDialog = ({
         try {
             const response = await axiosPrivate.put('/students', {
                 "id": updateStudentsId,
-                "firstname": updateFname.trimStart(),
-                "lastname": updateLname.trimStart(),
-                "middlename": updateMname.trimStart(),
-                "email": updateEmail.trimStart(),
-                "password": updatePwd.trimStart(),
+                "firstname": updateFname.trimStart().trimEnd(),
+                "lastname": updateLname.trimStart().trimEnd(),
+                "middlename": updateMname.trimStart().trimEnd(),
+                "email": updateEmail.trimStart().trimEnd(),
+                "password": updatePwd.trimStart().trimEnd(),
                 "learning_disabilities": selectedDisabilities
 
             })
