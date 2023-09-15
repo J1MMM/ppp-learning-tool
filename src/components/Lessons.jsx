@@ -272,6 +272,7 @@ const Lessons = () => {
                         boxSizing='border-box'
                     >
                         <img src={emptyTable} style={{
+                            width: '100%',
                             maxWidth: '25rem'
                         }} />
                         <Typography variant='h4' textAlign="center" color='#2F2E41'>No Lessons Found</Typography>
