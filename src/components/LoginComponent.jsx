@@ -62,6 +62,7 @@ const LoginComponenet = () => {
 
         } catch (error) {
             setSnackOpen(true)
+            setSnackSev("error")
             if (!error?.response) {
                 setErrMsg('No Server Response')
             } else if (error.response?.status == 400) {

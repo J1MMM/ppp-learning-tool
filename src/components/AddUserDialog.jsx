@@ -18,13 +18,29 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
         e.preventDefault()
         setDisabled(true)
 
+        if (fname.length < 2 || lname.length < 2) {
+            setResMsg("All fields should be at least 2 characters");
+            setSeverity("error")
+            setSnack(true);
+            setDisabled(false)
+            return;
+        }
+
+        if (pwd.length < 8) {
+            setResMsg("Password should be at least 8 characters");
+            setSeverity("error")
+            setSnack(true);
+            setDisabled(false)
+            return;
+        }
+
         try {
             const response = await axiosPrivate.post('users', {
-                "firstname": fname.trimStart(),
-                "lastname": lname.trimStart(),
-                "middlename": mname.trimStart(),
-                "email": email.trimStart(),
-                "password": pwd.trimStart()
+                "firstname": fname.trimStart().trimEnd(),
+                "lastname": lname.trimStart().trimEnd(),
+                "middlename": mname.trimStart().trimEnd(),
+                "email": email.trimStart().trimEnd(),
+                "password": pwd.trimStart().trimEnd()
             })
 
             setUsers(prev => [...prev, response?.data?.result])

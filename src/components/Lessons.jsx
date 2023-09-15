@@ -59,7 +59,6 @@ const Lessons = () => {
                 const response = await axiosPrivate.get('/upload', {
                     signal: controller.signal
                 });
-                console.log(response.data);
                 setNoResponse(false)
                 if (response.data.length == 0) {
                     setEmpty(true)
@@ -280,7 +279,7 @@ const Lessons = () => {
                         <img src={emptyTable} style={{
                             maxWidth: '25rem'
                         }} />
-                        <Typography variant='h4' color='#2F2E41'>No Lessons Found</Typography>
+                        <Typography variant='h4' textAlign="center" color='#2F2E41'>No Lessons Found</Typography>
                     </Box>
                 </Grow>
             }

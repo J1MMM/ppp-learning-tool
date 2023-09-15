@@ -25,6 +25,22 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
         e.preventDefault()
         setDisabled(true)
 
+        if (fname.length < 2 || lname.length < 2) {
+            setResMsg("Student name should be at least 2 characters");
+            setSeverity("error")
+            setSnack(true);
+            setDisabled(false)
+            return;
+        }
+
+        if (pwd.length < 8) {
+            setResMsg("Password should be at least 8 characters");
+            setSeverity("error")
+            setSnack(true);
+            setDisabled(false)
+            return;
+        }
+
         const selectedDisabilities = Object.keys(disabilities)
             .filter(disability => disabilities[disability])
             .map(disability => disability);

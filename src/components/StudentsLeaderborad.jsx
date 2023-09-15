@@ -133,7 +133,7 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                             <img src={emptyTable} style={{
                                 maxWidth: '25rem'
                             }} />
-                            <Typography variant='h4' color='#2F2E41'>No Students Found</Typography>
+                            <Typography variant='h4' textAlign='center' color='#2F2E41'>No Students Found</Typography>
                         </Box>
                     </Grow>
                 }

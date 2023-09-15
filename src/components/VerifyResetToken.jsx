@@ -13,7 +13,6 @@ const VerifyResetToken = () => {
         const checkToken = async () => {
             try {
                 const response = await axios.post(`/reset-password/${token}`)
-                console.log(response.status);
 
                 if (response.status == 200) {
                     isMounted && setAllowed(true)
@@ -30,7 +29,7 @@ const VerifyResetToken = () => {
 
 
     return (
-        allowed ? <Outlet /> : <Navigate to="/" state={{ from: location }} replace />
+        allowed ? <Outlet context={allowed} /> : <Navigate to="/" state={{ from: location }} replace />
     );
 }
 

@@ -47,7 +47,7 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                         >
                             <Add />
                             <Typography pr={1} variant='button'>
-                                Add User
+                                create account
                             </Typography>
                         </Button>
                     </Box>

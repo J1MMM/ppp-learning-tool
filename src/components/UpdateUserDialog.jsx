@@ -30,6 +30,22 @@ const UpdateUserDialog = ({
         e.preventDefault()
         setDisabled(true)
 
+        if (updateFname.length < 2 || updateLname.length < 2) {
+            setResMsg("first and last name should be at least 2 characters");
+            setSeverity("error")
+            setSnack(true);
+            setDisabled(false)
+            return;
+        }
+
+        if (updatePwd && updatePwd.length < 8) {
+            setResMsg("Password should be at least 8 characters");
+            setSeverity("error")
+            setSnack(true);
+            setDisabled(false)
+            return;
+        }
+
         try {
             const response = await axiosPrivate.put('users', {
                 "id": updateUserId,

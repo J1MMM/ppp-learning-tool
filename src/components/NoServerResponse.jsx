@@ -15,7 +15,7 @@ const NoServerResponse = ({ show }) => {
                 flexDirection='column'
             >
                 <img src={serverErr} style={{ maxWidth: '25rem' }} />
-                <Typography variant='h4' color="rgb(63,61,86)" mt={3}>No Server Response</Typography>
+                <Typography variant='h4' textAlign='center' color="rgb(63,61,86)" mt={3}>No Server Response</Typography>
             </Box>
         </Grow>
     );

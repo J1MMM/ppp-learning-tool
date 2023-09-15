@@ -35,6 +35,23 @@ const UpdateStudentDialog = ({
     const handleUpdateStudents = async (e) => {
         e.preventDefault()
         setDisabled(true)
+
+        if (updateFname.length < 2 || updateLname.length < 2) {
+            setResMsg("Student name should be at least 2 characters");
+            setSeverity("error")
+            setSnack(true);
+            setDisabled(false)
+            return;
+        }
+
+        if (updatePwd && updatePwd.length < 8) {
+            setResMsg("Password should be at least 8 characters");
+            setSeverity("error")
+            setSnack(true);
+            setDisabled(false)
+            return;
+        }
+
         const selectedDisabilities = Object.keys(disabilities)
             .filter(disability => disabilities[disability])
             .map(disability => disability);

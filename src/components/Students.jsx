@@ -43,8 +43,6 @@ const Students = () => {
         const controller = new AbortController();
 
         const getStudents = async () => {
-            console.log("get students");
-
             try {
                 const response = await axiosPrivate.get('/students', {
                     signal: controller.signal
