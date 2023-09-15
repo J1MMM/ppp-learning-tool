@@ -95,7 +95,7 @@ const UpdateUserDialog = ({
     }
 
     return (
-        <Dialog open={open} onClose={() => { onClose(false); setPwdVisible(false) }} >
+        <Dialog open={open} onClose={() => { onClose(false); setPwdVisible(false) }} disableAutoFocus>
             <form onSubmit={handleUpdateUser}>
                 <DialogTitle variant='h5' >Edit user </DialogTitle>
                 <Divider />
@@ -127,7 +127,6 @@ const UpdateUserDialog = ({
                         <TextField
                             disabled={disabled}
                             required
-                            autoFocus
                             margin="dense"
                             id="lname"
                             label="Last name"
@@ -139,7 +138,6 @@ const UpdateUserDialog = ({
                         />
                         <TextField
                             disabled={disabled}
-                            autoFocus
                             margin="dense"
                             id="mname"
                             label="Middle name"
@@ -165,7 +163,6 @@ const UpdateUserDialog = ({
                         <TextField
                             disabled={disabled}
                             required
-                            autoFocus
                             margin="dense"
                             id="email"
                             label="Email Address"

@@ -71,7 +71,7 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
     }
 
     return (
-        <Dialog open={open} onClose={() => onClose(false)} >
+        <Dialog open={open} onClose={() => onClose(false)} disableAutoFocus>
             <form onSubmit={handleAddUser}>
                 <DialogTitle variant='h5' >Add user</DialogTitle>
                 <Divider />
@@ -102,7 +102,6 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                         <TextField
                             disabled={disabled}
                             required
-                            autoFocus
                             margin="dense"
                             id="lname"
                             label="Last name"
@@ -114,7 +113,6 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                         />
                         <TextField
                             disabled={disabled}
-                            autoFocus
                             margin="dense"
                             id="mname"
                             label="Middle name"
@@ -140,7 +138,6 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                         <TextField
                             disabled={disabled}
                             required
-                            autoFocus
                             margin="dense"
                             id="email"
                             label="Email Address"

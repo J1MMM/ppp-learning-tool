@@ -119,7 +119,7 @@ const UpdateStudentDialog = ({
     }
 
     return (
-        <Dialog open={open} onClose={() => { onClose(false); setPwdVisible(false) }} >
+        <Dialog open={open} onClose={() => { onClose(false); setPwdVisible(false) }} disableAutoFocus>
             <form onSubmit={handleUpdateStudents}>
                 <DialogTitle variant='h5' >Edit Student</DialogTitle>
                 <Divider />
@@ -151,7 +151,6 @@ const UpdateStudentDialog = ({
                         <TextField
                             disabled={disabled}
                             required
-                            autoFocus
                             margin="dense"
                             id="lname"
                             label="Last name"
@@ -163,7 +162,6 @@ const UpdateStudentDialog = ({
                         />
                         <TextField
                             disabled={disabled}
-                            autoFocus
                             margin="dense"
                             id="mname"
                             label="Middle name"
@@ -189,7 +187,6 @@ const UpdateStudentDialog = ({
                         <TextField
                             disabled={disabled}
                             required
-                            autoFocus
                             margin="dense"
                             id="email"
                             label="Email Address"

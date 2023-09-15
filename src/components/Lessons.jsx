@@ -15,11 +15,9 @@ import Unauthorized from './Unauthorized';
 import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
 import videoSrc from '../assets/test.mp4'
 
-
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
-
 
 const Lessons = () => {
     const BASE_URL = 'https://capstone-server-kqsi.onrender.com/view/'
@@ -46,8 +44,6 @@ const Lessons = () => {
     const [deleteModal, setDeleteModal] = useState(false)
     const [deletID, setDeleteID] = useState("")
     const [deleteFilename, setDeleteFilename] = useState("")
-
-
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -77,7 +73,6 @@ const Lessons = () => {
         if (lessons.length == 0) {
             getLessons()
         }
-
 
         return () => {
             isMounted = false;

@@ -96,7 +96,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
     }
 
     return (
-        <Dialog open={open} onClose={() => onClose(false)} >
+        <Dialog open={open} onClose={() => onClose(false)} disableAutoFocus>
             <form onSubmit={handleAddStudent}>
                 <DialogTitle variant='h5' >Add Student</DialogTitle>
                 <Divider />
@@ -112,8 +112,8 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                         }}
                     >
                         <TextField
-                            disabled={disabled}
                             autoFocus
+                            disabled={disabled}
                             margin="dense"
                             id="fname"
                             label="First name"
@@ -124,10 +124,10 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                             required
                             onChange={(e) => setFname(e.target.value)}
                         />
+
                         <TextField
                             disabled={disabled}
                             required
-                            autoFocus
                             margin="dense"
                             id="lname"
                             label="Last name"
@@ -139,7 +139,6 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                         />
                         <TextField
                             disabled={disabled}
-                            autoFocus
                             margin="dense"
                             id="mname"
                             label="Middle name"
@@ -165,7 +164,6 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                         <TextField
                             disabled={disabled}
                             required
-                            autoFocus
                             margin="dense"
                             id="email"
                             label="Email Address"
@@ -174,6 +172,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                             fullWidth
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+
                         />
 
                         <FormControl fullWidth variant="outlined" margin='dense'>
