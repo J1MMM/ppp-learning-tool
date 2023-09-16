@@ -43,7 +43,15 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                 "password": pwd.trimStart().trimEnd()
             })
 
-            setUsers(prev => [...prev, response?.data?.result])
+            setUsers(prev => {
+                const sortedData = [...prev, response.data.result].sort((a, b) => {
+                    return a['lastname'].localeCompare(b['lastname']);
+                });
+
+                return sortedData
+            })
+
+            // setUsers(prev => [...prev, response?.data?.result])
             setResMsg(response?.data?.success);
             setSeverity("success")
             setSnack(true);

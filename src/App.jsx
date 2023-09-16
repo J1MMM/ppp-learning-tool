@@ -35,7 +35,7 @@ function App() {
         return 'users login';
       case '/lessons':
         return 'lessons management';
-      case '/reset-password/:id/:token':
+      case '/reset-password/:token':
         return 'reset password';
       case '/unauthorized':
         return 'unauthorized user';

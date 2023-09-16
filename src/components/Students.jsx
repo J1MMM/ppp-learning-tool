@@ -51,7 +51,12 @@ const Students = () => {
                 if (response.data?.length == 0) {
                     setStudentsEmpty(true)
                 }
-                isMounted && setStudents(response.data)
+
+                const sortedData = [...response.data].sort((a, b) => {
+                    return a['lastname'].localeCompare(b['lastname']);
+                });
+
+                isMounted && setStudents(sortedData)
 
             } catch (err) {
                 setNoServerRes(true)
@@ -70,7 +75,6 @@ const Students = () => {
         if (students.length > 0) {
             setStudentsEmpty(false)
         }
-
     }, [students])
 
     const handleDeleteStudent = async () => {
@@ -148,6 +152,7 @@ const Students = () => {
         <Box>
             <StudentsTable
                 students={students}
+                setStudents={setStudents}
                 setAddStudentModal={setAddStudentsModal}
                 setDeleteStudentId={setDeleteStudentId}
                 setDeleteModal={setDeleteModal}
@@ -155,6 +160,7 @@ const Students = () => {
                 geStudent={getStudent}
                 studentsEmpty={studentsEmpty}
                 noServerRes={noServerRes}
+
             />
 
             <AddStudentDialog

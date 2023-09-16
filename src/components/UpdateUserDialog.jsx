@@ -56,13 +56,29 @@ const UpdateUserDialog = ({
                 "password": updatePwd?.trimStart()?.trimEnd()
             })
 
-            setUsers(prev => prev?.map(user => {
-                if (user?._id == response?.data?.result?._id) {
-                    return response?.data?.result
-                } else {
-                    return user
-                }
-            }))
+            // setUsers(prev => prev?.map(user => {
+            //     if (user?._id == response?.data?.result?._id) {
+            //         return response?.data?.result
+            //     } else {
+            //         return user
+            //     }
+            // }))
+
+            setUsers(prev => {
+                const newData = prev?.map(user => {
+                    if (user?._id == response?.data?.result?._id) {
+                        return response?.data?.result
+                    } else {
+                        return user
+                    }
+                })
+
+                const sortedData = [...newData].sort((a, b) => {
+                    return a['lastname'].localeCompare(b['lastname']);
+                });
+
+                return sortedData
+            })
 
             setResMsg(response?.data?.success);
             setSeverity("success")

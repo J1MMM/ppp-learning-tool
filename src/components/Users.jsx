@@ -45,7 +45,12 @@ const Users = () => {
                     signal: controller.signal
                 });
                 setNoResponse(false)
-                isMounted && setUsers(response.data)
+
+                const sortedData = [...response.data].sort((a, b) => {
+                    return a['lastname'].localeCompare(b['lastname']);
+                });
+
+                isMounted && setUsers(sortedData)
             } catch (err) {
                 setNoResponse(true)
                 console.error(err);

@@ -63,9 +63,7 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                 <Table sx={{ minWidth: 650, position: 'relative' }} aria-label="simple table" >
                     <TableHead sx={{ bgcolor: '#FCFCFD' }}>
                         <TableRow>
-                            <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "3.5rem" }}>First Name</TableCell>
-                            <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "3.5rem" }}>Lastname</TableCell>
-                            <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "4.5rem" }}>Middle Name</TableCell>
+                            <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "4.5rem" }}>Full name</TableCell>
                             <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "3.5rem" }}>Email</TableCell>
                             {isAdmin && <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "3.5rem" }} >Instructor</TableCell>}
                             <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Stars Collected</TableCell>
@@ -84,9 +82,7 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                                     key={index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >{student.firstname}</TableCell>
-                                    <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" } }}>{student.lastname}</TableCell>
-                                    <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" } }}>{student.middlename}</TableCell>
+                                    <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "10rem" }}>{student.lastname}, {student.firstname} {student.middlename}</TableCell>
                                     <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" } }}>
                                         <Box display='flex' alignItems='center' gap={1}>
                                             <UserAvatar fullname={fullname} height={'35px'} width={'35px'} fontSize="70%" />

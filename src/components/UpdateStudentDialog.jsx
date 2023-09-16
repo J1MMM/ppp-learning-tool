@@ -68,13 +68,21 @@ const UpdateStudentDialog = ({
 
             })
 
-            setStudents(prev => prev?.map(user => {
-                if (user?._id == response?.data?.result?._id) {
-                    return response?.data?.result
-                } else {
-                    return user
-                }
-            }))
+            setStudents(prev => {
+                const newData = prev?.map(user => {
+                    if (user?._id == response?.data?.result?._id) {
+                        return response?.data?.result
+                    } else {
+                        return user
+                    }
+                })
+
+                const sortedData = [...newData].sort((a, b) => {
+                    return a['lastname'].localeCompare(b['lastname']);
+                });
+
+                return sortedData
+            })
 
             setResMsg(response?.data?.success);
             setSeverity("success")

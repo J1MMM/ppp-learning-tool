@@ -54,7 +54,11 @@ const Home = () => {
 
 
                 if (isMounted) {
-                    setStudents(res1.data);
+                    const sortedData = [...res1.data].sort((a, b) => {
+                        return a['lastname'].localeCompare(b['lastname']);
+                    });
+
+                    setStudents(sortedData);
                     isAdmin && setUsers(res2.data)
                     setNoServerRes(false)
                     setStudentsEmpty(false)

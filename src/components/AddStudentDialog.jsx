@@ -55,12 +55,18 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                 "learning_disabilities": selectedDisabilities
             })
 
-            setStudents(prev => [...prev, response?.data?.result])
+            setStudents(prev => {
+                const sortedData = [...prev, response.data.result].sort((a, b) => {
+                    return a['lastname'].localeCompare(b['lastname']);
+                });
+
+                return sortedData
+            })
+
             setStudentsEmpty(false)
             setResMsg(response?.data?.success);
             setSeverity("success")
             setSnack(true);
-
 
         } catch (error) {
             if (!error?.response) {
