@@ -48,10 +48,6 @@ const Home = () => {
                 const res1 = await axiosPrivate.get('/students', {
                     signal: controller.signal
                 });
-                const res2 = isAdmin ? await axiosPrivate.get('/users', {
-                    signal: controller.signal
-                }) : null
-
 
                 if (isMounted) {
                     const sortedData = [...res1.data].sort((a, b) => {
@@ -59,15 +55,12 @@ const Home = () => {
                     });
 
                     setStudents(sortedData);
-                    isAdmin && setUsers(res2.data)
                     setNoServerRes(false)
                     setStudentsEmpty(false)
 
                     if (res1.data.length == 0) {
                         setStudentsEmpty(true)
                     }
-
-
                 }
             } catch (err) {
                 setNoServerRes(true)
@@ -76,9 +69,6 @@ const Home = () => {
         }
 
         getData()
-
-
-
 
         return () => {
 
