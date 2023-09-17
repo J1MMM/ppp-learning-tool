@@ -1,5 +1,5 @@
-import { Box, Button, Chip, CircularProgress, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Button, Checkbox, Chip, CircularProgress, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UserAvatar from './UserAvatar';
@@ -7,6 +7,20 @@ import { Add, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import NoServerResponse from './NoServerResponse';
 
 const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal, getUser, setAddUserModal, noResponse }) => {
+    const [mobileView, setMobileView] = useState(false)
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth <= 900) {
+                setMobileView(true)
+            } else {
+                setMobileView(false)
+            }
+        }
+        handleResize()
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize)
+    })
 
     return (
         <>
@@ -54,7 +68,16 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                     <Table sx={{ minWidth: 650, position: 'relative' }} aria-label="simple table" >
                         <TableHead sx={{ bgcolor: '#FCFCFD' }}>
                             <TableRow>
-                                <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Full name</TableCell>
+                                <TableCell padding='checkbox' sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
+                                    <Checkbox
+                                        size={mobileView ? 'small' : 'medium'}
+                                        color="primary"
+                                        inputProps={{
+                                            'aria-label': 'select all desserts',
+                                        }}
+                                    />
+                                    Full name
+                                </TableCell>
                                 <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Email</TableCell>
                                 <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Roles</TableCell>
                                 <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Actions</TableCell>
@@ -67,11 +90,19 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
 
                                 return (
                                     <TableRow
-                                        hover
                                         key={index}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: '#E8F0FE' } }}
                                     >
-                                        <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>{user.lastname}, {user.firstname} {user.middlename}</TableCell>
+                                        <TableCell padding='checkbox' sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "12rem", sm: "12rem", md: "15rem" } }}>
+                                            <Checkbox
+                                                size={mobileView ? 'small' : 'medium'}
+                                                color="primary"
+                                                inputProps={{
+                                                    'aria-label': 'select all desserts',
+                                                }}
+                                            />
+                                            {user.lastname}, {user.firstname} {user.middlename}
+                                        </TableCell>
                                         <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
                                             <Box display='flex' alignItems='center' gap={1}>
                                                 <UserAvatar fullname={fullname} height={'35px'} width={'35px'} fontSize="70%" />

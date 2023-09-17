@@ -1,5 +1,5 @@
-import { Box, Button, Chip, CircularProgress, Fade, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, capitalize } from '@mui/material';
-import React from 'react';
+import { Box, Button, Checkbox, Chip, CircularProgress, Fade, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, capitalize } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import UserAvatar from './UserAvatar';
 import { Add, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import useAuth from '../hooks/useAuth';
@@ -19,6 +19,21 @@ const StudentsTable = ({
 }) => {
     const { auth } = useAuth();
     const isAdmin = auth.roles.includes(ROLES_LIST.Admin);
+
+    const [mobileView, setMobileView] = useState(false)
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth <= 900) {
+                setMobileView(true)
+            } else {
+                setMobileView(false)
+            }
+        }
+        handleResize()
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize)
+    })
 
 
     return (
@@ -63,13 +78,22 @@ const StudentsTable = ({
                     </Button>
                 </Box>
                 <Table sx={{ minWidth: 650, position: 'relative' }} aria-label="simple table" >
-                    <TableHead sx={{ bgcolor: '#FCFCFD' }}>
+                    <TableHead sx={{ bgcolor: '#FAFAFA', boxSizing: 'border-box' }}>
                         <TableRow>
-                            <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Full name</TableCell>
-                            <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Email</TableCell>
-                            <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Learning Disabilities</TableCell>
-                            {isAdmin && <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Instructor</TableCell>}
-                            <TableCell sx={{ color: 'grey', fontSize: 'small' }} >Actions</TableCell>
+                            <TableCell padding='checkbox' sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "10rem" }}>
+                                <Checkbox
+                                    size={mobileView ? 'small' : 'medium'}
+                                    color="primary"
+                                    inputProps={{
+                                        'aria-label': 'select all desserts',
+                                    }}
+                                />
+                                Full name
+                            </TableCell>
+                            <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Email</TableCell>
+                            <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Learning Disabilities</TableCell>
+                            {isAdmin && <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Instructor</TableCell>}
+                            <TableCell sx={{ color: 'GrayText', fontSize: 'small' }} >Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -87,11 +111,20 @@ const StudentsTable = ({
 
                             return (
                                 <TableRow
-                                    hover
                                     key={index}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: '#E8F0FE' } }}
                                 >
-                                    <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "10rem" }}>{student.lastname}, {student.firstname} {student.middlename}</TableCell>
+                                    <TableCell padding='checkbox' sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "10rem", sm: "10rem", md: "15rem" } }}>
+                                        <Checkbox
+                                            size={mobileView ? 'small' : 'medium'}
+                                            color="primary"
+                                            inputProps={{
+                                                'aria-label': 'select all desserts',
+                                            }}
+                                        />
+
+                                        {student.lastname}, {student.firstname} {student.middlename}
+                                    </TableCell>
                                     <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
                                         <Box display='flex' alignItems='center' gap={1}>
                                             <UserAvatar fullname={fullname} height={'35px'} width={'35px'} fontSize="70%" />
