@@ -145,7 +145,7 @@ const StudentsTable = ({
                             <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Email</TableCell>
                             <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Learning Disabilities</TableCell>
                             {isAdmin && <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Instructor</TableCell>}
-                            <TableCell sx={{ color: 'GrayText', fontSize: 'small' }} >Actions</TableCell>
+                            <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" } }} >Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -207,6 +207,7 @@ const StudentsTable = ({
                                                         setUpateStudentModal(true)
                                                         geStudent(student?._id)
                                                     }}
+                                                    size={mobileView ? 'small' : 'medium'}
                                                 >
                                                     <EditOutlined />
                                                 </IconButton>
