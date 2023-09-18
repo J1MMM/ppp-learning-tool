@@ -6,7 +6,7 @@ import UserAvatar from './UserAvatar';
 import { Add, Close, Delete, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import NoServerResponse from './NoServerResponse';
 
-const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal, getUser, setAddUserModal, noResponse, selectedRows, setSelectedRows }) => {
+const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddUserModal, noResponse, selectedRows, setSelectedRows }) => {
     const [mobileView, setMobileView] = useState(false)
 
     useEffect(() => {
@@ -31,7 +31,6 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
             setSelectedRows([...selectedRows, rowId]);
         }
     };
-    console.log(selectedRows);
     return (
         <>
             {noResponse ? <NoServerResponse show={noResponse} /> :
@@ -195,7 +194,6 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                         >
                             <CircularProgress />
                         </Box>
-
                     }
                 </TableContainer></Grow >)
             }

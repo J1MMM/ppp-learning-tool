@@ -261,7 +261,7 @@ const UpdateStudentDialog = ({
 
                 <DialogActions>
                     <Button disabled={disabled} onClick={() => { onClose(false); setPwdVisible(false) }} color='inherit' sx={{ mb: 1 }}><Typography>Cancel</Typography></Button>
-                    <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Update</Typography></Button>
+                    <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Save</Typography></Button>
                 </DialogActions>
             </form>
         </Dialog>

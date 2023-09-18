@@ -18,6 +18,7 @@ const Students = () => {
     const [updateStudentsModal, setUpdateStudentsModal] = useState(false)
     const [updateStudentId, setUpdateStudentId] = useState("")
     const [deleteStudentId, setDeleteStudentId] = useState(null)
+    const [selectedRows, setSelectedRows] = useState([])
     const [deleteModal, setDeleteModal] = useState(false)
 
     const [resMsg, setResMsg] = useState("")
@@ -80,11 +81,9 @@ const Students = () => {
     const handleDeleteStudent = async () => {
         try {
             const response = await axiosPrivate.delete('/students', {
-                data: {
-                    "id": deleteStudentId
-                }
+                data: { "idsToDelete": selectedRows }
             })
-            setStudents(prev => prev.filter(user => user._id !== deleteStudentId))
+            setStudents(prev => prev.filter(user => !selectedRows.includes(user._id)))
             if (students.length <= 1) {
                 setStudentsEmpty(true)
             }
@@ -92,13 +91,14 @@ const Students = () => {
             setSeverity("success")
             setSnack(true)
 
-
         } catch (error) {
             console.error(error.message);
             setResMsg('Failed to delete')
             setSeverity("error")
             setSnack(true)
         }
+
+        setSelectedRows([])
     }
 
     const getStudent = async (id) => {
@@ -160,7 +160,8 @@ const Students = () => {
                 geStudent={getStudent}
                 studentsEmpty={studentsEmpty}
                 noServerRes={noServerRes}
-
+                selectedRows={selectedRows}
+                setSelectedRows={setSelectedRows}
             />
 
             <AddStudentDialog

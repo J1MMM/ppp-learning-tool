@@ -13,7 +13,7 @@ const Users = () => {
     // ito pala! 
     const axiosPrivate = useAxiosPrivate();
 
-    const { users, setUsers } = useData();
+    const { users, setUsers, setStudents, setLessons } = useData();
     const [updateUser, setupdateUser] = useState({})
 
     const [updateUserId, setUpdateUserId] = useState(null)
@@ -29,7 +29,6 @@ const Users = () => {
     const [snack, setSnack] = useState(false)
     const [severity, setSeverity] = useState("success")
     const [deleteModal, setDeleteModal] = useState(false)
-    const [deleteUserId, setDeleteUserId] = useState(null)
     const [selectedRows, setSelectedRows] = useState([])
     const [resMsg, setResMsg] = useState("")
     const [noResponse, setNoResponse] = useState(false)
@@ -70,8 +69,12 @@ const Users = () => {
             const response = await axiosPrivate.delete('users', {
                 data: { "idsToDelete": selectedRows }
             })
+            console.log(response);
 
             setUsers(prev => prev.filter(user => !selectedRows.includes(user._id)))
+            setStudents(prev => prev.filter(user => !selectedRows.includes(user.teacherID)))
+            setLessons(prev => prev.filter(user => !selectedRows.includes(user.teacherID)))
+
             setResMsg(`${selectedRows.length > 1 ? 'Users have been successfully deleted.' : 'User has been successfully deleted.'}`)
             setSeverity("success")
             setSnack(true)

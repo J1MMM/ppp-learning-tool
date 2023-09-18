@@ -1,11 +1,12 @@
-import { Box, Button, Checkbox, Chip, CircularProgress, Fade, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, capitalize } from '@mui/material';
+import { Box, Button, Checkbox, Chip, CircularProgress, Collapse, Fade, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, capitalize } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import UserAvatar from './UserAvatar';
-import { Add, DeleteOutline, EditOutlined } from '@mui/icons-material';
+import { Add, Close, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import useAuth from '../hooks/useAuth';
 import emptyTable from '../assets/images/undraw_empty_re_opql.svg'
 import NoServerResponse from './NoServerResponse';
 import ROLES_LIST from './ROLES_LIST'
+import useData from '../hooks/useData';
 
 const StudentsTable = ({
     students,
@@ -15,9 +16,12 @@ const StudentsTable = ({
     geStudent,
     setAddStudentModal,
     studentsEmpty,
-    noServerRes
+    noServerRes,
+    selectedRows,
+    setSelectedRows
 }) => {
     const { auth } = useAuth();
+    const { users } = useData();
     const isAdmin = auth.roles.includes(ROLES_LIST.Admin);
 
     const [mobileView, setMobileView] = useState(false)
@@ -35,6 +39,13 @@ const StudentsTable = ({
         return () => window.removeEventListener('resize', handleResize)
     })
 
+    const handleRowClick = (rowId) => {
+        if (selectedRows.includes(rowId)) {
+            setSelectedRows(selectedRows.filter((id) => id !== rowId));
+        } else {
+            setSelectedRows([...selectedRows, rowId]);
+        }
+    };
 
     return (
         <Grow in={true}>
@@ -80,8 +91,49 @@ const StudentsTable = ({
                 <Table sx={{ minWidth: 650, position: 'relative' }} aria-label="simple table" >
                     <TableHead sx={{ bgcolor: '#FAFAFA', boxSizing: 'border-box' }}>
                         <TableRow>
+                            <TableCell colSpan={5} padding='none'>
+                                <Collapse in={selectedRows.length > 0} >
+                                    <Box width='100%' bgcolor='primary.main' boxSizing='border-box' display='flex' alignItems='center' gap={3} position='relative' p={1}>
+                                        <IconButton size='small' sx={{ color: 'rgb(225, 225, 225)' }} onClick={() => setSelectedRows([])}>
+                                            <Close />
+                                        </IconButton>
+                                        <Typography variant='body1' color='#FFF' sx={{ fontSize: { xs: 'x-small', sm: 'x-small', md: 'small' } }} ml={-2}>{selectedRows.length} selected</Typography>
+
+                                        <Box width='1px' height='32px' bgcolor='rgba(225, 225, 225, .3)' display='block' />
+
+                                        <Button
+                                            variant='outlined'
+                                            size='small'
+                                            sx={{
+                                                color: '#FFF',
+                                                borderColor: 'rgba(225, 225, 225, .8)',
+                                                '&:hover': {
+                                                    borderColor: '#FFF',
+                                                    bgcolor: 'rgba(255, 255, 255, 0.10)'
+                                                },
+                                                p: '5px 14px',
+                                                fontSize: 'x-small',
+
+                                            }}
+                                            onClick={() => {
+                                                setDeleteModal(true)
+                                            }}>
+                                            Delete
+                                        </Button>
+                                    </Box>
+                                </Collapse>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
                             <TableCell padding='checkbox' sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "10rem" }}>
                                 <Checkbox
+                                    indeterminate={selectedRows.length > 0 && selectedRows.length < students?.length}
+                                    checked={selectedRows.length == students.length}
+                                    onChange={() =>
+                                        setSelectedRows(
+                                            selectedRows.length === students.length ? [] : students.map(stu => stu._id)
+                                        )
+                                    }
                                     size={mobileView ? 'small' : 'medium'}
                                     color="primary"
                                     inputProps={{
@@ -99,13 +151,16 @@ const StudentsTable = ({
                     <TableBody>
                         {students?.map((student, index) => {
                             const fullname = `${student.firstname} ${student.lastname}`
+                            const instructor = users.find(user => user._id === student.teacherID)
+                            const instructorFullname = `${instructor?.firstname} ${instructor?.lastname}`
+
                             function capitalizeFirstLetter(str) {
                                 return str.charAt(0).toUpperCase() + str.slice(1);
                             }
 
                             const disabilitiesChip = student.learning_disabilities?.map((item, index) => {
                                 return (
-                                    <Chip key={index} label={capitalizeFirstLetter(item)} sx={{ bgcolor: '#EFF4FF', fontFamily: 'Poppins, sans-serif', color: item == 'dyslexia' ? '#BF2011' : item == 'dysgraphia' ? '#7F56D9' : '#0FC06B', fontSize: 'x-small' }} />
+                                    <Chip size={mobileView ? 'small' : 'medium'} key={index} label={capitalizeFirstLetter(item)} sx={{ bgcolor: '#EFF4FF', fontFamily: 'Poppins, sans-serif', color: item == 'dyslexia' ? '#BF2011' : item == 'dysgraphia' ? '#7F56D9' : '#0FC06B', fontSize: 'x-small' }} />
                                 )
                             })
 
@@ -119,10 +174,11 @@ const StudentsTable = ({
                                             size={mobileView ? 'small' : 'medium'}
                                             color="primary"
                                             inputProps={{
-                                                'aria-label': 'select all desserts',
+                                                'aria-label': 'select row',
                                             }}
+                                            checked={selectedRows.includes(student._id)}
+                                            onClick={() => handleRowClick(student._id)}
                                         />
-
                                         {student.lastname}, {student.firstname} {student.middlename}
                                     </TableCell>
                                     <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
@@ -140,7 +196,7 @@ const StudentsTable = ({
                                             {disabilitiesChip}
                                         </Box>
                                     </TableCell>
-                                    {isAdmin && <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>{student.instructor}</TableCell>}
+                                    {isAdmin && <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "8rem" }}>{instructorFullname}</TableCell>}
                                     <TableCell  >
                                         <Box
                                             width="fit-content"
