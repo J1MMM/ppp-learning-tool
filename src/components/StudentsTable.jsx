@@ -203,17 +203,6 @@ const StudentsTable = ({
                                             display="flex"
                                             gap={1}
                                         >
-                                            <Tooltip title="Delete">
-                                                <IconButton
-                                                    color='error'
-                                                    onClick={() => {
-                                                        setDeleteModal(true)
-                                                        setDeleteStudentId(student._id)
-
-                                                    }}>
-                                                    <DeleteOutline />
-                                                </IconButton>
-                                            </Tooltip>
                                             <Tooltip title="Edit">
                                                 <IconButton
                                                     onClick={() => {
