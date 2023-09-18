@@ -1,7 +1,8 @@
-import { MoreVert } from '@mui/icons-material';
+import { Description, MoreVert, OndemandVideo } from '@mui/icons-material';
 import { Box, Button, Divider, Grow, IconButton, Menu, MenuItem, Paper, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import useAxios from '../hooks/useAxios';
+import { BsFilePdf, BsFiletypeDoc, BsFiletypeDocx, BsFiletypeJpg, BsFiletypePng, BsFiletypePpt, BsFiletypePptx, BsPaperclip } from "react-icons/bs";
 
 import banner1 from '../assets/images/banner1.jpg'
 import banner2 from '../assets/images/banner2.svg'
@@ -13,6 +14,7 @@ import banner7 from '../assets/images/banner7.jpg'
 import banner8 from '../assets/images/banner1.webp'
 import banner9 from '../assets/images/banner9.jpg'
 import banner10 from '../assets/images/banner10.jpg'
+import UserAvatar from './UserAvatar';
 
 
 const LessonCard =
@@ -108,7 +110,7 @@ const LessonCard =
                         p={2}
                         boxSizing="border-box"
                     >
-                        <Typography variant='h6' zIndex={5} color="#FFF">{lesson.title}</Typography>
+                        <Typography variant='h6' zIndex={5} color="#FFF">{lesson.title.length > 18 ? `${lesson.title.slice(0, 18)}...` : lesson.title}</Typography>
                         <Typography variant='caption' zIndex={5} color="#FFF">{lesson.instructor}</Typography>
 
                         <IconButton
@@ -126,6 +128,58 @@ const LessonCard =
 
                     <Box
                         // border="1px solid red"
+                        width="100%"
+                        height="100%"
+                        position="relative"
+                        boxSizing="border-box"
+                        p={1}
+                    >
+                        <Box
+                            // bgcolor='primary.main'
+                            display="flex"
+                            alignItems="center"
+                            borderRadius={1}
+                            boxSizing="border-box"
+                            p={1}
+                            gap={1}
+                        >
+                            {lesson.fileType == "mp4" ?
+                                <OndemandVideo color='primary' /> :
+                                lesson.fileType == "ppt" ?
+                                    <BsFiletypePpt size={20} color='#434CE6' /> :
+                                    lesson.fileType == "pptx" ?
+                                        <BsFiletypePptx size={20} color='#434CE6' /> :
+                                        lesson.fileType == "doc" ?
+                                            <BsFiletypeDoc size={20} color='#434CE6' /> :
+                                            lesson.fileType == "docx" ?
+                                                <BsFiletypeDocx size={20} color='#434CE6' /> :
+                                                lesson.fileType == "pdf" ?
+                                                    <BsFilePdf size={20} color='#434CE6' /> :
+                                                    lesson.fileType == "jpg" ?
+                                                        <BsFiletypeJpg size={20} color='#434CE6' /> :
+                                                        lesson.fileType == "png" ?
+                                                            <BsFiletypePng size={20} color='#434CE6' /> :
+                                                            <BsPaperclip size={20} color='#434CE6' />
+
+                            }
+
+                            <Typography color="primary.main">{lesson.fileName.length > 20 ? `${lesson.fileName.slice(0, 20)}...` : lesson.fileName}</Typography>
+                        </Box>
+
+                    </Box>
+
+                    {/* <Box
+                        // border="1px solid red"
+                        height="100%"
+                        width="100%"
+                        position="relative"
+                    >
+                        <Box position="absolute" top={-35} right={20} >
+                            <UserAvatar fullname={lesson.instructor} height={70} width={70} border={"3px solid #FFF"} />
+                        </Box>
+                    </Box> */}
+
+                    <Box
                         display="flex"
                         justifyContent="flex-end"
                         alignItems="center"

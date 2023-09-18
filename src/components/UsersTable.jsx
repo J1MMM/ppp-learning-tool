@@ -114,7 +114,7 @@ const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddU
                                 <TableCell padding='checkbox' sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "10rem" }}>
                                     <Checkbox
                                         indeterminate={selectedRows.length > 0 && selectedRows.length < users?.length}
-                                        checked={selectedRows.length == users.length}
+                                        checked={selectedRows.length == users.length && selectedRows.length !== 0}
                                         onChange={() =>
                                             setSelectedRows(
                                                 selectedRows.length === (users.length - 1) ? [] : users.filter((row) => !Object.values(row.roles).includes(5150)).map(user => user._id)
