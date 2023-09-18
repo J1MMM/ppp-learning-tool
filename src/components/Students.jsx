@@ -84,7 +84,7 @@ const Students = () => {
                 data: { "idsToDelete": selectedRows }
             })
             setStudents(prev => prev.filter(user => !selectedRows.includes(user._id)))
-            if (students.length <= 1) {
+            if (students.length == 0) {
                 setStudentsEmpty(true)
             }
             setResMsg('Student deleted successfully')
@@ -207,8 +207,8 @@ const Students = () => {
             />
 
             <ConfirmationDialog
-                title="Delete Student"
-                content="Are you sure to delete this student?"
+                title={`Delete Student${selectedRows.length > 1 ? 's' : ''}`}
+                content="You may be deleting students data. After you delete this, it can't be recovered."
                 open={deleteModal}
                 setOpen={setDeleteModal}
                 confirm={handleDeleteStudent}

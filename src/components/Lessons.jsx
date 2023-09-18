@@ -254,7 +254,7 @@ const Lessons = () => {
             <ConfirmationDialog
                 confirm={deleteLesson}
                 title="Delete File"
-                content="Are you sure to delete this file?"
+                content="After you delete this, it can't be recovered. Are you sure to delete this file? "
                 open={deleteModal}
                 setOpen={setDeleteModal}
 

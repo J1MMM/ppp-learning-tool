@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider } from '@mui/material';
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider } from '@mui/material';
 import React from 'react';
 
 const ConfirmationDialog = ({ open, setOpen, title, content, confirm }) => {
@@ -15,7 +15,9 @@ const ConfirmationDialog = ({ open, setOpen, title, content, confirm }) => {
             <Divider />
             <DialogContent >
                 <DialogContentText id="alert-dialog-description">
-                    {content}
+                    <Alert severity='warning' sx={{ maxWidth: '400px' }}>
+                        {content}
+                    </Alert>
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

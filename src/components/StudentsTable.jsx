@@ -128,7 +128,7 @@ const StudentsTable = ({
                             <TableCell padding='checkbox' sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "10rem" }}>
                                 <Checkbox
                                     indeterminate={selectedRows.length > 0 && selectedRows.length < students?.length}
-                                    checked={selectedRows.length == students.length}
+                                    checked={selectedRows.length == students.length && selectedRows.length !== 0}
                                     onChange={() =>
                                         setSelectedRows(
                                             selectedRows.length === students.length ? [] : students.map(stu => stu._id)
@@ -137,7 +137,7 @@ const StudentsTable = ({
                                     size={mobileView ? 'small' : 'medium'}
                                     color="primary"
                                     inputProps={{
-                                        'aria-label': 'select all desserts',
+                                        'aria-label': 'select all',
                                     }}
                                 />
                                 Full name
@@ -151,8 +151,6 @@ const StudentsTable = ({
                     <TableBody>
                         {students?.map((student, index) => {
                             const fullname = `${student.firstname} ${student.lastname}`
-                            const instructor = users.find(user => user._id === student.teacherID)
-                            const instructorFullname = `${instructor?.firstname} ${instructor?.lastname}`
 
                             function capitalizeFirstLetter(str) {
                                 return str.charAt(0).toUpperCase() + str.slice(1);
@@ -196,7 +194,7 @@ const StudentsTable = ({
                                             {disabilitiesChip}
                                         </Box>
                                     </TableCell>
-                                    {isAdmin && <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "8rem" }}>{instructorFullname}</TableCell>}
+                                    {isAdmin && <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "8rem" }}>{student.instructor}</TableCell>}
                                     <TableCell  >
                                         <Box
                                             width="fit-content"

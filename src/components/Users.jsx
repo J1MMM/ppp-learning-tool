@@ -164,8 +164,8 @@ const Users = () => {
             />
 
             <ConfirmationDialog
-                title="Delete User"
-                content="Are you sure to delete this user?"
+                title={`Delete User${selectedRows.length > 1 ? 's' : ''}`}
+                content="You may be deleting user data. After you delete this, it can't be recovered."
                 open={deleteModal}
                 setOpen={setDeleteModal}
                 confirm={handleDeleteUser}
