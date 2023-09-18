@@ -1,12 +1,12 @@
-import { Box, Button, Checkbox, Chip, CircularProgress, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Chip, CircularProgress, Collapse, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UserAvatar from './UserAvatar';
-import { Add, DeleteOutline, EditOutlined } from '@mui/icons-material';
+import { Add, Close, Delete, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import NoServerResponse from './NoServerResponse';
 
-const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal, getUser, setAddUserModal, noResponse }) => {
+const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal, getUser, setAddUserModal, noResponse, selectedRows, setSelectedRows }) => {
     const [mobileView, setMobileView] = useState(false)
 
     useEffect(() => {
@@ -22,6 +22,16 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
         return () => window.removeEventListener('resize', handleResize)
     })
 
+    const handleRowClick = (rowId) => {
+        const adminId = users.filter(user => Object.values(user.roles).includes(5150))[0]._id
+        if (rowId === adminId) return;
+        if (selectedRows.includes(rowId)) {
+            setSelectedRows(selectedRows.filter((id) => id !== rowId));
+        } else {
+            setSelectedRows([...selectedRows, rowId]);
+        }
+    };
+    console.log(selectedRows);
     return (
         <>
             {noResponse ? <NoServerResponse show={noResponse} /> :
@@ -56,8 +66,6 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                             variant='contained'
                             size='small'
                             onClick={() => setAddUserModal(true)} sx={{ mb: 2 }}
-
-
                         >
                             <Add />
                             <Typography pr={1} variant='button'>
@@ -65,11 +73,54 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                             </Typography>
                         </Button>
                     </Box>
+
+
                     <Table sx={{ minWidth: 650, position: 'relative' }} aria-label="simple table" >
                         <TableHead sx={{ bgcolor: '#FCFCFD' }}>
                             <TableRow>
-                                <TableCell padding='checkbox' sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
+                                <TableCell colSpan={4} padding='none'>
+                                    <Collapse in={selectedRows.length > 0} >
+                                        <Box width='100%' bgcolor='primary.main' boxSizing='border-box' display='flex' alignItems='center' gap={3} position='relative' p={1}>
+                                            <IconButton size='small' sx={{ color: 'rgb(225, 225, 225)' }} onClick={() => setSelectedRows([])}>
+                                                <Close />
+                                            </IconButton>
+                                            <Typography variant='body1' color='#FFF' sx={{ fontSize: { xs: 'x-small', sm: 'x-small', md: 'small' } }} ml={-2}>{selectedRows.length} selected</Typography>
+
+                                            <Box width='1px' height='32px' bgcolor='rgba(225, 225, 225, .3)' display='block' />
+
+                                            <Button
+                                                variant='outlined'
+                                                size='small'
+                                                sx={{
+                                                    color: '#FFF',
+                                                    borderColor: 'rgba(225, 225, 225, .8)',
+                                                    '&:hover': {
+                                                        borderColor: '#FFF',
+                                                        bgcolor: 'rgba(255, 255, 255, 0.10)'
+                                                    },
+                                                    p: '5px 14px',
+                                                    fontSize: 'x-small',
+
+                                                }}
+                                                onClick={() => {
+                                                    setDeleteModal(true)
+                                                }}>
+                                                Delete
+                                            </Button>
+                                        </Box>
+                                    </Collapse>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell padding='checkbox' sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "10rem" }}>
                                     <Checkbox
+                                        indeterminate={selectedRows.length > 0 && selectedRows.length < users?.length}
+                                        checked={selectedRows.length == users.length}
+                                        onChange={() =>
+                                            setSelectedRows(
+                                                selectedRows.length === (users.length - 1) ? [] : users.filter((row) => !Object.values(row.roles).includes(5150)).map(user => user._id)
+                                            )
+                                        }
                                         size={mobileView ? 'small' : 'medium'}
                                         color="primary"
                                         inputProps={{
@@ -91,15 +142,19 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                                 return (
                                     <TableRow
                                         key={index}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: '#E8F0FE' } }}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: '#E8F0FE' }, bgcolor: selectedRows.includes(user._id) ? '#E8F0FE' : '#FFF' }}
                                     >
                                         <TableCell padding='checkbox' sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "12rem", sm: "12rem", md: "15rem" } }}>
                                             <Checkbox
                                                 size={mobileView ? 'small' : 'medium'}
                                                 color="primary"
                                                 inputProps={{
-                                                    'aria-label': 'select all desserts',
+                                                    'aria-label': 'select row',
                                                 }}
+                                                checked={selectedRows.includes(user._id)}
+                                                onClick={() => handleRowClick(user._id)}
+                                                disabled={role === 'Admin' ? true : false}
+                                                indeterminate={role === 'Admin' ? true : false}
                                             />
                                             {user.lastname}, {user.firstname} {user.middlename}
                                         </TableCell>
@@ -110,39 +165,19 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                                             </Box>
                                         </TableCell>
                                         <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
-                                            <Chip label={role} sx={{ fontFamily: 'Poppins, sans-serif', color: role === 'Admin' ? 'primary.main' : 'InactiveCaptionText', bgcolor: '#EFF4FF' }} />
+                                            <Chip label={role} sx={{ fontFamily: 'Poppins, sans-serif', color: role === 'Admin' ? 'primary.main' : 'InactiveCaptionText', bgcolor: '#EFF4FF', fontSize: 'x-small' }} />
                                         </TableCell>
                                         <TableCell  >
-                                            <Box
-                                                width="fit-content"
-                                                display="flex"
-                                                gap={1}
-                                            >
-                                                {role !== "Admin" &&
-                                                    <Tooltip title="Delete"  >
-                                                        <IconButton
-                                                            color='error'
-                                                            onClick={() => {
-                                                                setDeleteModal(true)
-                                                                setDeleteUserId(user._id)
-
-                                                            }}>
-                                                            <DeleteOutline />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                }
-                                                <Tooltip title="Edit">
-                                                    <IconButton
-                                                        onClick={() => {
-                                                            setUpateUserModal(true)
-                                                            getUser(user?._id)
-                                                        }}
-                                                    >
-                                                        <EditOutlined />
-                                                    </IconButton>
-                                                </Tooltip>
-
-                                            </Box>
+                                            <Tooltip title="Edit">
+                                                <IconButton
+                                                    onClick={() => {
+                                                        setUpateUserModal(true)
+                                                        getUser(user?._id)
+                                                    }}
+                                                >
+                                                    <EditOutlined />
+                                                </IconButton>
+                                            </Tooltip>
                                         </TableCell>
                                     </TableRow>
                                 )
@@ -162,7 +197,8 @@ const UsersTable = ({ users, setDeleteModal, setDeleteUserId, setUpateUserModal,
                         </Box>
 
                     }
-                </TableContainer></Grow>)}
+                </TableContainer></Grow >)
+            }
         </>
     );
 }

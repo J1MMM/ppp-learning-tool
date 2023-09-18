@@ -30,6 +30,7 @@ const Users = () => {
     const [severity, setSeverity] = useState("success")
     const [deleteModal, setDeleteModal] = useState(false)
     const [deleteUserId, setDeleteUserId] = useState(null)
+    const [selectedRows, setSelectedRows] = useState([])
     const [resMsg, setResMsg] = useState("")
     const [noResponse, setNoResponse] = useState(false)
 
@@ -67,12 +68,11 @@ const Users = () => {
     const handleDeleteUser = async () => {
         try {
             const response = await axiosPrivate.delete('users', {
-                data: {
-                    "id": deleteUserId
-                }
+                data: { "idsToDelete": selectedRows }
             })
-            setUsers(prev => prev.filter(user => user._id !== deleteUserId))
-            setResMsg('User deleted successfully')
+
+            setUsers(prev => prev.filter(user => !selectedRows.includes(user._id)))
+            setResMsg(`${selectedRows.length > 1 ? 'Users have been successfully deleted.' : 'User has been successfully deleted.'}`)
             setSeverity("success")
             setSnack(true)
 
@@ -82,6 +82,7 @@ const Users = () => {
             setSeverity("error")
             setSnack(true)
         }
+        setSelectedRows([])
     }
 
     const getUser = async (id) => {
@@ -114,11 +115,12 @@ const Users = () => {
             <UsersTable
                 users={users}
                 setDeleteModal={setDeleteModal}
-                setDeleteUserId={setDeleteUserId}
                 setUpateUserModal={setUpdateUserModal}
                 getUser={getUser}
                 setAddUserModal={setAddUserModal}
                 noResponse={noResponse}
+                selectedRows={selectedRows}
+                setSelectedRows={setSelectedRows}
             />
 
             <AddUserDialog
