@@ -1,5 +1,5 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
@@ -12,6 +12,9 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
     const [mname, setMname] = useState("")
     const [email, setEmail] = useState("")
     const [pwd, setPwd] = useState("")
+    const [gender, setGender] = useState("")
+    const [address, setAddress] = useState("")
+    const [contactNo, setContactNo] = useState("")
     const [disabled, setDisabled] = useState(false)
 
     const handleAddUser = async (e) => {
@@ -40,18 +43,13 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                 "lastname": lname.trimStart().trimEnd(),
                 "middlename": mname.trimStart().trimEnd(),
                 "email": email.trimStart().trimEnd(),
-                "password": pwd.trimStart().trimEnd()
+                "password": pwd.trimStart().trimEnd(),
+                "address": address.trimStart().trimEnd(),
+                "contactNo": contactNo.trimStart().trimEnd(),
+                "gender": gender
             })
 
-            setUsers(prev => {
-                const sortedData = [...prev, response.data.result].sort((a, b) => {
-                    return a['lastname'].localeCompare(b['lastname']);
-                });
-
-                return sortedData
-            })
-
-            // setUsers(prev => [...prev, response?.data?.result])
+            setUsers(prev => [...prev, response?.data?.result])
             setResMsg(response?.data?.success);
             setSeverity("success")
             setSnack(true);
@@ -74,16 +72,19 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
         setMname("")
         setEmail("")
         setPwd("")
+        setGender("")
+        setAddress("")
+        setContactNo("")
         onClose(false)
         setDisabled(false)
     }
 
     return (
-        <Dialog open={open} onClose={() => onClose(false)} disableAutoFocus>
-            <form onSubmit={handleAddUser}>
-                <DialogTitle variant='h5' >Add user</DialogTitle>
+        <Dialog open={open} onClose={() => onClose(false)} disableAutoFocus >
+            <form onSubmit={handleAddUser} >
+                <DialogTitle variant='h5' bgcolor="primary.main" color="#FFF" >Add user</DialogTitle>
                 <Divider />
-                <DialogContent>
+                <DialogContent sx={{ borderRadius: 3 }}>
                     <Box
                         display="flex"
                         gap={2}
@@ -132,6 +133,59 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                         />
                     </Box>
 
+                    <Box
+                        mt={1}
+                        display='flex'
+                        gap={2}
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            }
+                        }}
+                    >
+                        <FormControl fullWidth margin='dense'>
+                            <InputLabel id="gender">Gender</InputLabel>
+                            <Select
+                                labelId="gender"
+                                id="gender"
+                                value={gender}
+                                label="Gender"
+                                onChange={(e) => setGender(e.target.value)}
+                                required
+                                disabled={disabled}
+                            >
+                                <MenuItem value={"male"}>Male</MenuItem>
+                                <MenuItem value={"female"}>Female</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <TextField
+                            disabled={disabled}
+                            required
+                            margin="dense"
+                            id="address"
+                            label="Address"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                        />
+                        <TextField
+                            disabled={disabled}
+                            required
+                            margin="dense"
+                            id="contact"
+                            label="Contact number"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            value={contactNo}
+                            onChange={(e) => setContactNo(e.target.value)}
+                        />
+
+                    </Box>
                     <Box
                         mt={1}
                         display='flex'

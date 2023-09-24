@@ -1,5 +1,5 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { axiosPrivate } from '../api/axios';
 
@@ -21,7 +21,13 @@ const UpdateUserDialog = ({
     setUpdateEmail,
     setUpdatePwd,
     updatePwd,
-    setUpdateUserId
+    setUpdateUserId,
+    updateGender,
+    setUpdateGender,
+    updateAddress,
+    setUpdateAddress,
+    updateContactNo,
+    setUpdateContactNo,
 }) => {
     const [pwdVisible, setPwdVisible] = useState(false)
     const [disabled, setDisabled] = useState(false)
@@ -53,37 +59,24 @@ const UpdateUserDialog = ({
                 "lastname": updateLname.trimStart().trimEnd(),
                 "middlename": updateMname?.trimStart()?.trimEnd(),
                 "email": updateEmail.trimStart().trimEnd(),
-                "password": updatePwd?.trimStart()?.trimEnd()
+                "password": updatePwd?.trimStart()?.trimEnd(),
+                "contactNo": updateContactNo?.trimStart()?.trimEnd(),
+                "address": updateAddress?.trimStart()?.trimEnd(),
+                "gender": updateGender
             })
 
-            // setUsers(prev => prev?.map(user => {
-            //     if (user?._id == response?.data?.result?._id) {
-            //         return response?.data?.result
-            //     } else {
-            //         return user
-            //     }
-            // }))
-
             setUsers(prev => {
-                const newData = prev?.map(user => {
-                    if (user?._id == response?.data?.result?._id) {
-                        return response?.data?.result
-                    } else {
-                        return user
+                return prev.map(data => {
+                    if (data._id == updateUserId) {
+                        return response.data?.result
                     }
+                    return data
                 })
-
-                const sortedData = [...newData].sort((a, b) => {
-                    return a['lastname'].localeCompare(b['lastname']);
-                });
-
-                return sortedData
             })
 
             setResMsg(response?.data?.success);
             setSeverity("success")
             setSnack(true);
-
 
         } catch (error) {
             setSeverity("error")
@@ -91,7 +84,7 @@ const UpdateUserDialog = ({
                 setResMsg('No Server Response')
             } else if (error?.response?.status == 304) {
                 setSeverity("warning")
-                setResMsg(`No changes for user with ID: ${updateUserId}`)
+                setResMsg(`No changes for user with email: ${updateEmail}`)
             } else if (error?.response?.status == 409) {
                 setResMsg('Email address is already use')
             } else {
@@ -106,6 +99,9 @@ const UpdateUserDialog = ({
         setUpdateMname("")
         setUpdateEmail("")
         setUpdatePwd("")
+        setUpdateGender("")
+        setUpdateAddress("")
+        setUpdateContactNo("")
         onClose(false)
         setDisabled(false)
     }
@@ -162,6 +158,59 @@ const UpdateUserDialog = ({
                             variant="outlined"
                             value={updateMname}
                             onChange={(e) => setUpdateMname(e.target.value)}
+                        />
+                    </Box>
+
+                    <Box
+                        mt={1}
+                        display='flex'
+                        gap={2}
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            }
+                        }}
+                    >
+                        <FormControl fullWidth margin='dense'>
+                            <InputLabel id="gender">Gender</InputLabel>
+                            <Select
+                                labelId="gender"
+                                id="gender"
+                                value={updateGender}
+                                label="Gender"
+                                onChange={(e) => setUpdateGender(e.target.value)}
+                                required
+                                disabled={disabled}
+                            >
+                                <MenuItem value={"male"}>Male</MenuItem>
+                                <MenuItem value={"female"}>Female</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <TextField
+                            disabled={disabled}
+                            required
+                            margin="dense"
+                            id="address"
+                            label="Address"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            value={updateAddress}
+                            onChange={(e) => setUpdateAddress(e.target.value)}
+                        />
+                        <TextField
+                            disabled={disabled}
+                            required
+                            margin="dense"
+                            id="contact"
+                            label="Contact number"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            value={updateContactNo}
+                            onChange={(e) => setUpdateContactNo(e.target.value)}
                         />
                     </Box>
 

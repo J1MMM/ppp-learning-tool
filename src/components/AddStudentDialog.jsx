@@ -1,7 +1,12 @@
 import { CheckBox, Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { differenceInYears } from 'date-fns';
 
 const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, setSeverity, setStudentsEmpty }) => {
     const axiosPrivate = useAxiosPrivate();
@@ -12,6 +17,14 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
     const [mname, setMname] = useState("")
     const [email, setEmail] = useState("")
     const [pwd, setPwd] = useState("")
+    const [address, setAddress] = useState("")
+    const [gender, setGender] = useState("")
+    const [contactNo, setContactNo] = useState("")
+    const [guardian, setGuardian] = useState("")
+    const [dateOfBirth, setDateOfBirth] = useState(null)
+    const [age, setAge] = useState("")
+
+
     const [disabled, setDisabled] = useState(false)
     const [disabilities, setDisabilities] = useState({
         dyslexia: false,
@@ -20,10 +33,27 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
     })
     const { dyslexia, dysgraphia, dyscalculia } = disabilities;
     const disabilitiesRequired = [dyslexia, dysgraphia, dyscalculia].filter((v) => v).length < 1;
-
     const handleAddStudent = async (e) => {
         e.preventDefault()
         setDisabled(true)
+
+        if (!dateOfBirth) {
+            setResMsg("All fields are required");
+            setSeverity("error")
+            setSnack(true);
+            setDisabled(false)
+            return;
+        }
+
+        const age = differenceInYears(new Date(), dateOfBirth);
+
+        if (age < 5) {
+            setResMsg("Age must be 5 or older");
+            setSeverity("error")
+            setSnack(true);
+            setDisabled(false)
+            return;
+        }
 
         if (fname.length < 2 || lname.length < 2) {
             setResMsg("Student name should be at least 2 characters");
@@ -52,17 +82,15 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                 "middlename": mname.trimStart().trimEnd(),
                 "email": email.trimStart().trimEnd(),
                 "password": pwd.trimStart().trimEnd(),
+                "gender": gender,
+                "address": address.trimStart().trimEnd(),
+                "contactNo": contactNo.trimStart().trimEnd(),
+                "guardian": guardian.trimStart().trimEnd(),
+                "birthday": dateOfBirth,
                 "learning_disabilities": selectedDisabilities
             })
 
-            setStudents(prev => {
-                const sortedData = [...prev, response.data.result].sort((a, b) => {
-                    return a['lastname'].localeCompare(b['lastname']);
-                });
-
-                return sortedData
-            })
-
+            setStudents(prev => [...prev, response.data.result]);
             setStudentsEmpty(false)
             setResMsg(response?.data?.success);
             setSeverity("success")
@@ -85,6 +113,12 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
         setMname("")
         setEmail("")
         setPwd("")
+        setGender("")
+        setGuardian("")
+        setContactNo("")
+        setAddress("")
+        setDateOfBirth(null)
+        setAge("")
         setDisabilities({
             dyslexia: false,
             dysgraphia: false,
@@ -101,10 +135,16 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
         });
     }
 
+    const handleBdayChange = (date) => {
+        setDateOfBirth(date)
+        const age = differenceInYears(new Date(), date)
+        setAge(`${age} years old`)
+    }
+
     return (
-        <Dialog open={open} onClose={() => onClose(false)} disableAutoFocus>
-            <form onSubmit={handleAddStudent}>
-                <DialogTitle variant='h5' >Add Student</DialogTitle>
+        <Dialog open={open} onClose={() => onClose(false)} disableAutoFocus >
+            <form onSubmit={handleAddStudent} >
+                <DialogTitle variant='h5' bgcolor="primary.main" color="#FFF" >Add Student</DialogTitle>
                 <Divider />
                 <DialogContent>
                     <Box
@@ -153,6 +193,107 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                             variant="outlined"
                             value={mname}
                             onChange={(e) => setMname(e.target.value)}
+                        />
+                    </Box>
+
+                    <TextField
+                        disabled={disabled}
+                        required
+                        margin="dense"
+                        id="address"
+                        label="Address"
+                        type="text"
+                        variant="outlined"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        fullWidth
+
+                    />
+
+                    <Box
+                        mt={1}
+                        display="flex"
+                        gap={2}
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            }
+                        }}
+
+                    >
+                        <FormControl fullWidth margin='dense'>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker label="Date of birth" onChange={(date) => handleBdayChange(date)} disabled={disabled} />
+                            </LocalizationProvider>
+                        </FormControl>
+
+                        <FormControl fullWidth margin='dense'>
+                            <InputLabel id="gender">Gender</InputLabel>
+                            <Select
+                                labelId="gender"
+                                id="gender"
+                                value={gender}
+                                label="Gender"
+                                onChange={(e) => setGender(e.target.value)}
+                                required
+                                disabled={disabled}
+                            >
+                                <MenuItem value={"male"}>Male</MenuItem>
+                                <MenuItem value={"female"}>Female</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <TextField
+                            disabled={disabled}
+                            required
+                            margin="dense"
+                            id="contactNo"
+                            label="Phone number"
+                            type='text'
+                            variant="outlined"
+                            fullWidth
+                            value={contactNo}
+                            onChange={(e) => setContactNo(e.target.value)}
+                        />
+
+                    </Box>
+                    <Box
+                        mt={1}
+                        display="flex"
+                        gap={2}
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            }
+                        }}
+
+                    >
+                        <TextField
+                            disabled={disabled}
+                            margin="dense"
+                            id="age"
+                            label="Age"
+                            type='text'
+                            variant="outlined"
+                            fullWidth
+                            value={age}
+                            inputProps={{ readOnly: true }}
+                            focused={false}
+                        />
+                        <TextField
+                            disabled={disabled}
+                            required
+                            margin="dense"
+                            id="guardian"
+                            label="Parent/Guardian"
+                            type="text"
+                            variant="outlined"
+                            value={guardian}
+                            onChange={(e) => setGuardian(e.target.value)}
+                            fullWidth
+
                         />
                     </Box>
 
@@ -205,6 +346,9 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                             />
                         </FormControl>
                     </Box>
+
+
+
 
                     <FormControl sx={{ mt: 2 }} error={disabilitiesRequired} >
                         <FormLabel component="legend">Learning Disabilities:</FormLabel>

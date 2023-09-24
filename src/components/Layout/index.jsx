@@ -79,8 +79,8 @@ const Layout = () => {
                         }
                     }}>
                         {anchorEl ?
-                            <CloseRounded fontSize='large' color='secondary' /> :
-                            <MenuRounded fontSize='large' color='secondary' />
+                            <CloseRounded fontSize='large' color='action' /> :
+                            <MenuRounded fontSize='large' color='action' />
                         }
                     </IconButton>
 
@@ -130,7 +130,7 @@ const Layout = () => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button size='small' onClick={() => setOpenDialog(false)} color='secondary'>Cancel</Button>
+                    <Button size='small' onClick={() => setOpenDialog(false)} sx={{ color: 'InactiveCaptionText' }}>Cancel</Button>
                     <Button size='small' onClick={signout} color='error'>
                         Sign out
                     </Button>
@@ -176,7 +176,8 @@ const Layout = () => {
 
                     <Box mt={2} display="flex" alignItems="center" gap={1}>
                         {auth.roles.map((role, index) => {
-                            return role && <Chip key={index} label={Object.keys(ROLES_LIST).find(key => ROLES_LIST[key] == role)} color={role == 5150 ? 'secondary' : 'primary'} size='small' />
+                            if (role === 0) return;
+                            return role && <Chip key={index} label={Object.keys(ROLES_LIST).find(key => ROLES_LIST[key] == role)} color='primary' size='small' />
                         })}
                     </Box>
                 </Box>
@@ -186,21 +187,27 @@ const Layout = () => {
                         <FiHome size={22} />
                         <span>Overview</span>
                     </NavLink>
-                    <NavLink to="lessons" onClick={() => setAnchorEl(false)}>
-                        <IoFolderOpenOutline size={22} />
-                        <span>Lessons</span>
-                    </NavLink>
-                    <NavLink to="students" onClick={() => setAnchorEl(false)}>
-                        <HiOutlineUserGroup size={26} />
-                        <span>Students</span>
-                    </NavLink>
-                    {isAdmin
+                    {!isAdmin
+                        &&
+                        <NavLink to="lessons" onClick={() => setAnchorEl(false)}>
+                            <IoFolderOpenOutline size={22} />
+                            <span>Lessons</span>
+                        </NavLink>
+                    }
+                    {!isAdmin
+                        &&
+                        <NavLink to="students" onClick={() => setAnchorEl(false)}>
+                            <HiOutlineUserGroup size={26} />
+                            <span>Students</span>
+                        </NavLink>
+                    }
+                    {/* {isAdmin
                         &&
                         <NavLink to="users" onClick={() => setAnchorEl(false)}>
                             <FiUsers size={22} />
                             <span>Users List</span>
                         </NavLink>
-                    }
+                    } */}
                 </nav>
 
                 <button style={{ display: 'none' }} className='sign-out-btn menu-logout-btn' onClick={() => setOpenDialog(true)}>

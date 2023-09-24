@@ -22,6 +22,9 @@ const Users = () => {
     const [updateMname, setUpdateMname] = useState("")
     const [updateEmail, setUpdateEmail] = useState("")
     const [updatePwd, setUpdatePwd] = useState("")
+    const [updateGender, setUpdateGender] = useState("")
+    const [updateAddress, setUpdateAddress] = useState("")
+    const [updateContactNo, setUpdateContactNo] = useState("")
 
     const [addUserModal, setAddUserModal] = useState(false)
     const [updateUserModal, setUpdateUserModal] = useState(false)
@@ -33,24 +36,21 @@ const Users = () => {
     const [resMsg, setResMsg] = useState("")
     const [noResponse, setNoResponse] = useState(false)
 
+    const [sorted, setSorted] = useState(false)
+
     useEffect(() => {
         window.scrollTo(0, 0);
         let isMounted = true;
         const controller = new AbortController();
 
         const getUsers = async () => {
-            console.log("get user");
             try {
                 const response = await axiosPrivate.get('/users', {
                     signal: controller.signal
                 });
                 setNoResponse(false)
 
-                const sortedData = [...response.data].sort((a, b) => {
-                    return a['lastname'].localeCompare(b['lastname']);
-                });
-
-                isMounted && setUsers(sortedData)
+                isMounted && setUsers(response.data)
             } catch (err) {
                 setNoResponse(true)
                 console.error(err);
@@ -69,11 +69,10 @@ const Users = () => {
             const response = await axiosPrivate.delete('users', {
                 data: { "idsToDelete": selectedRows }
             })
-            console.log(response);
 
             setUsers(prev => prev.filter(user => !selectedRows.includes(user._id)))
-            setStudents(prev => prev.filter(user => !selectedRows.includes(user.teacherID)))
-            setLessons(prev => prev.filter(user => !selectedRows.includes(user.teacherID)))
+            // setStudents(prev => prev.filter(user => !selectedRows.includes(user.teacherID)))
+            // setLessons(prev => prev.filter(user => !selectedRows.includes(user.teacherID)))
 
             setResMsg(`${selectedRows.length > 1 ? 'Users have been successfully deleted.' : 'User has been successfully deleted.'}`)
             setSeverity("success")
@@ -97,6 +96,9 @@ const Users = () => {
         setUpdateMname("")
         setUpdateEmail("")
         setUpdatePwd("")
+        setUpdateGender("")
+        setUpdateAddress("")
+        setUpdateContactNo("")
 
         try {
             const response = await axiosPrivate(`/users/${id}`)
@@ -106,11 +108,26 @@ const Users = () => {
             setUpdateLname(response?.data?.lastname)
             setUpdateMname(response?.data?.middlename)
             setUpdateEmail(response?.data?.email)
+            setUpdateGender(response?.data?.gender)
+            setUpdateAddress(response?.data?.address)
+            setUpdateContactNo(response?.data?.contactNo)
 
         } catch (error) {
             console.error(error.message);
         }
     }
+
+    useEffect(() => {
+        const sortBy = sorted ? 'lastname' : '_id'
+
+        const sortedData = [...users].sort((a, b) => {
+            return a[sortBy].localeCompare(b[sortBy]);
+        });
+
+        setUsers(sortedData)
+
+    }, [sorted])
+
     if (noResponse) return <NoServerResponse show={noResponse} />;
 
     return (
@@ -124,6 +141,8 @@ const Users = () => {
                 noResponse={noResponse}
                 selectedRows={selectedRows}
                 setSelectedRows={setSelectedRows}
+                setSorted={setSorted}
+                sorted={sorted}
             />
 
             <AddUserDialog
@@ -154,6 +173,12 @@ const Users = () => {
                 updatePwd={updatePwd}
                 setUpdatePwd={setUpdatePwd}
                 setUpdateUserId={setUpdateUserId}
+                setUpdateAddress={setUpdateAddress}
+                setUpdateContactNo={setUpdateContactNo}
+                setUpdateGender={setUpdateGender}
+                updateAddress={updateAddress}
+                updateContactNo={updateContactNo}
+                updateGender={updateGender}
             />
 
             <SnackBar

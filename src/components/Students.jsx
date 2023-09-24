@@ -8,6 +8,8 @@ import ConfirmationDialog from './ConfirmationDialog';
 import UpdateStudentDialog from './UpdateStudentDialog';
 import useData from '../hooks/useData';
 import NoServerResponse from './NoServerResponse';
+import StudentMoreInfo from './StudentMoreInfo';
+import { differenceInMonths, differenceInYears } from 'date-fns'
 
 const Students = () => {
     const { students, setStudents } = useData()
@@ -31,12 +33,21 @@ const Students = () => {
     const [updateMname, setUpdateMname] = useState("")
     const [updateEmail, setUpdateEmail] = useState("")
     const [updatePwd, setUpdatePwd] = useState("")
+    const [updateGender, setUpdateGender] = useState("")
+    const [updateGuardian, setUpdateGuardian] = useState("")
+    const [updateAddress, setUpdateAddress] = useState("")
+    const [updateContactNo, setUpdateContactNo] = useState("")
+    const [updateDateOfBirth, setUpdateDateOfBirth] = useState(null)
+    const [age, setAge] = useState("")
+    const [updateAge, setUpdateAge] = useState("")
+
+    const [alphabetically, setAlphabetically] = useState(false)
+
     const [disabilities, setDisabilities] = useState({
         dyslexia: false,
         dysgraphia: false,
         dyscalculia: false,
     })
-
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -53,11 +64,7 @@ const Students = () => {
                     setStudentsEmpty(true)
                 }
 
-                const sortedData = [...response.data].sort((a, b) => {
-                    return a['lastname'].localeCompare(b['lastname']);
-                });
-
-                isMounted && setStudents(sortedData)
+                isMounted && setStudents(response.data)
 
             } catch (err) {
                 setNoServerRes(true)
@@ -83,13 +90,15 @@ const Students = () => {
             const response = await axiosPrivate.delete('/students', {
                 data: { "idsToDelete": selectedRows }
             })
-            setStudents(prev => prev.filter(user => !selectedRows.includes(user._id)))
-            if (students.length == 0) {
-                setStudentsEmpty(true)
-            }
+
+            // setStudents(prev => prev.filter(user => !selectedRows.includes(user._id)))
+            setStudents(response.data)
             setResMsg('Student deleted successfully')
             setSeverity("success")
             setSnack(true)
+            if (response.data.length == 0) {
+                setStudentsEmpty(true)
+            }
 
         } catch (error) {
             console.error(error.message);
@@ -99,6 +108,7 @@ const Students = () => {
         }
 
         setSelectedRows([])
+
     }
 
     const getStudent = async (id) => {
@@ -109,14 +119,34 @@ const Students = () => {
         setUpdateLname("")
         setUpdateMname("")
         setUpdateEmail("")
+        setUpdatePwd("")
+        setUpdateGender("")
+        setUpdateGuardian("")
+        setUpdateAddress("")
+        setUpdateContactNo("")
+        setUpdateDateOfBirth(null)
+        setUpdateAge("")
         try {
             const response = await axiosPrivate(`/students/${id}`)
+            const parseDate = new Date(response?.data?.birthday)
 
             setUpdateStudentId(response?.data?._id)
             setUpdateFname(response?.data?.firstname)
             setUpdateLname(response?.data?.lastname)
             setUpdateMname(response?.data?.middlename)
             setUpdateEmail(response?.data?.email)
+            setUpdateGender(response?.data?.gender)
+            setUpdateAddress(response?.data?.address)
+            setUpdateGuardian(response?.data?.guardian)
+            setUpdateContactNo(response?.data?.contactNo)
+            setUpdateDateOfBirth(parseDate)
+
+            // compute age 
+            const currentDate = new Date();
+            const ageInYears = differenceInYears(currentDate, parseDate);
+
+            setUpdateAge(`${ageInYears} years old`)
+
 
             setDisabilities(prev => {
                 const myObj = {
@@ -145,8 +175,18 @@ const Students = () => {
 
     }
 
-    if (noServerRes) return <NoServerResponse show={noServerRes} />;
+    useEffect(() => {
+        const sortBy = alphabetically ? 'lastname' : '_id'
 
+        const sortedData = [...students].sort((a, b) => {
+            return a[sortBy].localeCompare(b[sortBy]);
+        });
+
+        setStudents(sortedData)
+
+    }, [alphabetically])
+
+    if (noServerRes) return <NoServerResponse show={noServerRes} />;
 
     return (
         <Box>
@@ -162,6 +202,8 @@ const Students = () => {
                 noServerRes={noServerRes}
                 selectedRows={selectedRows}
                 setSelectedRows={setSelectedRows}
+                setAlphabetically={setAlphabetically}
+                alphabetically={alphabetically}
             />
 
             <AddStudentDialog
@@ -195,8 +237,19 @@ const Students = () => {
                 updatePwd={updatePwd}
                 disabilities={disabilities}
                 setDisabilities={setDisabilities}
-
-
+                setUpdateAddress={setUpdateAddress}
+                setUpdateContactNo={setUpdateContactNo}
+                setUpdateDateOfBirth={setUpdateDateOfBirth}
+                setUpdateGender={setUpdateGender}
+                setUpdateGuardian={setUpdateGuardian}
+                updateAddress={updateAddress}
+                updateContactNo={updateContactNo}
+                updateDateOfBirth={updateDateOfBirth}
+                updateGender={updateGender}
+                updateGuardian={updateGuardian}
+                updateAge={updateAge}
+                setUpdateAge={setUpdateAge}
+                setAlphabetically={setAlphabetically}
             />
 
             <SnackBar
@@ -213,6 +266,7 @@ const Students = () => {
                 setOpen={setDeleteModal}
                 confirm={handleDeleteStudent}
             />
+
         </Box>
     )
 }

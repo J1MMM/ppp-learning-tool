@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
-import pppLogo from '../assets/images/ppp-logo.svg'
+import pppLogo from '../assets/images/ppp-logo.png'
 import { Link, Box, Button, Container, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography, Alert, Collapse, Dialog } from '@mui/material';
 import { Email, Mail, MailLockOutlined, MailOutline, Message, Visibility, VisibilityOff } from '@mui/icons-material';
 import useAuth from '../hooks/useAuth';
@@ -164,11 +164,11 @@ const LoginComponenet = () => {
                         sm: "1fr 1fr",
                     },
                     minHeight: {
-                        xs: "450px",
+                        xs: "500px",
                         sm: "none"
                     },
                     maxHeight: {
-                        xs: "450px",
+                        xs: "500px",
                         sm: "700px",
                     },
                     p: {
@@ -229,7 +229,7 @@ const LoginComponenet = () => {
                             height: '100%',
                             width: '100%',
                             maxWidth: "457px",
-                            "--swiper-pagination-color": "#FFD500",
+                            "--swiper-pagination-color": "#F8C6FB",
                         }}
 
                     >
@@ -249,7 +249,7 @@ const LoginComponenet = () => {
                     borderRadius={3}
                     p={3}
                 >
-                    <img src={pppLogo} style={{ width: '100%', maxWidth: '130px' }} />
+                    <img src={pppLogo} style={{ width: '100%', maxWidth: '250px', filter: 'dropShadow(5px 5px 10px #000000)' }} />
                     <Typography variant='h5' mt={3} fontWeight={500} color="#424242">Get Started Now</Typography>
                     <Typography
                         variant='caption'

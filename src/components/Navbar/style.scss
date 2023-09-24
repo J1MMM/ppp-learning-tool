@@ -14,15 +14,16 @@
     left: 0;
 
     .ppp-logo-container {
-        margin: 1.5rem 2rem;
         position: relative;
-        width: 9rem;
+        display: flex;
+        box-sizing: border-box;
+        justify-content: center;
+        margin: 1.5rem 0;
     }
 
     .ppp-logo {
         object-fit: contain;
-        height: 100%;
-        width: 100%;
+        width: 85%;
     }
 
 

@@ -15,11 +15,11 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: "#434CE6",
+      main: "#2DA544",
       light: '#FFD500'
     },
     secondary: {
-      main: "#010C0B",
+      main: "#F8C6FB",
       light: "#FFF"
     },
 

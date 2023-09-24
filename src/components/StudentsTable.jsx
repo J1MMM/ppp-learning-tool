@@ -1,12 +1,14 @@
-import { Box, Button, Checkbox, Chip, CircularProgress, Collapse, Fade, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, capitalize } from '@mui/material';
+import { Box, Button, Checkbox, Chip, CircularProgress, Collapse, Fade, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, Tooltip, Typography, capitalize } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import UserAvatar from './UserAvatar';
-import { Add, Close, DeleteOutline, EditOutlined } from '@mui/icons-material';
+import { Add, ArrowUpward, Close, DeleteOutline, EditOutlined, Info, InfoOutlined } from '@mui/icons-material';
 import useAuth from '../hooks/useAuth';
 import emptyTable from '../assets/images/undraw_empty_re_opql.svg'
 import NoServerResponse from './NoServerResponse';
 import ROLES_LIST from './ROLES_LIST'
 import useData from '../hooks/useData';
+import { PiGenderFemaleBold, PiGenderMaleBold } from "react-icons/pi";
+import { BsArrowDownShort, BsArrowUpShort } from "react-icons/bs";
 
 const StudentsTable = ({
     students,
@@ -18,7 +20,9 @@ const StudentsTable = ({
     studentsEmpty,
     noServerRes,
     selectedRows,
-    setSelectedRows
+    setSelectedRows,
+    setAlphabetically,
+    alphabetically
 }) => {
     const { auth } = useAuth();
     const { users } = useData();
@@ -71,10 +75,10 @@ const StudentsTable = ({
                 >
                     <Box sx={{ mb: { xs: 2, sm: 0 } }}>
                         <Box display='flex' alignItems='center' gap={1} mb={-.5}>
-                            <Typography variant='h5' >Students Management</Typography>
+                            <Typography component={'span'} variant='h5' >Students Management</Typography>
                             <Chip label={`${students.length == 0 ? 'Empty' : students.length > 1 ? `${students.length} Students` : `${students.length} Student`}`} sx={{ fontFamily: 'Poppins, sans-serif', color: 'primary.main' }} size='small' />
                         </Box>
-                        <Typography variant='caption' color='InactiveCaptionText' >Insights and information about different students within the institution.</Typography>
+                        <Typography component={'span'} variant='caption' color='InactiveCaptionText' >Insights and information about different students within the institution.</Typography>
                     </Box>
 
                     <Button
@@ -82,8 +86,8 @@ const StudentsTable = ({
                         size='small'
                         onClick={() => setAddStudentModal(true)} sx={{ mb: 2 }}
                     >
-                        <Add />
-                        <Typography pr={1} variant='button'>
+                        <Add sx={{ color: '#FFF' }} />
+                        <Typography component={'span'} pr={1} variant='caption' color="white">
                             Add Student
                         </Typography>
                     </Button>
@@ -97,7 +101,7 @@ const StudentsTable = ({
                                         <IconButton size='small' sx={{ color: 'rgb(225, 225, 225)' }} onClick={() => setSelectedRows([])}>
                                             <Close />
                                         </IconButton>
-                                        <Typography variant='body1' color='#FFF' sx={{ fontSize: { xs: 'x-small', sm: 'x-small', md: 'small' } }} ml={-2}>{selectedRows.length} selected</Typography>
+                                        <Typography component={'span'} variant='body1' color='#FFF' sx={{ fontSize: { xs: 'x-small', sm: 'x-small', md: 'small' } }} ml={-2}>{selectedRows.length} selected</Typography>
 
                                         <Box width='1px' height='32px' bgcolor='rgba(225, 225, 225, .3)' display='block' />
 
@@ -113,7 +117,6 @@ const StudentsTable = ({
                                                 },
                                                 p: '5px 14px',
                                                 fontSize: 'x-small',
-
                                             }}
                                             onClick={() => {
                                                 setDeleteModal(true)
@@ -139,13 +142,14 @@ const StudentsTable = ({
                                     inputProps={{
                                         'aria-label': 'select all',
                                     }}
+                                    disabled={students.length == 0}
                                 />
-                                Full name
+                                <TableSortLabel active={alphabetically} direction={alphabetically ? 'asc' : 'desc'} onClick={() => setAlphabetically(v => !v)}>Fullname</TableSortLabel>
                             </TableCell>
                             <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Email</TableCell>
                             <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Learning Disabilities</TableCell>
                             {isAdmin && <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Instructor</TableCell>}
-                            <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" } }} >Actions</TableCell>
+                            <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" } }} >Details</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -167,7 +171,7 @@ const StudentsTable = ({
                                     key={index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: '#E8F0FE' } }}
                                 >
-                                    <TableCell padding='checkbox' sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "10rem", sm: "10rem", md: "15rem" } }}>
+                                    <TableCell padding='checkbox' sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "12rem", sm: "12rem", md: "15rem" } }}>
                                         <Checkbox
                                             size={mobileView ? 'small' : 'medium'}
                                             color="primary"
@@ -177,7 +181,10 @@ const StudentsTable = ({
                                             checked={selectedRows.includes(student._id)}
                                             onClick={() => handleRowClick(student._id)}
                                         />
-                                        {student.lastname}, {student.firstname} {student.middlename}
+                                        <Typography component={'span'} variant='inherit' mr={1} >
+                                            {student.lastname}, {student.firstname} {student.middlename}
+                                        </Typography>
+                                        {student.gender == "male" ? <PiGenderMaleBold color='rgb(2,170,232)' /> : <PiGenderFemaleBold color='#EF5890' />}
                                     </TableCell>
                                     <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
                                         <Box display='flex' alignItems='center' gap={1}>
@@ -201,7 +208,7 @@ const StudentsTable = ({
                                             display="flex"
                                             gap={1}
                                         >
-                                            <Tooltip title="Edit">
+                                            <Tooltip title="more info">
                                                 <IconButton
                                                     onClick={() => {
                                                         setUpateStudentModal(true)
@@ -209,9 +216,10 @@ const StudentsTable = ({
                                                     }}
                                                     size={mobileView ? 'small' : 'medium'}
                                                 >
-                                                    <EditOutlined />
+                                                    <InfoOutlined />
                                                 </IconButton>
                                             </Tooltip>
+
                                         </Box>
                                     </TableCell>
                                 </TableRow>
@@ -231,16 +239,17 @@ const StudentsTable = ({
                             gap={2}
                             margin={5}
                             boxSizing='border-box'
+                            height="50vh"
                         >
                             <img src={emptyTable} style={{
                                 width: '100%',
-                                maxWidth: '25rem'
+                                maxWidth: '25rem',
                             }} />
-                            <Typography variant='h4' textAlign="center" color='#2F2E41'>No Students Found</Typography>
+                            <Typography component={'span'} variant='h4' textAlign="center" color='#2F2E41'>No Students Found</Typography>
                         </Box>
                     </Grow>
                 }
-                {students < 1 && !studentsEmpty &&
+                {students.length < 1 && !studentsEmpty &&
                     <Box
                         width="100%"
                         display="flex"

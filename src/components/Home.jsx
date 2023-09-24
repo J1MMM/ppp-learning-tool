@@ -22,6 +22,7 @@ import StudentsLeaderborad from './StudentsLeaderborad';
 import { BiBrain, BiPencil, BiSolidPencil } from "react-icons/bi";
 import { GoNumber } from "react-icons/go";
 import { MdOutlineDraw } from "react-icons/md";
+import Users from './Users'
 
 const Home = () => {
     const { students, users, setStudents, setUsers } = useData();
@@ -37,6 +38,7 @@ const Home = () => {
     const totalDyscalculia = students.filter(student => student.learning_disabilities.includes('dyscalculia')).length
 
     const isAdmin = Boolean(auth?.roles?.find(role => role === ROLES_LIST.Admin))
+    if (isAdmin) return <Users />
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -76,8 +78,7 @@ const Home = () => {
             isMounted && controller.abort();
         }
     }, [])
-
-
+    // console.log(auth);
 
     const cardData = [
         {
@@ -90,19 +91,19 @@ const Home = () => {
         {
             "title": "Dyslexia",
             "data": totalDyslexia,
-            "icon": <BiBrain color={"#434ce6"} size={20} />,
+            "icon": <BiBrain color={"#2DA544"} size={20} />,
             "subText": "total number of students with dyslexia"
         },
         {
             "title": "Dysgraphia",
             "data": totalDysgraphia,
-            "icon": <MdOutlineDraw color={"#434ce6"} size={20} />,
+            "icon": <MdOutlineDraw color={"#2DA544"} size={20} />,
             "subText": "total number of students with dysgraphia"
         },
         {
             "title": "Dyscalculia",
             "data": totalDyscalculia,
-            "icon": <GoNumber color={"#434ce6"} size={20} />,
+            "icon": <GoNumber color={"#2DA544"} size={20} />,
             "subText": "total number of students with dyscalculia"
         },
     ]

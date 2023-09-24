@@ -26,19 +26,19 @@ function App() {
   const getPageTitle = (pathname) => {
     switch (pathname) {
       case '/':
-        return 'dashboard';
+        return 'Dashboard | Overview';
       case '/users':
-        return 'users management';
+        return 'Dashboard | Users Management';
       case '/students':
-        return 'students management';
+        return 'Dashboard | Students Management';
       case '/login':
-        return 'users login';
+        return 'PPPedu | Login';
       case '/lessons':
-        return 'lessons management';
+        return 'Dashboard | Lessons management';
       case '/reset-password/:token':
-        return 'reset password';
+        return 'Reset Password';
       case '/unauthorized':
-        return 'unauthorized user';
+        return 'Unauthorized User';
       default:
         return 'page not found';
     }
@@ -59,15 +59,18 @@ function App() {
         {/* protected routes  */}
         <Route path='/' element={<Layout />}>
           {/* admin and teaches allowed  */}
-          <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Admin, ROLES_LIST.Teacher]} />}>
+          <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Teacher, ROLES_LIST.Admin]} />}>
             <Route path='/' element={<Home />} />
+          </Route>
+          {/* only teachers are allowed on this route  */}
+          <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Teacher]} />}>
             <Route path='students' element={<Students />} />
             <Route path='lessons' element={<Lessons />} />
           </Route>
           {/* only admin are allowed  */}
-          <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Admin]} />}>
+          {/* <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Admin]} />}>
             <Route path='users' element={<Users />} />
-          </Route>
+          </Route> */}
 
           {/* catch all  */}
         </Route>

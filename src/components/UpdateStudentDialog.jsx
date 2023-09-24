@@ -1,7 +1,11 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { axiosPrivate } from '../api/axios';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import dayjs from 'dayjs';
+import { differenceInYears, set } from 'date-fns';
 
 const UpdateStudentDialog = ({
     open,
@@ -23,10 +27,25 @@ const UpdateStudentDialog = ({
     updateStudentsId,
     setUpdateStudentsId,
     disabilities,
-    setDisabilities
+    setDisabilities,
+    updateGender,
+    updateGuardian,
+    updateAddress,
+    updateContactNo,
+    updateDateOfBirth,
+    setUpdateGender,
+    setUpdateGuardian,
+    setUpdateAddress,
+    setUpdateContactNo,
+    setUpdateDateOfBirth,
+    updateAge,
+    setUpdateAge,
+    setAlphabetically
+
 }) => {
     const [pwdVisible, setPwdVisible] = useState(false)
     const [disabled, setDisabled] = useState(false)
+    const [formReadOnly, setFormReadOnly] = useState(true)
 
     const { dyslexia, dysgraphia, dyscalculia } = disabilities;
     const disabilitiesRequired = [dyslexia, dysgraphia, dyscalculia].filter((v) => v).length < 1;
@@ -35,6 +54,7 @@ const UpdateStudentDialog = ({
     const handleUpdateStudents = async (e) => {
         e.preventDefault()
         setDisabled(true)
+        setFormReadOnly(true)
 
         if (updateFname.length < 2 || updateLname.length < 2) {
             setResMsg("Student name should be at least 2 characters");
@@ -43,6 +63,20 @@ const UpdateStudentDialog = ({
             setDisabled(false)
             return;
         }
+
+        if (updateDateOfBirth) {
+
+            const age = differenceInYears(new Date(), updateDateOfBirth);
+
+            if (age < 5) {
+                setResMsg("Age must be 5 or older");
+                setSeverity("error")
+                setSnack(true);
+                setDisabled(false)
+                return;
+            }
+        }
+
 
         if (updatePwd && updatePwd.length < 8) {
             setResMsg("Password should be at least 8 characters");
@@ -64,30 +98,26 @@ const UpdateStudentDialog = ({
                 "middlename": updateMname.trimStart().trimEnd(),
                 "email": updateEmail.trimStart().trimEnd(),
                 "password": updatePwd.trimStart().trimEnd(),
-                "learning_disabilities": selectedDisabilities
+                "learning_disabilities": selectedDisabilities,
+                "gender": updateGender,
+                "guardian": updateGuardian.trimStart().trimEnd(),
+                "address": updateAddress.trimStart().trimEnd(),
+                "contactNo": updateContactNo,
+                "birthday": updateDateOfBirth
 
             })
 
             setStudents(prev => {
-                const newData = prev?.map(user => {
-                    if (user?._id == response?.data?.result?._id) {
-                        return response?.data?.result
-                    } else {
-                        return user
+                return prev.map(data => {
+                    if (data._id == updateStudentsId) {
+                        return response.data?.result
                     }
+                    return data
                 })
-
-                const sortedData = [...newData].sort((a, b) => {
-                    return a['lastname'].localeCompare(b['lastname']);
-                });
-
-                return sortedData
             })
-
             setResMsg(response?.data?.success);
             setSeverity("success")
             setSnack(true);
-
 
         } catch (error) {
             setSeverity("error")
@@ -95,7 +125,7 @@ const UpdateStudentDialog = ({
                 setResMsg('No Server Response')
             } else if (error?.response?.status == 304) {
                 setSeverity("warning")
-                setResMsg(`No changes for student with ID: ${updateStudentsId}`)
+                setResMsg(`No changes for student with email: ${updateEmail}`)
             } else if (error?.response?.status == 409) {
                 setResMsg('Email address is already use')
             } else {
@@ -117,6 +147,7 @@ const UpdateStudentDialog = ({
         })
         onClose(false)
         setDisabled(false)
+
     }
 
     const disabilitiesChange = (event) => {
@@ -125,11 +156,16 @@ const UpdateStudentDialog = ({
             [event.target.name]: event.target.checked,
         });
     }
-
+    const handleDateChange = (date) => {
+        setUpdateDateOfBirth(date)
+        const age = differenceInYears(new Date(), date)
+        setUpdateAge(`${age} years old`)
+    }
+    // console.log(typeof updateDateOfBirth);
     return (
-        <Dialog open={open} onClose={() => { onClose(false); setPwdVisible(false) }} disableAutoFocus>
+        <Dialog open={open} onClose={() => { onClose(false); setPwdVisible(false); setFormReadOnly(true) }} disableAutoFocus>
             <form onSubmit={handleUpdateStudents}>
-                <DialogTitle variant='h5' >Edit Student</DialogTitle>
+                <DialogTitle variant='h5' bgcolor="primary.main" color="#FFF" >Details</DialogTitle>
                 <Divider />
                 <DialogContent>
                     <Box
@@ -154,7 +190,7 @@ const UpdateStudentDialog = ({
                             variant="outlined"
                             value={updateFname}
                             onChange={(e) => setUpdateFname(e.target.value)}
-
+                            inputProps={{ readOnly: formReadOnly }}
                         />
                         <TextField
                             disabled={disabled}
@@ -167,6 +203,7 @@ const UpdateStudentDialog = ({
                             variant="outlined"
                             value={updateLname}
                             onChange={(e) => setUpdateLname(e.target.value)}
+                            inputProps={{ readOnly: formReadOnly }}
                         />
                         <TextField
                             disabled={disabled}
@@ -178,13 +215,120 @@ const UpdateStudentDialog = ({
                             variant="outlined"
                             value={updateMname}
                             onChange={(e) => setUpdateMname(e.target.value)}
+                            inputProps={{ readOnly: formReadOnly }}
+                        />
+                    </Box>
+
+                    <TextField
+                        disabled={disabled}
+                        required
+                        margin="dense"
+                        id="address"
+                        label="Address"
+                        type="text"
+                        variant="outlined"
+                        value={updateAddress}
+                        onChange={(e) => setUpdateAddress(e.target.value)}
+                        fullWidth
+                        inputProps={{ readOnly: formReadOnly }}
+                    />
+
+                    <Box
+                        mt={1}
+                        display="flex"
+                        gap={2}
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            }
+                        }}
+
+                    >
+
+
+                        <FormControl fullWidth margin='dense'>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker label="Date of birth" onChange={(date) => handleDateChange(date)} disabled={disabled} value={updateDateOfBirth} readOnly={formReadOnly} />
+                            </LocalizationProvider>
+                        </FormControl>
+
+                        <FormControl fullWidth margin='dense' >
+                            <InputLabel id="gender">Gender</InputLabel>
+                            <Select
+                                labelId="gender"
+                                id="gender"
+                                value={updateGender}
+                                label="Gender"
+                                onChange={(e) => setUpdateGender(e.target.value)}
+                                required
+                                disabled={disabled}
+                                inputProps={{ readOnly: formReadOnly }}
+                            >
+                                <MenuItem value={"male"}>Male</MenuItem>
+                                <MenuItem value={"female"}>Female</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <TextField
+                            disabled={disabled}
+                            required
+                            margin="dense"
+                            id="contactNo"
+                            label="Phone number"
+                            type='text'
+                            variant="outlined"
+                            fullWidth
+                            value={updateContactNo}
+                            onChange={(e) => setUpdateContactNo(e.target.value)}
+                            inputProps={{ readOnly: formReadOnly }}
+                        />
+                    </Box>
+                    <Box
+                        mt={1}
+                        display="flex"
+                        gap={2}
+                        sx={{
+                            flexDirection: {
+                                xs: "column",
+                                sm: "row"
+                            }
+                        }}
+                    >
+
+                        <TextField
+                            disabled={disabled}
+                            margin="dense"
+                            id="age"
+                            label="Age"
+                            type='text'
+                            variant="outlined"
+                            fullWidth
+                            value={updateAge}
+                            inputProps={{ readOnly: true }}
+                            focused={false}
+
+                        />
+
+                        <TextField
+                            disabled={disabled}
+                            required
+                            margin="dense"
+                            id="guardian"
+                            label="Parent/Guardian"
+                            type='text'
+                            variant="outlined"
+                            fullWidth
+                            value={updateGuardian}
+                            onChange={(e) => setUpdateGuardian(e.target.value)}
+                            inputProps={{ readOnly: formReadOnly }}
                         />
                     </Box>
 
                     <Box
                         mt={1}
                         display='flex'
-                        gap={1}
+                        gap={2}
                         sx={{
                             flexDirection: {
                                 xs: "column",
@@ -203,9 +347,10 @@ const UpdateStudentDialog = ({
                             fullWidth
                             value={updateEmail}
                             onChange={(e) => setUpdateEmail(e.target.value)}
+                            inputProps={{ readOnly: formReadOnly }}
                         />
 
-                        <FormControl fullWidth variant="outlined" margin='dense' sx={{ mt: 1 }}>
+                        <FormControl fullWidth variant="outlined" margin='dense'>
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <OutlinedInput
                                 disabled={disabled}
@@ -213,6 +358,7 @@ const UpdateStudentDialog = ({
                                 type={pwdVisible ? 'text' : 'password'}
                                 value={updatePwd}
                                 onChange={(e) => setUpdatePwd(e.target.value)}
+                                inputProps={{ readOnly: formReadOnly }}
                                 endAdornment={
                                     <InputAdornment position="end" >
                                         <IconButton
@@ -227,16 +373,18 @@ const UpdateStudentDialog = ({
                                 label="Password"
                             />
                         </FormControl>
+
+
                     </Box>
 
                     <FormControl sx={{ mt: 2 }} error={disabilitiesRequired} >
                         <FormLabel component="legend">Learning Disabilities:</FormLabel>
-                        <FormGroup>
+                        <FormGroup >
                             <FormControlLabel
                                 required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
-                                    <Checkbox disabled={disabled} checked={dyslexia} name='dyslexia' onChange={disabilitiesChange} />
+                                    <Checkbox disabled={disabled || formReadOnly} checked={dyslexia} name='dyslexia' onChange={disabilitiesChange} />
                                 }
                                 label="Dyslexia" />
 
@@ -244,7 +392,7 @@ const UpdateStudentDialog = ({
                                 required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
-                                    <Checkbox disabled={disabled} checked={dysgraphia} name='dysgraphia' onChange={disabilitiesChange} />
+                                    <Checkbox disabled={disabled || formReadOnly} checked={dysgraphia} name='dysgraphia' onChange={disabilitiesChange} />
                                 }
                                 label="Dysgraphia" />
 
@@ -252,7 +400,7 @@ const UpdateStudentDialog = ({
                                 required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
-                                    <Checkbox disabled={disabled} checked={dyscalculia} name='dyscalculia' onChange={disabilitiesChange} />
+                                    <Checkbox disabled={disabled || formReadOnly} checked={dyscalculia} name='dyscalculia' onChange={disabilitiesChange} />
                                 }
                                 label="Dyscalculia" />
                         </FormGroup>
@@ -260,10 +408,21 @@ const UpdateStudentDialog = ({
                 </DialogContent>
 
                 <DialogActions>
-                    <Button disabled={disabled} onClick={() => { onClose(false); setPwdVisible(false) }} color='inherit' sx={{ mb: 1 }}><Typography>Cancel</Typography></Button>
-                    <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Save</Typography></Button>
+                    {formReadOnly ?
+                        <>
+                            <Button disabled={disabled} onClick={() => { onClose(false); setPwdVisible(false); setFormReadOnly(true) }} color='inherit' sx={{ mb: 1 }}><Typography>Close</Typography></Button>
+                            <Button disabled={disabled} type='button' onClick={() => setFormReadOnly(false)} color='warning' sx={{ mb: 1 }}><Typography>Edit Info</Typography></Button>
+
+                        </>
+                        :
+                        <>
+                            <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Save Changes</Typography></Button>
+                            <Button disabled={disabled} onClick={() => { setFormReadOnly(true) }} color='inherit' sx={{ mb: 1 }}><Typography>Cancel</Typography></Button>
+                        </>
+                    }
                 </DialogActions>
             </form>
+
         </Dialog>
     );
 }

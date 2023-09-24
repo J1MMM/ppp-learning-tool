@@ -1,6 +1,6 @@
-import { Box, Button, Card, Chip, CircularProgress, Dialog, Grow, Paper, Slide, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, Card, Chip, CircularProgress, Dialog, Grow, Paper, Slide, Typography } from '@mui/material';
 import React, { forwardRef, useEffect, useState } from 'react';
-import { Add, ChevronLeft } from '@mui/icons-material';
+import { Add, ChevronLeft, Filter, FilterList } from '@mui/icons-material';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import useData from '../hooks/useData';
 import useAuth from '../hooks/useAuth';
@@ -189,17 +189,29 @@ const Lessons = () => {
                     <Typography variant='caption' color='InactiveCaptionText' >Manage Your Lessons Efficiently.</Typography>
                 </Box>
 
-                <Button
-                    variant='contained'
-                    size='small'
-                    onClick={() => setAddLessonOpen(true)}
-                    sx={{ mb: 2 }}
-                >
-                    <Add />
-                    <Typography pr={1} variant='button'>
-                        Add Lesson
-                    </Typography>
-                </Button>
+                <Box display='flex' alignItems='center' gap={2}>
+                    <Button
+                        variant='outlined'
+                        size='small'
+                    >
+                        <FilterList />
+                        <Typography pr={1} ml={1} variant='caption'>
+                            Filters
+                        </Typography>
+                    </Button>
+
+                    <Button
+                        variant='contained'
+                        size='small'
+                        onClick={() => setAddLessonOpen(true)}
+                    >
+                        <Add sx={{ color: '#FFF' }} />
+                        <Typography pr={1} variant='caption' color="#FFF">
+                            Add Lesson
+                        </Typography>
+                    </Button>
+                </Box>
+
             </Box>
             <Box
                 display="flex"

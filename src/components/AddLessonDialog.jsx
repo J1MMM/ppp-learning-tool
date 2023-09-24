@@ -70,7 +70,7 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
             >
 
                 <form onSubmit={handleAddLesson} style={{ width: "100%" }}>
-                    <DialogTitle variant='h5' >Add Lesson</DialogTitle>
+                    <DialogTitle variant='h5' bgcolor="primary.main" color="#FFF">Add Lesson</DialogTitle>
                     <Divider />
                     <DialogContent>
                         <Box

@@ -1,12 +1,13 @@
-import { Box, Button, Checkbox, Chip, CircularProgress, Collapse, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Chip, CircularProgress, Collapse, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UserAvatar from './UserAvatar';
 import { Add, Close, Delete, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import NoServerResponse from './NoServerResponse';
+import { PiGenderFemaleBold, PiGenderMaleBold } from 'react-icons/pi';
 
-const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddUserModal, noResponse, selectedRows, setSelectedRows }) => {
+const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddUserModal, noResponse, selectedRows, setSelectedRows, sorted, setSorted }) => {
     const [mobileView, setMobileView] = useState(false)
 
     useEffect(() => {
@@ -77,7 +78,7 @@ const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddU
                     <Table sx={{ minWidth: 650, position: 'relative' }} aria-label="simple table" >
                         <TableHead sx={{ bgcolor: '#FCFCFD' }}>
                             <TableRow>
-                                <TableCell colSpan={4} padding='none'>
+                                <TableCell colSpan={6} padding='none'>
                                     <Collapse in={selectedRows.length > 0} >
                                         <Box width='100%' bgcolor='primary.main' boxSizing='border-box' display='flex' alignItems='center' gap={3} position='relative' p={1}>
                                             <IconButton size='small' sx={{ color: 'rgb(225, 225, 225)' }} onClick={() => setSelectedRows([])}>
@@ -117,7 +118,7 @@ const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddU
                                         checked={selectedRows.length == users.length && selectedRows.length !== 0}
                                         onChange={() =>
                                             setSelectedRows(
-                                                selectedRows.length === (users.length - 1) ? [] : users.filter((row) => !Object.values(row.roles).includes(5150)).map(user => user._id)
+                                                selectedRows.length === (users.length - 1) ? [] : users.map(user => Boolean(user.roles.Admin) ? null : user._id).filter(user => user)
                                             )
                                         }
                                         size={mobileView ? 'small' : 'medium'}
@@ -126,16 +127,20 @@ const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddU
                                             'aria-label': 'select all desserts',
                                         }}
                                     />
-                                    Full name
+                                    <TableSortLabel active={sorted} direction={sorted ? 'asc' : 'desc'} onClick={() => setSorted(v => !v)}>
+                                        Full name
+                                    </TableSortLabel>
                                 </TableCell>
                                 <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Email</TableCell>
+                                <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Address</TableCell>
+                                <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Contact #</TableCell>
                                 <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Roles</TableCell>
                                 <TableCell sx={{ color: 'grey', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {users?.map((user, index) => {
-                                let role = Object.values(user?.roles)?.splice(1) == "" ? "Teacher" : "Admin";
+                                let isAdmin = Boolean(user.roles.Admin)
                                 const fullname = `${user.firstname} ${user.lastname}`
 
                                 return (
@@ -152,10 +157,14 @@ const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddU
                                                 }}
                                                 checked={selectedRows.includes(user._id)}
                                                 onClick={() => handleRowClick(user._id)}
-                                                disabled={role === 'Admin' ? true : false}
-                                                indeterminate={role === 'Admin' ? true : false}
+                                                disabled={isAdmin ? true : false}
+                                                indeterminate={isAdmin ? true : false}
                                             />
-                                            {user.lastname}, {user.firstname} {user.middlename}
+                                            <Typography component={'span'} variant='inherit' mr={1} >
+                                                {user.lastname}, {user.firstname} {user.middlename}
+                                            </Typography>
+                                            {user.gender == "male" ? <PiGenderMaleBold color='rgb(2,170,232)' /> : <PiGenderFemaleBold color='#EF5890' />}
+
                                         </TableCell>
                                         <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
                                             <Box display='flex' alignItems='center' gap={1}>
@@ -164,7 +173,13 @@ const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddU
                                             </Box>
                                         </TableCell>
                                         <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
-                                            <Chip label={role} sx={{ fontFamily: 'Poppins, sans-serif', color: role === 'Admin' ? 'primary.main' : 'InactiveCaptionText', bgcolor: '#EFF4FF', fontSize: 'x-small' }} />
+                                            {user.address}
+                                        </TableCell>
+                                        <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
+                                            {user.contactNo}
+                                        </TableCell>
+                                        <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>
+                                            <Chip label={isAdmin ? 'Admin' : 'Teacher'} sx={{ fontFamily: 'Poppins, sans-serif', color: isAdmin ? '#000' : 'primary.main', bgcolor: '#EFF4FF', fontSize: 'x-small' }} />
                                         </TableCell>
                                         <TableCell  >
                                             <Tooltip title="Edit">
