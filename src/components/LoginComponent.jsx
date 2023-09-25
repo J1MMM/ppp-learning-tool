@@ -5,16 +5,23 @@ import pppLogo from '../assets/images/ppp-logo.png'
 import { Link, Box, Button, Container, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography, Alert, Collapse, Dialog } from '@mui/material';
 import { Email, Mail, MailLockOutlined, MailOutline, Message, Visibility, VisibilityOff } from '@mui/icons-material';
 import useAuth from '../hooks/useAuth';
-
-import img1 from '../assets/images/login-slide1.svg'
-import img2 from '../assets/images/login-slide2.svg'
-import img3 from '../assets/images/login-slide3.svg'
 import LoginSlides from './LoginSlides';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import SnackBar from './SnackBar'
+
+// import img1 from '../assets/images/login-slide1.svg'
+// import img2 from '../assets/images/login-slide2.svg'
+// import img3 from '../assets/images/login-slide3.svg'
+
+import img1 from '../assets/images/slider-photo-1.jpg'
+import img2 from '../assets/images/slider-photo-2.jpg'
+import img3 from '../assets/images/slider-photo-3.jpg'
+import img4 from '../assets/images/slider-photo-4.jpg'
+import img5 from '../assets/images/slider-photo-5.jpg'
+
 
 const LOGIN_URL = '/auth';
 
@@ -109,17 +116,27 @@ const LoginComponenet = () => {
         {
             img: img1,
             title: "Online Learning Tools for Educators in PPP",
-            sub: "New Approach to Kids Education"
+            sub: "A New and Innovative Approach to Inclusive Education"
         },
         {
             img: img2,
-            title: "Efficient Lesson Management for Workflow Enhancement",
+            title: "Smooth and Efficient Lesson Management",
             sub: "Powerful Tools to Organize, and Deliver Engaging Lessons"
         },
         {
             img: img3,
+            title: "Intuitive User-Friendly Solutions",
+            sub: "Discover Enhanced User-Friendly Solutions for Effortless Digital Experiences."
+        },
+        {
+            img: img4,
             title: "Ensuring Your Online Safety",
             sub: "Experience a Secure and Trustworthy Learning Environment"
+        },
+        {
+            img: img5,
+            title: "Cultivating the Intellectual Growth of Young Learners",
+            sub: "Experience Engaging and Educational Fun with PPPedu's Child-Friendly Features"
         },
     ]
 
@@ -194,10 +211,10 @@ const LoginComponenet = () => {
                     bgcolor="primary.main"
                     height="100%"
                     width="100%"
-                    borderRadius={3}
-                    p={3}
                     alignItems="center"
                     position="relative"
+                    borderRadius={3}
+                    overflow='hidden'
                     sx={{
                         maxWidth: {
                             xs: "150px",
@@ -211,9 +228,8 @@ const LoginComponenet = () => {
                         }
                     }}
                 >
-
                     <Swiper
-                        spaceBetween={30}
+                        spaceBetween={0}
                         centeredSlides={true}
                         autoplay={{
                             delay: 2500,
