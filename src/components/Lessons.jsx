@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Card, Chip, CircularProgress, Dialog, Grow, Paper, Slide, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, Card, Checkbox, Chip, CircularProgress, Dialog, Grow, ListItemText, ListSubheader, Menu, MenuItem, Paper, Slide, Typography } from '@mui/material';
 import React, { forwardRef, useEffect, useState } from 'react';
 import { Add, ChevronLeft, Filter, FilterList } from '@mui/icons-material';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
@@ -24,6 +24,8 @@ const Lessons = () => {
     const axiosPrivate = useAxiosPrivate();
     const { lessons, setLessons } = useData()
 
+    const [filteredLessons, setFilteredLessons] = useState([])
+
     const [addLessonOpen, setAddLessonOpen] = useState(false)
     const [submitDisabled, setSubmitDisabled] = useState(false)
     const [empty, setEmpty] = useState(false)
@@ -40,10 +42,17 @@ const Lessons = () => {
 
     const [newTitle, setNewTitle] = useState("")
     const [newFile, setNewFile] = useState(null)
+    const [newCategories, setNewCategories] = useState([])
 
     const [deleteModal, setDeleteModal] = useState(false)
     const [deletID, setDeleteID] = useState("")
     const [deleteFilename, setDeleteFilename] = useState("")
+
+    const [filter, setFilter] = useState([])
+
+    const filterCategories1 = ['Dyslexia', 'Dysgraphia', 'Dyscalculia']
+    const filterCategories2 = ['Documents', 'Videos', 'Images']
+
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -82,7 +91,6 @@ const Lessons = () => {
 
     const deleteLesson = async () => {
         setLessons(prev => prev.map(data => (data._id == deletID ? { ...data, show: false } : data)))
-        setLessons(prev => prev.filter(item => item._id !== deletID))
 
         try {
             const res = await axiosPrivate.delete('/upload', {
@@ -100,17 +108,20 @@ const Lessons = () => {
                 setEmpty(true)
             }
         } catch (error) {
+            setLessons(prev => prev.filter(item => item._id !== deletID))
             setSnackMsg(error.message)
             setSnackSev("error")
             setSnackOpen(true)
             console.log(error);
         }
+        setLessons(prev => prev.filter(item => item._id !== deletID))
 
     }
 
     const handleEditLesson = (id) => {
         const card = lessons.find(item => item._id == id)
         setNewTitle(card.title)
+        setNewCategories(card.categories)
     }
 
     const [activeDocs, setActiveDocs] = useState(lessons[0])
@@ -118,15 +129,12 @@ const Lessons = () => {
 
     const handleViewFile = (index) => {
         setActiveDocs(prev => {
-            return lessons[index]
+            return filteredLessons[index]
         })
         setOpenVDialog(true)
-
-
     };
 
-    const lessonsEl = lessons?.map((lesson, index) => {
-
+    const lessonsEl = filteredLessons?.map((lesson, index) => {
         return <LessonCard
             index={index}
             key={index}
@@ -153,6 +161,53 @@ const Lessons = () => {
     };
     MyCustomVideoRenderer.fileTypes = ["mp4", "video/mp4"];
     MyCustomVideoRenderer.weight = 1;
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleFilterChange = (value) => {
+        if (filter.includes(value)) {
+            setFilter(filter.filter(val => val !== value));
+        } else {
+            setFilter(prev => [...prev, value]);
+        }
+    };
+
+    useEffect(() => {
+        setFilteredLessons(lessons)
+    }, [lessons])
+
+    useEffect(() => {
+        if (filter.length !== 0) {
+            setFilteredLessons(prev => {
+                return lessons.filter(lesson => {
+                    let fileCategory;
+                    if (['mp4'].includes(lesson.fileType)) {
+                        fileCategory = 'Videos'
+                    } else if (['png', 'jpg', 'jpeg'].includes(lesson.fileType)) {
+                        fileCategory = 'Images'
+                    } else {
+                        fileCategory = 'Documents'
+                    }
+
+                    const LSFiltered = Boolean(filter.find(cat => filterCategories1.includes(cat)))
+                    const fileTypeIsFiltered = Boolean(filter.find(cat => filterCategories2.includes(cat)))
+
+                    return lesson.categories.find(cat => {
+                        if (fileTypeIsFiltered && !LSFiltered) {
+                            return filter.includes(fileCategory)
+                        } else if (LSFiltered && !fileTypeIsFiltered) {
+                            return filter.includes(cat)
+                        } else {
+                            return filter.includes(fileCategory) && filter.includes(cat)
+                        }
+                    })
+                })
+            })
+        } else {
+            setFilteredLessons(lessons)
+        }
+    }, [filter])
 
     if (noResponse) return <NoServerResponse show={noResponse} />;
     if (unAuthorized) return <Unauthorized show={unAuthorized} />;
@@ -193,6 +248,7 @@ const Lessons = () => {
                     <Button
                         variant='outlined'
                         size='small'
+                        onClick={(e) => setAnchorEl(e.currentTarget)}
                     >
                         <FilterList />
                         <Typography pr={1} ml={1} variant='caption'>
@@ -235,6 +291,7 @@ const Lessons = () => {
                 snackSev={snackSev}
                 setEmpty={setEmpty}
                 baseURL={BASE_URL}
+                setFilter={setFilter}
             />
 
             <EditLesson
@@ -254,6 +311,9 @@ const Lessons = () => {
                 newTitle={newTitle}
                 setNewTitle={setNewTitle}
                 baseURL={BASE_URL}
+                newCategories={newCategories}
+                setNewCategories={setNewCategories}
+                setFilter={setFilter}
             />
 
             <SnackBar
@@ -320,14 +380,14 @@ const Lessons = () => {
                 </Button>
                 <DocViewer
                     pluginRenderers={[MyCustomVideoRenderer, ...DocViewerRenderers]}
-                    documents={lessons}
+                    documents={filteredLessons}
                     activeDocument={activeDocs}
                     prefetchMethod='GET'
                     style={{ height: "100vh" }}
                     theme={{
-                        primary: "#414AE0",
+                        primary: "#2DA544",
                         secondary: "black",
-                        tertiary: "#c8cef7",
+                        tertiary: "#F8C6FB",
                         textPrimary: "#FFF",
                         textSecondary: "#5296d8",
                         textTertiary: "black",
@@ -335,6 +395,47 @@ const Lessons = () => {
                     }}
                 />
             </Dialog>
+
+            <Menu
+                id="demo-positioned-menu"
+                aria-labelledby="demo-positioned-button"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+            >
+                <ListSubheader sx={{ fontWeight: 'bold', fontFamily: 'Poppins, sans-serif' }}>Learning Support</ListSubheader>
+                {filterCategories1.map(name => {
+                    return <MenuItem
+                        key={name}
+                        value={name}
+                        onClick={() => handleFilterChange(name)}
+                    >
+                        <Checkbox checked={filter.indexOf(name) > -1} />
+                        <ListItemText primary={name} />
+                    </MenuItem>
+
+                })}
+                <ListSubheader sx={{ fontWeight: 'bold', fontFamily: 'Poppins, sans-serif' }}>File Type</ListSubheader>
+                {filterCategories2.map(name => {
+                    return <MenuItem
+                        key={name}
+                        value={name}
+                        onClick={() => handleFilterChange(name)}
+                    >
+                        <Checkbox checked={filter.indexOf(name) > -1} />
+                        <ListItemText primary={name} />
+                    </MenuItem>
+
+                })}
+            </Menu>
         </Paper>
     );
 }

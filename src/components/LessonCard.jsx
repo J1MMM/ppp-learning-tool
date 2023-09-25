@@ -1,5 +1,5 @@
 import { Description, MoreVert, OndemandVideo } from '@mui/icons-material';
-import { Box, Button, Divider, Grow, IconButton, Menu, MenuItem, Paper, Typography } from '@mui/material';
+import { Box, Button, Chip, Divider, Grow, IconButton, Menu, MenuItem, Paper, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import useAxios from '../hooks/useAxios';
 import { BsFilePdf, BsFiletypeDoc, BsFiletypeDocx, BsFiletypeJpg, BsFiletypePng, BsFiletypePpt, BsFiletypePptx, BsPaperclip } from "react-icons/bs";
@@ -15,6 +15,7 @@ import banner8 from '../assets/images/banner1.webp'
 import banner9 from '../assets/images/banner9.jpg'
 import banner10 from '../assets/images/banner10.jpg'
 import UserAvatar from './UserAvatar';
+import { BiBrain, BiPencil, BiSolidPencil } from "react-icons/bi";
 
 
 const LessonCard =
@@ -134,8 +135,39 @@ const LessonCard =
                         boxSizing="border-box"
                         p={1}
                     >
-                        <Box
+                        {/* <Box
                             // bgcolor='primary.main'
+                            display="flex"
+                            alignItems="center"
+                            borderRadius={1}
+                            boxSizing="border-box"
+                            p={1}
+                            gap={.5}
+                        >
+                            {lesson.fileType == "mp4" ?
+                                <OndemandVideo color='primary' /> :
+                                lesson.fileType == "ppt" ?
+                                    <BsFiletypePpt size={18} color='#2DA544' /> :
+                                    lesson.fileType == "pptx" ?
+                                        <BsFiletypePptx size={18} color='#2DA544' /> :
+                                        lesson.fileType == "doc" ?
+                                            <BsFiletypeDoc size={18} color='#2DA544' /> :
+                                            lesson.fileType == "docx" ?
+                                                <BsFiletypeDocx size={18} color='#2DA544' /> :
+                                                lesson.fileType == "pdf" ?
+                                                    <BsFilePdf size={18} color='#2DA544' /> :
+                                                    lesson.fileType == "jpg" ?
+                                                        <BsFiletypeJpg size={18} color='#2DA544' /> :
+                                                        lesson.fileType == "png" ?
+                                                            <BsFiletypePng size={18} color='#2DA544' /> :
+                                                            <BsPaperclip size={18} color='#2DA544' />
+
+                            }
+
+                            <Typography variant='caption' color="primary.main">{lesson.fileName.length > 20 ? `${lesson.fileName.slice(0, 20)}...` : lesson.fileName}</Typography>
+                        </Box> */}
+
+                        <Box
                             display="flex"
                             alignItems="center"
                             borderRadius={1}
@@ -143,27 +175,12 @@ const LessonCard =
                             p={1}
                             gap={1}
                         >
-                            {lesson.fileType == "mp4" ?
-                                <OndemandVideo color='primary' /> :
-                                lesson.fileType == "ppt" ?
-                                    <BsFiletypePpt size={20} color='#434CE6' /> :
-                                    lesson.fileType == "pptx" ?
-                                        <BsFiletypePptx size={20} color='#434CE6' /> :
-                                        lesson.fileType == "doc" ?
-                                            <BsFiletypeDoc size={20} color='#434CE6' /> :
-                                            lesson.fileType == "docx" ?
-                                                <BsFiletypeDocx size={20} color='#434CE6' /> :
-                                                lesson.fileType == "pdf" ?
-                                                    <BsFilePdf size={20} color='#434CE6' /> :
-                                                    lesson.fileType == "jpg" ?
-                                                        <BsFiletypeJpg size={20} color='#434CE6' /> :
-                                                        lesson.fileType == "png" ?
-                                                            <BsFiletypePng size={20} color='#434CE6' /> :
-                                                            <BsPaperclip size={20} color='#434CE6' />
-
-                            }
-
-                            <Typography color="primary.main">{lesson.fileName.length > 20 ? `${lesson.fileName.slice(0, 20)}...` : lesson.fileName}</Typography>
+                            <Typography variant='caption' sx={{ color: 'InactiveCaptionText' }} >
+                                Tags:
+                            </Typography>
+                            {lesson.categories.map((item, index) => {
+                                return <Chip label={item} key={index} size='small' sx={{ color: item == 'Dyslexia' ? '#BF2011' : item == 'Dysgraphia' ? '#7F56D9' : '#0FC06B', fontSize: 'x-small', fontWeight: 'bold' }} />
+                            })}
                         </Box>
 
                     </Box>
@@ -190,7 +207,7 @@ const LessonCard =
                     >
                         <Divider sx={{ position: 'absolute', width: '100%', top: 0, left: 0 }} />
 
-                        <Button size='small' onClick={() => handleDownload(lesson.fileName, lesson.uri)}>download</Button>
+                        <Button sx={{ color: 'InactiveCaptionText' }} size='small' onClick={() => handleDownload(lesson.fileName, lesson.uri)}>download</Button>
                         <Button size='small' onClick={() => handleViewFile(index)}>preview</Button>
                     </Box>
 

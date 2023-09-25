@@ -1,14 +1,17 @@
-import { Box, Button, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grow, IconButton, Popover, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, Grow, IconButton, InputLabel, ListItemText, MenuItem, OutlinedInput, Popover, Select, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import useAxios from '../hooks/useAxios';
 import { CloudDownload, CloudUpload, Delete, Description, Done, DownloadDone, FileDownloadDone, FileUpload, FileUploadOutlined, Folder, InsertDriveFile, InsertDriveFileOutlined, UploadFile } from '@mui/icons-material';
 import InputFile from './InputFile';
 
-const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLessons, setSnackMsg, setSnackOpen, setSnackSev, snackSev, snackOpen, snackMsg, setEmpty, }) => {
+const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLessons, setSnackMsg, setSnackOpen, setSnackSev, snackSev, snackOpen, snackMsg, setEmpty, setFilter }) => {
     const axios = useAxios();
 
     const [title, setTitle] = useState("")
+    const [categories, setCategories] = useState([])
     const [file, setFile] = useState(null)
+
+    const items = ['Dyslexia', 'Dysgraphia', 'Dyscalculia']
 
 
     const handleAddLesson = async (e) => {
@@ -35,6 +38,7 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
         const formData = new FormData()
         formData.append('title', title)
         formData.append('file', file)
+        formData.append('categories', categories)
 
         try {
             const response = await axios.post('/upload', formData)
@@ -55,12 +59,25 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
 
         setFile(null)
         setTitle("")
+        setCategories([])
+        setFilter([])
         onClose(false)
         setDisabled(false)
     }
+
+    const handleChange = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setCategories(
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
+
     return (
         <Dialog open={open} onClose={() => onClose(false)} >
             <Box
+                maxWidth='500px'
                 sx={{
                     minWidth: {
                         md: "500px"
@@ -68,7 +85,6 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
                 }}
 
             >
-
                 <form onSubmit={handleAddLesson} style={{ width: "100%" }}>
                     <DialogTitle variant='h5' bgcolor="primary.main" color="#FFF">Add Lesson</DialogTitle>
                     <Divider />
@@ -78,18 +94,55 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
                             flexDirection="column"
                             gap={2}
                         >
-                            <TextField
-                                disabled={disabled}
-                                autoFocus
-                                margin="dense"
-                                id="title"
-                                label="Lesson Title"
-                                type="text"
-                                fullWidth
-                                variant="outlined"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                            />
+                            <Box
+                                display="flex"
+                                gap={2}
+                                sx={{
+                                    flexDirection: {
+                                        xs: "column",
+                                        sm: "row"
+                                    }
+                                }}
+
+                            >
+                                <TextField
+                                    disabled={disabled}
+                                    autoFocus
+                                    margin="dense"
+                                    id="title"
+                                    label="Lesson Title"
+                                    type="text"
+                                    fullWidth
+                                    variant="outlined"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
+
+                                <FormControl variant="outlined" fullWidth margin='dense'>
+                                    <InputLabel id="demo-multiple-name-label">Learning Support</InputLabel>
+                                    <Select
+                                        labelId="demo-multiple-name-label"
+                                        id="demo-multiple-name"
+                                        multiple
+                                        value={categories}
+                                        onChange={handleChange}
+                                        input={<OutlinedInput label="Learning Support" />}
+                                        renderValue={(selected) => selected.join(', ')}
+                                        disabled={disabled}
+                                        required
+                                    >
+                                        {items.map((name) => (
+                                            <MenuItem
+                                                key={name}
+                                                value={name}
+                                            >
+                                                <Checkbox checked={categories.indexOf(name) > -1} />
+                                                <ListItemText primary={name} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Box>
                             {/* input file */}
                             <InputFile file={file} setFile={setFile} disabled={disabled} />
 

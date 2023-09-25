@@ -1,11 +1,13 @@
-import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grow, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, Grow, IconButton, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import InputFile from './InputFile';
 import { Delete, Description } from '@mui/icons-material';
 import useAxios from '../hooks/useAxios';
 
-const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEditID, setSnackSev, setSnackMsg, setLessons, setSnackOpen, setEmpty, lessons, newFile, newTitle, setNewFile, setNewTitle }) => {
+const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEditID, setSnackSev, setSnackMsg, setLessons, setSnackOpen, setEmpty, lessons, newFile, newTitle, setNewFile, setNewTitle, newCategories, setNewCategories, setFilter }) => {
     const axios = useAxios()
+
+    const items = ['Dyslexia', 'Dysgraphia', 'Dyscalculia']
 
     const handleEditLesson = async (e) => {
         e.preventDefault()
@@ -28,6 +30,7 @@ const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEdi
         formData.append('title', newTitle)
         formData.append('file', newFile)
         formData.append('id', lessonToEditID)
+        formData.append('categories', newCategories)
 
         try {
             const response = await axios.put('/upload', formData)
@@ -52,12 +55,23 @@ const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEdi
 
         setNewFile(null)
         setNewTitle("")
+        setNewCategories([])
+        setFilter([])
         onClose(false)
         setDisabled(false)
     }
+
+    const handleChange = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setNewCategories(
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
     return (
         <Dialog open={open} onClose={() => onClose(false)} >
-            <Box sx={{ minWidth: { md: "500px" } }}>
+            <Box sx={{ minWidth: { md: "500px" } }} maxWidth="500px">
                 <form onSubmit={handleEditLesson} style={{ width: "100%" }}>
                     <DialogTitle variant='h5' >Edit Lesson</DialogTitle>
                     <Divider />
@@ -67,18 +81,56 @@ const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEdi
                             flexDirection="column"
                             gap={2}
                         >
-                            <TextField
-                                disabled={disabled}
-                                autoFocus
-                                margin="dense"
-                                id="title"
-                                label="Lesson Title"
-                                type="text"
-                                fullWidth
-                                variant="outlined"
-                                value={newTitle}
-                                onChange={(e) => setNewTitle(e.target.value)}
-                            />
+                            <Box
+                                display="flex"
+                                gap={2}
+                                sx={{
+                                    flexDirection: {
+                                        xs: "column",
+                                        sm: "row"
+                                    }
+                                }}
+
+                            >
+                                <TextField
+                                    disabled={disabled}
+                                    autoFocus
+                                    margin="dense"
+                                    id="title"
+                                    label="Lesson Title"
+                                    type="text"
+                                    fullWidth
+                                    variant="outlined"
+                                    value={newTitle}
+                                    onChange={(e) => setNewTitle(e.target.value)}
+                                />
+
+                                <FormControl variant="outlined" fullWidth margin='dense'>
+                                    <InputLabel id="demo-multiple-name-label">Learning Support</InputLabel>
+                                    <Select
+                                        labelId="demo-multiple-name-label"
+                                        id="demo-multiple-name"
+                                        multiple
+                                        value={newCategories}
+                                        onChange={handleChange}
+                                        input={<OutlinedInput label="Learning Support" />}
+                                        renderValue={(selected) => selected.join(', ')}
+                                        disabled={disabled}
+                                        required
+                                    >
+                                        {items.map((name) => (
+                                            <MenuItem
+                                                key={name}
+                                                value={name}
+                                            >
+                                                <Checkbox checked={newCategories.indexOf(name) > -1} />
+                                                <ListItemText primary={name} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+
+                            </Box>
 
                             <InputFile file={newFile} setFile={setNewFile} disabled={disabled} />
 
