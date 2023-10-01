@@ -13,14 +13,14 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import SnackBar from './SnackBar'
 
 // import img1 from '../assets/images/login-slide1.svg'
-// import img2 from '../assets/images/login-slide2.svg'
+// import img2 from '../assets/images/slide-2.svg'
 // import img3 from '../assets/images/login-slide3.svg'
 
 import img1 from '../assets/images/slider-photo-1.jpg'
-import img2 from '../assets/images/slider-photo-2.jpg'
-import img3 from '../assets/images/slider-photo-3.jpg'
+import img2 from '../assets/images/slider-photo-4.jpg'
+import img3 from '../assets/images/slider-photo-1.jpg'
 import img4 from '../assets/images/slider-photo-4.jpg'
-import img5 from '../assets/images/slider-photo-5.jpg'
+import img5 from '../assets/images/slider-photo-1.jpg'
 
 
 const LOGIN_URL = '/auth';
@@ -136,7 +136,7 @@ const LoginComponenet = () => {
         {
             img: img5,
             title: "Cultivating the Intellectual Growth of Young Learners",
-            sub: "Experience Engaging and Educational Fun with PPPedu's Child-Friendly Features"
+            sub: "Engaging and Educational Fun with PPPedu's Child-Friendly Features"
         },
     ]
 
@@ -265,7 +265,7 @@ const LoginComponenet = () => {
                     borderRadius={3}
                     p={3}
                 >
-                    <img src={pppLogo} style={{ width: '100%', maxWidth: '250px', filter: 'dropShadow(5px 5px 10px #000000)' }} />
+                    <img src={pppLogo} style={{ width: '100%', maxWidth: '200px', filter: 'dropShadow(5px 5px 10px #000000)' }} />
                     <Typography variant='h5' mt={3} fontWeight={500} color="#424242">Get Started Now</Typography>
                     <Typography
                         variant='caption'

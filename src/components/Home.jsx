@@ -116,12 +116,14 @@ const Home = () => {
     return (
         <Box display="flex" flexDirection="column" gap={2}>
             <Box
-                display="flex"
+                display="grid"
                 gap={2}
+                // bgcolor="red"
                 sx={{
-                    flexDirection: {
-                        xs: "column",
-                        sm: "row"
+                    gridTemplateColumns: {
+                        xs: "1fr",
+                        sm: "1fr",
+                        md: "1fr 1fr"
                     }
                 }}
             >
@@ -131,7 +133,8 @@ const Home = () => {
                     gap={2}
                     sx={{
                         gridTemplateColumns: {
-                            sm: " 1fr",
+                            xs: " 1fr",
+                            sm: " 1fr 1fr",
                             md: "1fr 1fr"
                         }
                     }}

@@ -17,10 +17,6 @@ const OverviewCard = ({ index, data }) => {
                 sx={{
                     borderRadius: 2,
                     width: "100%",
-                    maxWidth: {
-                        sm: 300
-                    },
-                    minWidth: 300,
                     p: 2,
                     display: 'flex',
                     flexDirection: 'column',

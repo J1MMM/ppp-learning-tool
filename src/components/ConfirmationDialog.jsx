@@ -1,4 +1,4 @@
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider } from '@mui/material';
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Typography } from '@mui/material';
 import React from 'react';
 
 const ConfirmationDialog = ({ open, setOpen, title, content, confirm }) => {
@@ -9,18 +9,18 @@ const ConfirmationDialog = ({ open, setOpen, title, content, confirm }) => {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle id="alert-dialog-title" variant='h6' fontWeight="500">
+            <DialogTitle id="alert-dialog-title" variant='h5' fontWeight="500">
                 {title}
             </DialogTitle>
             <Divider />
             <DialogContent >
                 <DialogContentText id="alert-dialog-description">
-                    <Alert severity='warning' sx={{ maxWidth: '400px' }}>
-                        {content}
+                    <Alert severity='warning' sx={{ maxWidth: '400px' }} >
+                        <Typography variant='body1'>{content}</Typography>
                     </Alert>
                 </DialogContentText>
             </DialogContent>
-            <DialogActions>
+            <DialogActions >
                 <Button size='small' onClick={() => setOpen(false)} sx={{ color: 'InactiveCaptionText' }}>Cancel</Button>
                 <Button
                     autoFocus

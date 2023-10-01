@@ -216,7 +216,7 @@ const Lessons = () => {
         <Paper
             elevation={0}
             sx={{
-                p: 3,
+                p: 2,
                 borderRadius: 3,
                 minHeight: '50vh'
             }}
@@ -233,6 +233,11 @@ const Lessons = () => {
                         xs: "column",
                         sm: "column",
                         md: "row"
+                    },
+                    mb: {
+                        xs: 0,
+                        sm: 0,
+                        md: 2
                     }
                 }}
             >
@@ -244,7 +249,7 @@ const Lessons = () => {
                     <Typography variant='caption' color='InactiveCaptionText' >Manage Your Lessons Efficiently.</Typography>
                 </Box>
 
-                <Box display='flex' alignItems='center' gap={2}>
+                <Box display='flex' alignItems='center' gap={2} sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
                     <Button
                         variant='outlined'
                         size='small'

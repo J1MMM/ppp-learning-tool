@@ -56,6 +56,14 @@ const UpdateStudentDialog = ({
         setDisabled(true)
         setFormReadOnly(true)
 
+        if (disabilitiesRequired) {
+            setResMsg("All fields are required");
+            setSeverity("error")
+            setSnack(true);
+            setDisabled(false)
+            return;
+        }
+
         if (updateFname.length < 2 || updateLname.length < 2) {
             setResMsg("Student name should be at least 2 characters");
             setSeverity("error")
@@ -147,7 +155,6 @@ const UpdateStudentDialog = ({
         })
         onClose(false)
         setDisabled(false)
-
     }
 
     const disabilitiesChange = (event) => {
@@ -245,8 +252,6 @@ const UpdateStudentDialog = ({
                         }}
 
                     >
-
-
                         <FormControl fullWidth margin='dense'>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker label="Date of birth" onChange={(date) => handleDateChange(date)} disabled={disabled} value={updateDateOfBirth} readOnly={formReadOnly} />
@@ -381,7 +386,6 @@ const UpdateStudentDialog = ({
                         <FormLabel component="legend">Learning Disabilities:</FormLabel>
                         <FormGroup >
                             <FormControlLabel
-                                required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
                                     <Checkbox disabled={disabled || formReadOnly} checked={dyslexia} name='dyslexia' onChange={disabilitiesChange} />
@@ -389,7 +393,6 @@ const UpdateStudentDialog = ({
                                 label="Dyslexia" />
 
                             <FormControlLabel
-                                required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
                                     <Checkbox disabled={disabled || formReadOnly} checked={dysgraphia} name='dysgraphia' onChange={disabilitiesChange} />
@@ -397,7 +400,6 @@ const UpdateStudentDialog = ({
                                 label="Dysgraphia" />
 
                             <FormControlLabel
-                                required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
                                     <Checkbox disabled={disabled || formReadOnly} checked={dyscalculia} name='dyscalculia' onChange={disabilitiesChange} />

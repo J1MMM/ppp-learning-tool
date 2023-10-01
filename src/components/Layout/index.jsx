@@ -5,18 +5,21 @@ import Navbar from '../Navbar';
 import { BsChevronDown } from 'react-icons/bs'
 import useAuth from '../../hooks/useAuth';
 import { Avatar, Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
-import { AccountCircle, ArrowBackIosNewSharp, ArrowCircleDownSharp, ArrowDownward, ArrowDownwardSharp, ArrowDropDown, CloseRounded, ContentCut, KeyboardArrowDown, Logout, MenuBookOutlined, MenuOutlined, MenuRounded, MiscellaneousServicesOutlined, PersonAdd, VisibilityOff } from '@mui/icons-material';
+import { AccountCircle, ArrowBackIosNewSharp, ArrowCircleDownSharp, ArrowDownward, ArrowDownwardSharp, ArrowDropDown, CloseRounded, ContentCut, KeyboardArrowDown, Logout, MenuBookOutlined, MenuOutlined, MenuRounded, MenuSharp, MiscellaneousServicesOutlined, PersonAdd, VisibilityOff } from '@mui/icons-material';
 import { FiHome, FiLogOut, FiUser, FiUsers } from 'react-icons/fi';
 import { HiOutlineUserGroup, HiUser, HiUsers } from 'react-icons/hi2';
 import { GrUserAdd } from 'react-icons/gr';
 import UseLogout from '../../hooks/useLogout';
 import ROLES_LIST from '../ROLES_LIST';
 import UserAvatar from '../UserAvatar';
+import ConfirmationDialog from '../ConfirmationDialog';
 import { IoFolderOpenOutline } from 'react-icons/io5';
+import Logo from '../../assets/images/logo.png'
 
 const Layout = () => {
     const { auth } = useAuth()
 
+    const [navOpen, setNavOpen] = useState(true)
     const [openDialog, setOpenDialog] = useState(false);
     const [headerShadow, setHeaderShadow] = useState(false);
     const fullname = auth?.fullname || undefined;
@@ -56,86 +59,78 @@ const Layout = () => {
         return () => window.removeEventListener('scroll', handleScroll)
     })
 
+
     if (!auth?.fullname) {
         return <Navigate to='/login' />
     }
 
     return (
         <div className='layout'>
-            <div className="navbar-container">
-                <Navbar openDialog={openDialog} setOpenDialog={setOpenDialog} />
+            <div className={headerShadow ? "header shadow" : "header"}>
+                <Box display='flex' alignItems='center' gap={2}>
+                    <IconButton onClick={() => setNavOpen(prev => !prev)} sx={{ display: { xs: 'none', md: 'flex' } }}>
+                        <MenuRounded color='action' />
+                    </IconButton>
+                    <NavLink to={'/'} className={'nav-logo'}>
+                        <img src={Logo} />
+                        <Typography variant='h5'>PPP<span>edu</span></Typography>
+                    </NavLink>
+
+                </Box>
+
+                {/* mobile view nav  */}
+                <IconButton onClick={handleClick} sx={{
+                    display: {
+                        md: "none",
+                    }
+                }}>
+                    {anchorEl ?
+                        <CloseRounded color='action' /> :
+                        <MenuRounded color='action' />
+                    }
+                </IconButton>
+
+                <Box
+                    mr={3}
+                    alignItems="center"
+                    sx={{
+                        display: {
+                            xs: "none",
+                            sm: "none",
+                            md: "flex"
+                        },
+                    }}
+                >
+                    {
+                        fullname &&
+                        <IconButton onClick={handleClick} >
+                            <UserAvatar
+                                fullname={auth.fullname}
+                                variant="circular"
+                                height={40}
+                                width={40}
+                                fontSize={'small'}
+                            />
+                        </IconButton>
+                    }
+                    <Box>
+                        <Typography variant='body2' mb={-1} fontWeight={600}>{fullname}</Typography>
+                        <Typography variant='caption' fontSize={'x-small'} color={'grey'}>{email}</Typography>
+                    </Box>
+                </Box>
             </div>
 
             <section className='main-container'>
-                <div className={headerShadow ? "header shadow" : "header"}>
-                    <Box>
-                        <Typography variant='h5' lineHeight='2rem' fontWeight='600' mb='-5px' color={'InfoText'} >Dashboard</Typography>
-                        <Typography variant='caption' color={'InactiveCaptionText'} >Welcome back, {auth.fullname.split(' ')[0]}</Typography>
-                    </Box>
+                <Navbar openDialog={openDialog} setOpenDialog={setOpenDialog} navOpen={navOpen} />
 
-                    <IconButton onClick={handleClick} sx={{
-                        display: {
-                            md: "none",
-                        }
-                    }}>
-                        {anchorEl ?
-                            <CloseRounded fontSize='large' color='action' /> :
-                            <MenuRounded fontSize='large' color='action' />
-                        }
-                    </IconButton>
-
-                    <Box
-                        alignItems="center"
-                        sx={{
-                            display: {
-                                xs: "none",
-                                sm: "none",
-                                md: "flex"
-                            }
-                        }}
-                    >
-                        {
-                            fullname &&
-                            <IconButton onClick={handleClick} sx={{ borderRadius: 1 }} >
-                                <UserAvatar
-                                    fullname={auth.fullname}
-                                    variant="rounded"
-                                />
-                            </IconButton>
-                        }
-                        <Box>
-                            <Typography variant='body1' mb={-1} fontWeight={600}>{fullname}</Typography>
-                            <Typography variant='caption' color={'grey'}>{email}</Typography>
-                        </Box>
-                    </Box>
-                </div>
                 <main className='main'>
                     <Outlet />
                 </main>
             </section >
 
-            <Dialog
-                open={openDialog}
-                onClose={() => setOpenDialog(false)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title" variant='h6' fontWeight="500">
-                    Confirm Sign out
-                </DialogTitle>
-                <Divider />
-                <DialogContent >
-                    <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to sign out?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button size='small' onClick={() => setOpenDialog(false)} sx={{ color: 'InactiveCaptionText' }}>Cancel</Button>
-                    <Button size='small' onClick={signout} color='error'>
-                        Sign out
-                    </Button>
-                </DialogActions>
-            </Dialog>
+
+
+            <ConfirmationDialog title='Confirm Sign out' confirm={signout} content='Are you sure you want to sign out?' open={openDialog} setOpen={setOpenDialog} />
 
             <Menu
                 id="basic-menu"
@@ -145,7 +140,6 @@ const Layout = () => {
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
-
             >
                 <Box
                     minWidth="250px"
@@ -182,38 +176,42 @@ const Layout = () => {
                     </Box>
                 </Box>
 
-                <nav style={{ display: "none" }} className='menu-nav'>
-                    <NavLink to="/" onClick={() => setAnchorEl(false)}>
-                        <FiHome size={22} />
-                        <span>Overview</span>
+                <nav style={{ display: 'none ' }} className='navbar-nav menu-nav'>
+                    <NavLink to="/" className={'open mobile'}>
+                        {
+                            isAdmin ?
+                                <>
+                                    <FiUsers size={22} />
+                                    <Typography component={'span'} className={'active'}>Users List</Typography>
+                                </> :
+                                <>
+                                    <FiHome size={22} />
+                                    <Typography component={'span'} className={'active'}>Overview</Typography>
+                                </>
+                        }
                     </NavLink>
-                    {!isAdmin
-                        &&
-                        <NavLink to="lessons" onClick={() => setAnchorEl(false)}>
-                            <IoFolderOpenOutline size={22} />
-                            <span>Lessons</span>
-                        </NavLink>
-                    }
-                    {!isAdmin
-                        &&
-                        <NavLink to="students" onClick={() => setAnchorEl(false)}>
-                            <HiOutlineUserGroup size={26} />
-                            <span>Students</span>
-                        </NavLink>
-                    }
-                    {/* {isAdmin
-                        &&
-                        <NavLink to="users" onClick={() => setAnchorEl(false)}>
-                            <FiUsers size={22} />
-                            <span>Users List</span>
-                        </NavLink>
-                    } */}
-                </nav>
 
-                <button style={{ display: 'none' }} className='sign-out-btn menu-logout-btn' onClick={() => setOpenDialog(true)}>
-                    <FiLogOut size={22} />
-                    <span>Sign out</span>
-                </button>
+                    {!isAdmin
+                        &&
+                        <NavLink to="lessons" className={'open mobile'}>
+                            <IoFolderOpenOutline size={22} />
+                            <Typography component={'span'} className={'active'}>Lessons</Typography>
+                        </NavLink>
+                    }
+
+                    {!isAdmin
+                        &&
+                        <NavLink to="students" className={'open mobile'}>
+                            <HiOutlineUserGroup size={26} />
+                            <Typography component={'span'} className={'active'}>Students</Typography>
+                        </NavLink>
+                    }
+
+                    {/* <NavLink to="/" className={'open mobile'} onClick={}>
+                        <Logout size={26} />
+                        <Typography component={'span'} className={'active'}>Logout</Typography>
+                    </NavLink> */}
+                </nav>
 
                 <MenuItem sx={{
                     p: 1,
@@ -229,6 +227,10 @@ const Layout = () => {
                     <Typography>Sign out </Typography>
                 </MenuItem>
 
+                <button style={{ display: 'none' }} className='sign-out-btn menu-logout-btn' onClick={() => setOpenDialog(true)}>
+                    <FiLogOut size={22} />
+                    <span>Sign out</span>
+                </button>
             </Menu>
         </div >
     );

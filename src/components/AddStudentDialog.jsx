@@ -37,14 +37,13 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
         e.preventDefault()
         setDisabled(true)
 
-        if (!dateOfBirth) {
+        if (!dateOfBirth || disabilitiesRequired) {
             setResMsg("All fields are required");
             setSeverity("error")
             setSnack(true);
             setDisabled(false)
             return;
         }
-
         const age = differenceInYears(new Date(), dateOfBirth);
 
         if (age < 5) {
@@ -347,14 +346,10 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                         </FormControl>
                     </Box>
 
-
-
-
-                    <FormControl sx={{ mt: 2 }} error={disabilitiesRequired} >
+                    <FormControl sx={{ mt: 2 }} error={disabilitiesRequired}>
                         <FormLabel component="legend">Learning Disabilities:</FormLabel>
                         <FormGroup>
                             <FormControlLabel
-                                required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
                                     <Checkbox disabled={disabled} checked={dyslexia} name='dyslexia' onChange={disabilitiesChange} />
@@ -362,7 +357,6 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                                 label="Dyslexia" />
 
                             <FormControlLabel
-                                required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
                                     <Checkbox disabled={disabled} checked={dysgraphia} name='dysgraphia' onChange={disabilitiesChange} />
@@ -370,7 +364,6 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                                 label="Dysgraphia" />
 
                             <FormControlLabel
-                                required={disabilitiesRequired}
                                 sx={{ width: 'fit-content' }}
                                 control={
                                     <Checkbox disabled={disabled} checked={dyscalculia} name='dyscalculia' onChange={disabilitiesChange} />

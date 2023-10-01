@@ -173,74 +173,82 @@ body {
   box-sizing: border-box;
 }
 
-nav {
-  padding: 0;
+nav.navbar-nav {
+  box-sizing: border-box;
 
   a {
+    width: fit-content;
     color: $light-grey;
     text-decoration: none;
     box-sizing: border-box;
-    padding: 20px 30px;
+    padding: 16px 24px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: start;
+    gap: 16px;
     font-size: 16px;
     position: relative;
-    transition-duration: 300ms;
+    padding-right: 24px;
+    transition-duration: 100ms !important;
+    min-width: 32px;
+
+    &.open {
+      padding-right: 7rem;
+      min-width: 250px;
+    }
+
+    span {
+      display: none;
+
+      &.active {
+        display: inline;
+      }
+
+    }
 
     &:hover {
       background-color: #f2f5f791;
+      border-top-right-radius: 2rem;
+      border-bottom-right-radius: 2rem;
     }
 
     &.active {
-      transition-duration: 500ms;
       background-color: #F2F5F7;
       color: #2DA544;
+      border-top-right-radius: 2rem;
+      border-bottom-right-radius: 2rem;
+    }
 
-      &::before {
-        content: " ";
-        position: absolute;
-        height: 100%;
-        width: 3px;
-        background-color: #2DA544;
-        left: 0;
-        top: 0;
-
-      }
+    &.mobile {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      padding: 16px;
+      width: 100%;
     }
   }
 }
 
 .sign-out-btn {
+  margin-top: 24px;
   width: 100%;
   color: $light-grey;
   box-sizing: border-box;
-  padding: 20px 30px;
+  padding: 16px;
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 16px;
   background-color: transparent;
   border: none;
-  margin-top: auto;
   cursor: pointer;
-  transition-duration: 300ms;
   position: relative;
+  box-sizing: border-box;
 
   &:hover {
     background-color: $mono;
     color: rgba(255, 0, 0, 0.857);
 
-    &::before {
-      content: " ";
-      position: absolute;
-      height: 100%;
-      width: 3px;
-      background-color: rgba(255, 0, 0, 0.857);
-      left: 0;
-      top: 0;
 
-    }
   }
 }
 

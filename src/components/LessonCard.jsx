@@ -89,8 +89,8 @@ const LessonCard =
                     onMouseLeave={() => setCardElevation(3)}
                     sx={{
                         width: '100%',
-                        maxWidth: '300px',
-                        height: '300px',
+                        maxWidth: '280px',
+                        height: '280px',
                         boxSizing: 'border-box',
                         display: 'flex',
                         flexDirection: "column",

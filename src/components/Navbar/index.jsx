@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import ROLES_LIST from '../ROLES_LIST'
-import logoSrc from '../../assets/images/ppp-logo.svg'
 import dashboardLogo from '../../assets/images/ppp-logo.png'
 import { IoHomeOutline, IoPersonOutline, IoFolderOpenOutline, IoLogOutOutline } from 'react-icons/io5'
 import { HiOutlineUserGroup } from 'react-icons/hi2'
@@ -10,29 +9,25 @@ import { FiUser, FiHome, FiUsers, FiLogOut } from 'react-icons/fi'
 import { GrGroup } from 'react-icons/gr'
 import './style.scss'
 import UseLogout from '../../hooks/useLogout';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
-const Navbar = ({ setOpenDialog }) => {
+const Navbar = ({ setOpenDialog, navOpen }) => {
     const { auth } = useAuth();
     const isAdmin = Boolean(auth?.roles?.find(role => role === ROLES_LIST.Admin))
 
     return (
         <div className='navbar'>
-            <NavLink to='/' className='ppp-logo-container'>
-                <img className='ppp-logo' src={dashboardLogo} alt='logo.svg' />
-            </NavLink>
-
-            <nav>
-                <NavLink to="/">
+            <nav className='navbar-nav'>
+                <NavLink to="/" className={navOpen ? 'open' : ''}>
                     {
                         isAdmin ?
                             <>
                                 <FiUsers size={22} />
-                                <span>Users List</span>
+                                <Typography component={'span'} className={navOpen ? 'active' : ''}>Users</Typography>
                             </> :
                             <>
                                 <FiHome size={22} />
-                                <span>Overview</span>
+                                <Typography component={'span'} className={navOpen ? 'active' : ''}>Overview</Typography>
                             </>
                     }
                 </NavLink>
@@ -40,33 +35,22 @@ const Navbar = ({ setOpenDialog }) => {
 
                 {!isAdmin
                     &&
-                    <NavLink to="lessons">
+                    <NavLink to="lessons" className={navOpen ? 'open' : ''}>
                         <IoFolderOpenOutline size={22} />
-                        <span>Lessons</span>
+                        <Typography component={'span'} className={navOpen ? 'active' : ''}>Lessons</Typography>
                     </NavLink>
                 }
 
                 {!isAdmin
                     &&
-                    <NavLink to="students">
+                    <NavLink to="students" className={navOpen ? 'open' : ''}>
                         <HiOutlineUserGroup size={26} />
-                        <span>Students</span>
+                        <Typography component={'span'} className={navOpen ? 'active' : ''}>Students</Typography>
                     </NavLink>
                 }
-
-                {/* {!isAdmin
-                    &&
-                    <NavLink to="users">
-                        <FiUsers size={22} />
-                        <span>Users List</span>
-                    </NavLink>
-                } */}
             </nav>
 
-            <button className='sign-out-btn' onClick={() => setOpenDialog(true)}>
-                <FiLogOut size={22} />
-                <span>Sign out</span>
-            </button>
+
         </div >
     );
 }
