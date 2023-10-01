@@ -146,7 +146,8 @@ const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddU
                                 return (
                                     <TableRow
                                         key={index}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: '#E8F0FE' }, bgcolor: selectedRows.includes(user._id) ? '#E8F0FE' : '#FFF' }}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: '#e8fee9' }, bgcolor: selectedRows.includes(user._id) ? '#e8fee9' : '#FFF' }}
+                                        onClick={() => handleRowClick(user._id)}
                                     >
                                         <TableCell padding='checkbox' sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "12rem", sm: "12rem", md: "15rem" } }}>
                                             <Checkbox
@@ -184,7 +185,8 @@ const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddU
                                         <TableCell  >
                                             <Tooltip title="Edit">
                                                 <IconButton
-                                                    onClick={() => {
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
                                                         setUpateUserModal(true)
                                                         getUser(user?._id)
                                                     }}

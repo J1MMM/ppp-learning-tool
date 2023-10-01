@@ -38,7 +38,10 @@ const Home = () => {
     const totalDyscalculia = students.filter(student => student.learning_disabilities.includes('dyscalculia')).length
 
     const isAdmin = Boolean(auth?.roles?.find(role => role === ROLES_LIST.Admin))
-    if (isAdmin) return <Users />
+    if (isAdmin) {
+        document.title = "Dashboard | Users Management"
+        return <Users />
+    }
 
     useEffect(() => {
         window.scrollTo(0, 0);

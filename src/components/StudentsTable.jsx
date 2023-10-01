@@ -169,7 +169,8 @@ const StudentsTable = ({
                             return (
                                 <TableRow
                                     key={index}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: '#E8F0FE' } }}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: '#e8fee9' }, bgcolor: selectedRows.includes(student._id) ? '#e8fee9' : '' }}
+                                    onClick={() => handleRowClick(student._id)}
                                 >
                                     <TableCell padding='checkbox' sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "12rem", sm: "12rem", md: "18rem" } }}>
                                         <Checkbox
@@ -203,24 +204,19 @@ const StudentsTable = ({
                                     </TableCell>
                                     {isAdmin && <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "8rem" }}>{student.instructor}</TableCell>}
                                     <TableCell  >
-                                        <Box
-                                            width="fit-content"
-                                            display="flex"
-                                            gap={1}
-                                        >
-                                            <Tooltip title="more info">
-                                                <IconButton
-                                                    onClick={() => {
-                                                        setUpateStudentModal(true)
-                                                        geStudent(student?._id)
-                                                    }}
-                                                    size={mobileView ? 'small' : 'medium'}
-                                                >
-                                                    <InfoOutlined />
-                                                </IconButton>
-                                            </Tooltip>
 
-                                        </Box>
+                                        <Tooltip title="more info">
+                                            <IconButton
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setUpateStudentModal(true);
+                                                    geStudent(student?._id);
+                                                }}
+                                                size={mobileView ? 'small' : 'medium'}
+                                            >
+                                                <InfoOutlined />
+                                            </IconButton>
+                                        </Tooltip>
                                     </TableCell>
                                 </TableRow>
                             )

@@ -207,7 +207,7 @@ const LessonCard =
                     >
                         <Divider sx={{ position: 'absolute', width: '100%', top: 0, left: 0 }} />
 
-                        <Button sx={{ color: 'InactiveCaptionText' }} size='small' onClick={() => handleDownload(lesson.fileName, lesson.uri)}>download</Button>
+                        <Button size='small' onClick={() => handleDownload(lesson.fileName, lesson.uri)}>download</Button>
                         <Button size='small' onClick={() => handleViewFile(index)}>preview</Button>
                     </Box>
 

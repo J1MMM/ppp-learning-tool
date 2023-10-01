@@ -11,6 +11,8 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import SnackBar from './SnackBar'
+import Logo from '../assets/images/ppp-logo-login.png'
+
 
 // import img1 from '../assets/images/login-slide1.svg'
 // import img2 from '../assets/images/slide-2.svg'
@@ -265,8 +267,11 @@ const LoginComponenet = () => {
                     borderRadius={3}
                     p={3}
                 >
-                    <img src={pppLogo} style={{ width: '100%', maxWidth: '200px', filter: 'dropShadow(5px 5px 10px #000000)' }} />
-                    <Typography variant='h5' mt={3} fontWeight={500} color="#424242">Get Started Now</Typography>
+                    <Box display='flex' alignItems='center' gap={1}>
+                        <img src={Logo} />
+                        <Typography variant='h4' color='primary.main'>PPP<span style={{ color: '#f75fff' }}>edu</span></Typography>
+                    </Box>
+                    <Typography variant='h5' mt={2} fontWeight={500} color="#424242">Get Started Now</Typography>
                     <Typography
                         variant='caption'
                         mb={3}

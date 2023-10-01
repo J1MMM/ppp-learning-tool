@@ -91,7 +91,7 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                                     </TableCell>
                                     {isAdmin && <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>{student.instructor}</TableCell>}
                                     <TableCell >
-                                        <Typography width="fit-content" borderRadius={3} color="#6d64d8" p=".1rem .8rem" bgcolor="#ecf2ff" sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "2rem", sm: "2rem", md: "none" } }}>{student.stars} {student.stars > 1 ? "stars" : "star"}</Typography>
+                                        <Typography width="fit-content" borderRadius={3} color="#2DA544" p=".1rem .8rem" bgcolor="#e8fee9" sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "2rem", sm: "2rem", md: "none" } }}>{student.stars} {student.stars > 1 ? "stars" : "star"}</Typography>
                                     </TableCell>
                                 </TableRow>
                             )

@@ -22,11 +22,11 @@ const Navbar = ({ setOpenDialog, navOpen }) => {
                     {
                         isAdmin ?
                             <>
-                                <FiUsers size={22} />
+                                <FiUsers size={24} />
                                 <Typography component={'span'} className={navOpen ? 'active' : ''}>Users</Typography>
                             </> :
                             <>
-                                <FiHome size={22} />
+                                <FiHome size={24} />
                                 <Typography component={'span'} className={navOpen ? 'active' : ''}>Overview</Typography>
                             </>
                     }
@@ -36,7 +36,7 @@ const Navbar = ({ setOpenDialog, navOpen }) => {
                 {!isAdmin
                     &&
                     <NavLink to="lessons" className={navOpen ? 'open' : ''}>
-                        <IoFolderOpenOutline size={22} />
+                        <IoFolderOpenOutline size={24} />
                         <Typography component={'span'} className={navOpen ? 'active' : ''}>Lessons</Typography>
                     </NavLink>
                 }
