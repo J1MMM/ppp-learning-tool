@@ -42,6 +42,17 @@ body {
   padding: 0;
   scroll-behavior: smooth;
 
+  ::-moz-selection {
+    /* Code for Firefox */
+    color: #2DA544;
+    background: #F8C6FB;
+  }
+
+  ::selection {
+    color: #2DA544;
+    background: #F8C6FB;
+  }
+
 }
 
 .input-field {

@@ -152,14 +152,14 @@ const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEdi
                                         overflow="hidden"
                                     >
                                         <Description color='common' />
-                                        <Typography variant='body2' color="#FFF" ml={1} sx={{ fontSize: { xs: 10, sm: 14 }, maxWidth: { xs: "5rem", sm: "none" } }}>{newFile?.name}</Typography>
+                                        <Typography component={'span'} variant='body2' color="#FFF" ml={1} sx={{ fontSize: { xs: 10, sm: 14 }, maxWidth: { xs: "5rem", sm: "none" } }}>{newFile?.name}</Typography>
                                     </Box>
 
                                     <Box
                                         display="flex"
                                         alignItems="center"
                                     >
-                                        <Typography variant='body2' color="#FFF" ml={1} sx={{ fontSize: { xs: 10, sm: 14 }, maxWidth: { xs: "5rem", sm: "none" } }}>{(newFile?.size / 1024).toFixed(2)} KB</Typography>
+                                        <Typography component={'span'} variant='body2' color="#FFF" ml={1} sx={{ fontSize: { xs: 10, sm: 14 }, maxWidth: { xs: "5rem", sm: "none" } }}>{(newFile?.size / 1024).toFixed(2)} KB</Typography>
 
                                         <IconButton disabled={disabled} onClick={() => setNewFile(null)}>
                                             <Delete color='common' />
@@ -172,7 +172,7 @@ const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEdi
 
                     <DialogActions>
                         <Button disabled={disabled} onClick={() => onClose(false)} color='inherit' sx={{ mb: 1 }}><Typography>Cancel</Typography></Button>
-                        <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>save</Typography></Button>
+                        <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography component={'span'} ml={1}>save</Typography></Button>
                     </DialogActions>
                 </form>
             </Box>

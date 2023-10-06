@@ -14,7 +14,7 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
     const navigate = useNavigate()
 
     return (
-        <Slide direction='up' in={true} timeout={{ enter: 500 }}>
+        <Grow in={true} >
             <TableContainer component={Paper} elevation={3} sx={{ position: 'relative', boxSizing: 'border-box', borderRadius: 3, zIndex: 10 }}>
                 <Box
                     bgcolor='#fff'
@@ -42,10 +42,10 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                 >
                     <Box>
                         <Box display='flex' alignItems='center' gap={1} mb={-.5}>
-                            <Typography variant='h5' >Students Leaderboard</Typography>
+                            <Typography component={'span'} variant='h5' >Students Leaderboard</Typography>
                             <Chip label={`${students.length == 0 ? 'Empty' : students.length > 1 ? `${students.length} Students` : `${students.length} Student`}`} sx={{ fontFamily: 'Poppins, sans-serif', color: 'primary.main' }} size='small' />
                         </Box>
-                        <Typography variant='caption' color='InactiveCaptionText' sx={{ fontSize: { xs: 9, sm: 12 } }} >Overview of Student Performance and Achievements.</Typography>
+                        <Typography component={'span'} variant='caption' color='InactiveCaptionText' sx={{ fontSize: { xs: 9, sm: 12 } }} >Overview of Student Performance and Achievements.</Typography>
                     </Box>
 
                     <Button
@@ -55,7 +55,7 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                         onClick={() => navigate('/students')}
                     >
                         <HiOutlineUserGroup color={"#FFF"} size={20} />
-                        <Typography pl={1} variant='button'>
+                        <Typography component={'span'} pl={1} variant='button'>
                             Students
                         </Typography>
                     </Button>
@@ -91,7 +91,7 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                                     </TableCell>
                                     {isAdmin && <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>{student.instructor}</TableCell>}
                                     <TableCell >
-                                        <Typography width="fit-content" borderRadius={3} color="#2DA544" p=".1rem .8rem" bgcolor="#e8fee9" sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "2rem", sm: "2rem", md: "none" } }}>{student.stars} {student.stars > 1 ? "stars" : "star"}</Typography>
+                                        <Typography component={'span'} width="fit-content" borderRadius={3} color="#2DA544" p=".1rem .8rem" bgcolor="#f7fff8" sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "2rem", sm: "2rem", md: "none" } }}>{student.stars} {student.stars > 1 ? "stars" : "star"}</Typography>
                                     </TableCell>
                                 </TableRow>
                             )
@@ -108,7 +108,7 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                         justifyContent="center"
                         alignItems="center"
                         boxSizing="border-box"
-                        height="20vh"
+                        height="40vh"
                     >
                         <CircularProgress />
                     </Box>
@@ -128,14 +128,14 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                         >
                             <img src={emptyTable} style={{
                                 width: '100%',
-                                maxWidth: '25rem'
+                                maxWidth: '18rem'
                             }} />
-                            <Typography variant='h4' textAlign='center' color='#2F2E41'>No Students Found</Typography>
+                            <Typography component={'span'} variant='h4' textAlign='center' color='#2F2E41'>No Students Found</Typography>
                         </Box>
                     </Grow>
                 }
             </TableContainer >
-        </Slide>
+        </Grow>
     )
 }
 

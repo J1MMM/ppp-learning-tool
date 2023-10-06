@@ -8,7 +8,9 @@ import NoServerResponse from './NoServerResponse';
 import ROLES_LIST from './ROLES_LIST'
 import useData from '../hooks/useData';
 import { PiGenderFemaleBold, PiGenderMaleBold } from "react-icons/pi";
-import { BsArrowDownShort, BsArrowUpShort } from "react-icons/bs";
+import { MdOutlineDraw } from 'react-icons/md';
+import { GoNumber } from 'react-icons/go';
+import { VscBook } from "react-icons/vsc";
 
 const StudentsTable = ({
     students,
@@ -121,7 +123,7 @@ const StudentsTable = ({
                                             onClick={() => {
                                                 setDeleteModal(true)
                                             }}>
-                                            Delete
+                                            Archive
                                         </Button>
                                     </Box>
                                 </Collapse>
@@ -148,7 +150,7 @@ const StudentsTable = ({
                             </TableCell>
                             <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Email</TableCell>
                             <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Learning Disabilities</TableCell>
-                            {isAdmin && <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Instructor</TableCell>}
+                            <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Stars Collected</TableCell>
                             <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" } }} >Details</TableCell>
                         </TableRow>
                     </TableHead>
@@ -161,9 +163,30 @@ const StudentsTable = ({
                             }
 
                             const disabilitiesChip = student.learning_disabilities?.map((item, index) => {
-                                return (
-                                    <Chip size={mobileView ? 'small' : 'medium'} key={index} label={capitalizeFirstLetter(item)} sx={{ bgcolor: '#EFF4FF', fontFamily: 'Poppins, sans-serif', color: item == 'dyslexia' ? '#BF2011' : item == 'dysgraphia' ? '#7F56D9' : '#0FC06B', fontSize: 'x-small' }} />
-                                )
+                                const iconSize = mobileView ? 15 : 20
+                                switch (item) {
+                                    case 'dyslexia':
+                                        return (
+                                            <Box key={index} bgcolor={'#f9e8fa'} display={'flex'} justifyContent={'center'} alignItems={'center'} p={1} borderRadius={'50%'} boxSizing={'border-box'} >
+                                                <VscBook color='#F75FFF' size={iconSize} />
+                                            </Box>
+                                        )
+                                        break;
+                                    case 'dysgraphia':
+                                        return (
+                                            <Box key={index} bgcolor={'#d9e2ff'} display={'flex'} justifyContent={'center'} alignItems={'center'} p={1} borderRadius={'50%'} boxSizing={'border-box'} >
+                                                <MdOutlineDraw color='#3760E3' size={iconSize} />
+                                            </Box>
+                                        )
+                                        break;
+                                    case 'dyscalculia':
+                                        return (
+                                            <Box key={index} bgcolor={'#f7fff8'} display={'flex'} justifyContent={'center'} alignItems={'center'} p={1} borderRadius={'50%'} boxSizing={'border-box'} >
+                                                <GoNumber color='#00C914' size={iconSize} />
+                                            </Box>
+                                        )
+                                        break;
+                                }
                             })
 
                             return (
@@ -193,16 +216,18 @@ const StudentsTable = ({
                                             {student.email}
                                         </Box>
                                     </TableCell>
-                                    <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "18rem" }}>
+                                    <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "173px" }}>
                                         <Box
                                             display='flex'
-                                            gap={1}
+                                            gap={2}
                                             flexWrap='wrap'
                                         >
                                             {disabilitiesChip}
                                         </Box>
                                     </TableCell>
-                                    {isAdmin && <TableCell sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "8rem" }}>{student.instructor}</TableCell>}
+                                    <TableCell >
+                                        <Typography width="fit-content" borderRadius={3} color="#2DA544" p=".1rem .8rem" bgcolor="#f7fff8" sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "2rem", sm: "2rem", md: "none" } }}>{student.stars} {student.stars > 1 ? "stars" : "star"}</Typography>
+                                    </TableCell>
                                     <TableCell  >
 
                                         <Tooltip title="more info">
@@ -258,7 +283,7 @@ const StudentsTable = ({
                     </Box>
                 }
             </TableContainer>
-        </Grow>
+        </Grow >
     )
 }
 

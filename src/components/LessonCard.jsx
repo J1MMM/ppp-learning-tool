@@ -16,6 +16,9 @@ import banner9 from '../assets/images/banner9.jpg'
 import banner10 from '../assets/images/banner10.jpg'
 import UserAvatar from './UserAvatar';
 import { BiBrain, BiPencil, BiSolidPencil } from "react-icons/bi";
+import { VscBook } from 'react-icons/vsc';
+import { MdOutlineDraw } from 'react-icons/md';
+import { GoNumber } from 'react-icons/go';
 
 
 const LessonCard =
@@ -111,8 +114,8 @@ const LessonCard =
                         p={2}
                         boxSizing="border-box"
                     >
-                        <Typography variant='h6' zIndex={5} color="#FFF">{lesson.title.length > 18 ? `${lesson.title.slice(0, 18)}...` : lesson.title}</Typography>
-                        <Typography variant='caption' zIndex={5} color="#FFF">{lesson.instructor}</Typography>
+                        <Typography component={'span'} variant='h6' zIndex={5} color="#FFF">{lesson.title.length > 18 ? `${lesson.title.slice(0, 18)}...` : lesson.title}</Typography>
+                        <Typography component={'span'} variant='caption' zIndex={5} color="#FFF">{lesson.instructor}</Typography>
 
                         <IconButton
                             color='common'
@@ -135,37 +138,6 @@ const LessonCard =
                         boxSizing="border-box"
                         p={1}
                     >
-                        {/* <Box
-                            // bgcolor='primary.main'
-                            display="flex"
-                            alignItems="center"
-                            borderRadius={1}
-                            boxSizing="border-box"
-                            p={1}
-                            gap={.5}
-                        >
-                            {lesson.fileType == "mp4" ?
-                                <OndemandVideo color='primary' /> :
-                                lesson.fileType == "ppt" ?
-                                    <BsFiletypePpt size={18} color='#2DA544' /> :
-                                    lesson.fileType == "pptx" ?
-                                        <BsFiletypePptx size={18} color='#2DA544' /> :
-                                        lesson.fileType == "doc" ?
-                                            <BsFiletypeDoc size={18} color='#2DA544' /> :
-                                            lesson.fileType == "docx" ?
-                                                <BsFiletypeDocx size={18} color='#2DA544' /> :
-                                                lesson.fileType == "pdf" ?
-                                                    <BsFilePdf size={18} color='#2DA544' /> :
-                                                    lesson.fileType == "jpg" ?
-                                                        <BsFiletypeJpg size={18} color='#2DA544' /> :
-                                                        lesson.fileType == "png" ?
-                                                            <BsFiletypePng size={18} color='#2DA544' /> :
-                                                            <BsPaperclip size={18} color='#2DA544' />
-
-                            }
-
-                            <Typography variant='caption' color="primary.main">{lesson.fileName.length > 20 ? `${lesson.fileName.slice(0, 20)}...` : lesson.fileName}</Typography>
-                        </Box> */}
 
                         <Box
                             display="flex"
@@ -175,26 +147,37 @@ const LessonCard =
                             p={1}
                             gap={1}
                         >
-                            <Typography variant='caption' sx={{ color: 'InactiveCaptionText' }} >
+                            <Typography component={'span'} variant='caption' sx={{ color: 'InactiveCaptionText' }} >
                                 Tags:
                             </Typography>
                             {lesson.categories.map((item, index) => {
-                                return <Chip label={item} key={index} size='small' sx={{ color: item == 'Dyslexia' ? '#BF2011' : item == 'Dysgraphia' ? '#7F56D9' : '#0FC06B', fontSize: 'x-small', fontWeight: 'bold' }} />
+                                switch (item) {
+                                    case 'Dyslexia':
+                                        return (
+                                            <Box key={index} bgcolor={'#f9e8fa'} display={'flex'} justifyContent={'center'} alignItems={'center'} p={1} borderRadius={'50%'} boxSizing={'border-box'} >
+                                                <VscBook color='#F75FFF' size={16} />
+                                            </Box>
+                                        )
+                                        break;
+                                    case 'Dysgraphia':
+                                        return (
+                                            <Box key={index} bgcolor={'#d9e2ff'} display={'flex'} justifyContent={'center'} alignItems={'center'} p={1} borderRadius={'50%'} boxSizing={'border-box'} >
+                                                <MdOutlineDraw color='#3760E3' size={16} />
+                                            </Box>
+                                        )
+                                        break;
+                                    case 'Dyscalculia':
+                                        return (
+                                            <Box key={index} bgcolor={'#f7fff8'} display={'flex'} justifyContent={'center'} alignItems={'center'} p={1} borderRadius={'50%'} boxSizing={'border-box'} >
+                                                <GoNumber color='#00C914' size={16} />
+                                            </Box>
+                                        )
+                                        break;
+                                }
                             })}
                         </Box>
 
                     </Box>
-
-                    {/* <Box
-                        // border="1px solid red"
-                        height="100%"
-                        width="100%"
-                        position="relative"
-                    >
-                        <Box position="absolute" top={-35} right={20} >
-                            <UserAvatar fullname={lesson.instructor} height={70} width={70} border={"3px solid #FFF"} />
-                        </Box>
-                    </Box> */}
 
                     <Box
                         display="flex"

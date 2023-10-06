@@ -239,7 +239,7 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
 
                 <DialogActions>
                     <Button disabled={disabled} onClick={() => onClose(false)} color='inherit' sx={{ mb: 1 }}><Typography>Cancel</Typography></Button>
-                    <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Submit</Typography></Button>
+                    <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography component={'span'} ml={1}>Submit</Typography></Button>
                 </DialogActions>
             </form>
         </Dialog>

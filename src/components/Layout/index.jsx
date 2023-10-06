@@ -7,7 +7,7 @@ import useAuth from '../../hooks/useAuth';
 import { Avatar, Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
 import { AccountCircle, ArrowBackIosNewSharp, ArrowCircleDownSharp, ArrowDownward, ArrowDownwardSharp, ArrowDropDown, CloseRounded, ContentCut, KeyboardArrowDown, Logout, MenuBookOutlined, MenuOutlined, MenuRounded, MenuSharp, MiscellaneousServicesOutlined, PersonAdd, VisibilityOff } from '@mui/icons-material';
 import { FiHome, FiLogOut, FiUser, FiUsers } from 'react-icons/fi';
-import { HiOutlineUserGroup, HiUser, HiUsers } from 'react-icons/hi2';
+import { HiOutlineArchiveBox, HiOutlineUserGroup, HiUser, HiUsers } from 'react-icons/hi2';
 import { GrUserAdd } from 'react-icons/gr';
 import UseLogout from '../../hooks/useLogout';
 import ROLES_LIST from '../ROLES_LIST';
@@ -91,7 +91,7 @@ const Layout = () => {
                 </IconButton>
 
                 <Box
-                    mr={3}
+                    mr={1}
                     alignItems="center"
                     sx={{
                         display: {
@@ -113,9 +113,9 @@ const Layout = () => {
                             />
                         </IconButton>
                     }
-                    <Box>
-                        <Typography variant='body2' mb={-1} fontWeight={600}>{fullname}</Typography>
-                        <Typography variant='caption' fontSize={'x-small'} color={'grey'}>{email}</Typography>
+                    <Box display={'flex'} flexDirection={'column'} alignItems={'flex-start'} justifyContent={'center'}>
+                        <Typography component={'span'} variant='body2' fontWeight={600} pb={-1}>{fullname}</Typography>
+                        <Typography component={'span'} variant='caption' fontSize={'x-small'} color={'grey'}>{email}</Typography>
                     </Box>
                 </Box>
             </div>
@@ -206,11 +206,10 @@ const Layout = () => {
                             <Typography component={'span'} className={'active'}>Students</Typography>
                         </NavLink>
                     }
-
-                    {/* <NavLink to="/" className={'open mobile'} onClick={}>
-                        <Logout size={26} />
-                        <Typography component={'span'} className={'active'}>Logout</Typography>
-                    </NavLink> */}
+                    <NavLink to="archive" className={'open mobile'}>
+                        <HiOutlineArchiveBox size={26} />
+                        <Typography component={'span'} className={'active'}>Archive</Typography>
+                    </NavLink>
                 </nav>
 
                 <MenuItem sx={{

@@ -269,9 +269,9 @@ const LoginComponenet = () => {
                 >
                     <Box display='flex' alignItems='center' gap={1}>
                         <img src={Logo} />
-                        <Typography variant='h4' color='primary.main'>PPP<span style={{ color: '#f75fff' }}>edu</span></Typography>
+                        <Typography component={'span'} variant='h4' color='primary.main'>PPP<span style={{ color: '#f75fff' }}>edu</span></Typography>
                     </Box>
-                    <Typography variant='h5' mt={2} fontWeight={500} color="#424242">Get Started Now</Typography>
+                    <Typography component={'span'} variant='h5' mt={2} fontWeight={500} color="#424242">Get Started Now</Typography>
                     <Typography
                         variant='caption'
                         mb={3}
@@ -367,10 +367,10 @@ const LoginComponenet = () => {
 
                     }}
                 >
-                    <Typography variant='h4' sx={{ fontSize: { xs: 26, sm: 28, md: 30 } }}>
+                    <Typography component={'span'} variant='h4' sx={{ fontSize: { xs: 26, sm: 28, md: 30 } }}>
                         Forgot Password
                     </Typography>
-                    <Typography variant='body1' mb={2} sx={{ fontSize: { xs: 12, sm: 14 } }}>
+                    <Typography component={'span'} variant='body1' mb={2} sx={{ fontSize: { xs: 12, sm: 14 } }}>
                         You will receive link for reseting your password.
                     </Typography>
                     <form onSubmit={fgpSubmit}>

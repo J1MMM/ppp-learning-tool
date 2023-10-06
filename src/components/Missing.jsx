@@ -14,7 +14,7 @@ const Missing = () => {
             flexDirection="column"
         >
             <img src={img404} alt="" style={{ maxWidth: '40rem' }} />
-            <Typography variant='h3' color="#3F3D56" mt={3}>Page not Found</Typography>
+            <Typography component={'span'} variant='h3' color="#3F3D56" mt={3}>Page not Found</Typography>
 
             <Button variant='contained' sx={{ mt: 3 }} onClick={() => navigate('/')}>Go Home</Button>
         </Box>

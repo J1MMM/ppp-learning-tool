@@ -243,10 +243,10 @@ const Lessons = () => {
             >
                 <Box sx={{ mb: { xs: 1, sm: 1, md: 0 } }} >
                     <Box display='flex' alignItems='center' gap={1} mb={-.5}>
-                        <Typography variant='h5' >Lessons Management</Typography>
+                        <Typography component={'span'} variant='h5' >Lessons Management</Typography>
                         <Chip label={`${lessons.length == 0 ? 'Empty' : lessons.length > 1 ? `${lessons.length} Lessons` : `${lessons.length} Lesson`}`} sx={{ fontFamily: 'Poppins, sans-serif', color: 'primary.main' }} size='small' />
                     </Box>
-                    <Typography variant='caption' color='InactiveCaptionText' >Manage Your Lessons Efficiently.</Typography>
+                    <Typography component={'span'} variant='caption' color='InactiveCaptionText' >Manage Your Lessons Efficiently.</Typography>
                 </Box>
 
                 <Box display='flex' alignItems='center' gap={2} sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
@@ -256,7 +256,7 @@ const Lessons = () => {
                         onClick={(e) => setAnchorEl(e.currentTarget)}
                     >
                         <FilterList />
-                        <Typography pr={1} ml={1} variant='caption'>
+                        <Typography component={'span'} pr={1} ml={1} variant='caption'>
                             Filters
                         </Typography>
                     </Button>
@@ -267,7 +267,7 @@ const Lessons = () => {
                         onClick={() => setAddLessonOpen(true)}
                     >
                         <Add sx={{ color: '#FFF' }} />
-                        <Typography pr={1} variant='caption' color="#FFF">
+                        <Typography component={'span'} pr={1} variant='caption' color="#FFF">
                             Add Lesson
                         </Typography>
                     </Button>
@@ -352,7 +352,7 @@ const Lessons = () => {
                             width: '100%',
                             maxWidth: '25rem'
                         }} />
-                        <Typography variant='h4' textAlign="center" color='#2F2E41'>No Lessons Found</Typography>
+                        <Typography component={'span'} variant='h4' textAlign="center" color='#2F2E41'>No Lessons Found</Typography>
                     </Box>
                 </Grow>
             }

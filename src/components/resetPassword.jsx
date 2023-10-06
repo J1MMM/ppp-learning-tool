@@ -24,6 +24,10 @@ const ResetPassword = () => {
         setErrMsg("")
     }, [pwd1, pwd2])
 
+    useEffect(() => {
+        document.title = "PPPedu | Reset Password"
+    }, [])
+
     const handleResetPwd = async (e) => {
         e.preventDefault()
         setFormDisabled(true)
@@ -75,7 +79,7 @@ const ResetPassword = () => {
                 MozBoxShadow: '10px 10px 25px -9px rgba(0,0,0,0.36)',
             }}>
                 <form style={{ display: 'flex', flexDirection: 'column', gap: '24px' }} onSubmit={handleResetPwd}>
-                    <Typography variant='h5'>Change Password</Typography>
+                    <Typography component={'span'} variant='h5'>Change Password</Typography>
 
                     <FormControl fullWidth variant="outlined" >
                         <InputLabel htmlFor="password">New Password</InputLabel>

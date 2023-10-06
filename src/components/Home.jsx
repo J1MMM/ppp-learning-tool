@@ -23,6 +23,7 @@ import { BiBrain, BiPencil, BiSolidPencil } from "react-icons/bi";
 import { GoNumber } from "react-icons/go";
 import { MdOutlineDraw } from "react-icons/md";
 import Users from './Users'
+import { VscBook } from 'react-icons/vsc';
 
 const Home = () => {
     const { students, users, setStudents, setUsers } = useData();
@@ -33,9 +34,9 @@ const Home = () => {
     const [noServerRes, setNoServerRes] = useState(false)
     const [studentsEmpty, setStudentsEmpty] = useState(false)
 
-    const totalDyslexia = students.filter(student => student.learning_disabilities.includes('dyslexia')).length
-    const totalDysgraphia = students.filter(student => student.learning_disabilities.includes('dysgraphia')).length
-    const totalDyscalculia = students.filter(student => student.learning_disabilities.includes('dyscalculia')).length
+    const totalDyslexia = students.filter(student => student.archive == false && student.learning_disabilities.includes('dyslexia')).length
+    const totalDysgraphia = students.filter(student => student.archive == false && student.learning_disabilities.includes('dysgraphia')).length
+    const totalDyscalculia = students.filter(student => student.archive == false && student.learning_disabilities.includes('dyscalculia')).length
 
     const isAdmin = Boolean(auth?.roles?.find(role => role === ROLES_LIST.Admin))
     if (isAdmin) {
@@ -55,7 +56,7 @@ const Home = () => {
                 });
 
                 if (isMounted) {
-                    const sortedData = [...res1.data].sort((a, b) => {
+                    const sortedData = [...res1.data.filter(student => student.archive == false)].sort((a, b) => {
                         return a['lastname'].localeCompare(b['lastname']);
                     });
 
@@ -63,7 +64,7 @@ const Home = () => {
                     setNoServerRes(false)
                     setStudentsEmpty(false)
 
-                    if (res1.data.length == 0) {
+                    if (res1.data.filter(student => student.archive == false).length == 0) {
                         setStudentsEmpty(true)
                     }
                 }
@@ -88,13 +89,13 @@ const Home = () => {
             "title": "Total Students",
             "data": students.length,
             "icon": <HiOutlineUserGroup color={"#FFF"} size={20} />,
-            "subText": isAdmin ? "total count of registered students" : "students registered inside your class"
+            "subText": "students registered inside your class"
 
         },
         {
             "title": "Dyslexia",
             "data": totalDyslexia,
-            "icon": <BiBrain color={"#2DA544"} size={20} />,
+            "icon": <VscBook color={"#2DA544"} size={20} />,
             "subText": "total number of students with dyslexia"
         },
         {
@@ -125,30 +126,12 @@ const Home = () => {
                 sx={{
                     gridTemplateColumns: {
                         xs: "1fr",
-                        sm: "1fr",
-                        md: "1fr 1fr"
+                        sm: "1fr 1fr",
+                        md: "1fr 1fr 1fr 1fr"
                     }
                 }}
             >
-                <Box
-                    className="card-container"
-                    display="grid"
-                    gap={2}
-                    sx={{
-                        gridTemplateColumns: {
-                            xs: " 1fr",
-                            sm: " 1fr 1fr",
-                            md: "1fr 1fr"
-                        }
-                    }}
-                >
-                    {cardEl}
-                </Box>
-                <Slide direction='left' in={true} timeout={{ enter: 300 }}>
-                    <Paper elevation={2} sx={{ bgcolor: "#FFF", width: "100%", borderRadius: 2, overflow: 'hidden', minHeight: '395px' }}>
-                        <Calendar value={date} />
-                    </Paper>
-                </Slide>
+                {cardEl}
             </Box>
 
             <StudentsLeaderborad students={students} studentsEmpty={studentsEmpty} />

@@ -418,7 +418,7 @@ const UpdateStudentDialog = ({
                         </>
                         :
                         <>
-                            <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography ml={1}>Save Changes</Typography></Button>
+                            <Button type='submit' disabled={disabled} sx={{ mr: 1, mb: 1 }}>{disabled && <CircularProgress size={16} color='inherit' />} <Typography component={'span'} ml={1}>Save Changes</Typography></Button>
                             <Button disabled={disabled} onClick={() => { setFormReadOnly(true) }} color='inherit' sx={{ mb: 1 }}><Typography>Cancel</Typography></Button>
                         </>
                     }

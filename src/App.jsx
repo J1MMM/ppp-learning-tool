@@ -15,6 +15,7 @@ import SwiperComp from './components/SwiperComp'
 import { useEffect } from 'react'
 import ResetPassword from './components/resetPassword'
 import VerifyResetToken from './components/VerifyResetToken'
+import Archive from './components/Archive'
 
 function App() {
   const location = useLocation()
@@ -34,7 +35,9 @@ function App() {
       case '/login':
         return 'PPPedu | Login';
       case '/lessons':
-        return 'Dashboard | Lessons management';
+        return 'Dashboard | Lessons Management';
+      case '/archive':
+        return 'Dashboard |  Archived Management';
       case '/reset-password/:token':
         return 'Reset Password';
       case '/unauthorized':
@@ -61,6 +64,7 @@ function App() {
           {/* admin and teaches allowed  */}
           <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Teacher, ROLES_LIST.Admin]} />}>
             <Route path='/' element={<Home />} />
+            <Route path='archive' element={<Archive />} />
           </Route>
           {/* only teachers are allowed on this route  */}
           <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Teacher]} />}>

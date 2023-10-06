@@ -56,10 +56,10 @@ const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddU
                     >
                         <Box sx={{ mb: { xs: 2, sm: 0 } }}>
                             <Box display='flex' alignItems='center' gap={1} mb={-.5}>
-                                <Typography variant='h5' >Users Management</Typography>
+                                <Typography component={'span'} variant='h5' >Users Management</Typography>
                                 <Chip label={`${users?.length} ${users.length <= 1 ? 'User' : 'Users'}`} sx={{ fontFamily: 'Poppins, sans-serif', color: 'primary.main' }} size='small' />
                             </Box>
-                            <Typography variant='caption' color='InactiveCaptionText' >Overview of users and their roles for administrative purposes.</Typography>
+                            <Typography component={'span'} variant='caption' color='InactiveCaptionText' >Overview of users and their roles for administrative purposes.</Typography>
                         </Box>
 
                         <Button
@@ -68,7 +68,7 @@ const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddU
                             onClick={() => setAddUserModal(true)} sx={{ mb: 2 }}
                         >
                             <Add />
-                            <Typography pr={1} variant='button'>
+                            <Typography component={'span'} pr={1} variant='button'>
                                 create account
                             </Typography>
                         </Button>
@@ -84,7 +84,7 @@ const UsersTable = ({ users, setDeleteModal, setUpateUserModal, getUser, setAddU
                                             <IconButton size='small' sx={{ color: 'rgb(225, 225, 225)' }} onClick={() => setSelectedRows([])}>
                                                 <Close />
                                             </IconButton>
-                                            <Typography variant='body1' color='#FFF' sx={{ fontSize: { xs: 'x-small', sm: 'x-small', md: 'small' } }} ml={-2}>{selectedRows.length} selected</Typography>
+                                            <Typography component={'span'} variant='body1' color='#FFF' sx={{ fontSize: { xs: 'x-small', sm: 'x-small', md: 'small' } }} ml={-2}>{selectedRows.length} selected</Typography>
 
                                             <Box width='1px' height='32px' bgcolor='rgba(225, 225, 225, .3)' display='block' />
 

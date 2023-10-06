@@ -60,18 +60,19 @@ const Students = () => {
                     signal: controller.signal
                 });
 
-                if (response.data?.length == 0) {
+                if (response.data.filter(student => student.archive == false).length == 0) {
                     setStudentsEmpty(true)
                 }
 
-                isMounted && setStudents(response.data)
+                isMounted && setStudents(response.data.filter(student => student.archive == false))
 
             } catch (err) {
                 setNoServerRes(true)
                 console.error(err);
             }
         }
-        if (students.length == 0) getStudents();
+
+        getStudents();
 
         return () => {
             isMounted = false;
@@ -80,35 +81,32 @@ const Students = () => {
     }, [])
 
     useEffect(() => {
-        if (students.length > 0) {
+        if (students.filter(student => student.archive == false).length > 0) {
             setStudentsEmpty(false)
         }
     }, [students])
 
     const handleDeleteStudent = async () => {
         try {
-            const response = await axiosPrivate.delete('/students', {
-                data: { "idsToDelete": selectedRows }
-            })
+            const response = await axiosPrivate.patch('/students', { "idsToDelete": selectedRows, "toAchive": true })
 
             // setStudents(prev => prev.filter(user => !selectedRows.includes(user._id)))
-            setStudents(response.data)
-            setResMsg('Student deleted successfully')
+            setStudents(response.data.filter(student => student.archive == false))
+            setResMsg('Student archived successfully')
             setSeverity("success")
             setSnack(true)
-            if (response.data.length == 0) {
+            if (response.data.filter(student => student.archive == false).length == 0) {
                 setStudentsEmpty(true)
             }
 
         } catch (error) {
-            console.error(error.message);
-            setResMsg('Failed to delete')
+            console.error(error.response.data.message);
+            setResMsg('Failed to achive')
             setSeverity("error")
             setSnack(true)
         }
 
         setSelectedRows([])
-
     }
 
     const getStudent = async (id) => {
@@ -260,8 +258,8 @@ const Students = () => {
             />
 
             <ConfirmationDialog
-                title={`Delete Student${selectedRows.length > 1 ? 's' : ''}`}
-                content="You may be deleting students data. After you delete this, it can't be recovered."
+                title={`Archive Student${selectedRows.length > 1 ? 's' : ''}`}
+                content={`Are you sure you want to archive this student${selectedRows.length > 1 ? 's' : ''} data?`}
                 open={deleteModal}
                 setOpen={setDeleteModal}
                 confirm={handleDeleteStudent}

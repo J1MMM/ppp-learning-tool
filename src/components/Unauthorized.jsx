@@ -22,7 +22,7 @@ const Unauthorized = () => {
                 flexDirection='column'
             >
                 <img src={unauthorizedImg} style={{ maxWidth: '20rem' }} />
-                <Typography variant='h4' color="rgb(63,61,86)" mt={3}>Unauthorized User</Typography>
+                <Typography component={'span'} variant='h4' color="rgb(63,61,86)" mt={3}>Unauthorized User</Typography>
             </Box>
         </Grow>
     );

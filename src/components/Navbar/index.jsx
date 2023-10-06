@@ -3,13 +3,15 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import ROLES_LIST from '../ROLES_LIST'
 import dashboardLogo from '../../assets/images/ppp-logo.png'
-import { IoHomeOutline, IoPersonOutline, IoFolderOpenOutline, IoLogOutOutline } from 'react-icons/io5'
-import { HiOutlineUserGroup } from 'react-icons/hi2'
-import { FiUser, FiHome, FiUsers, FiLogOut } from 'react-icons/fi'
+import { IoHomeOutline, IoPersonOutline, IoFolderOpenOutline, IoLogOutOutline, IoArchiveOutline } from 'react-icons/io5'
+import { HiArchiveBox, HiOutlineArchiveBox, HiOutlineUserGroup } from 'react-icons/hi2'
+import { FiUser, FiHome, FiUsers, FiLogOut, FiArchive } from 'react-icons/fi'
 import { GrGroup } from 'react-icons/gr'
 import './style.scss'
 import UseLogout from '../../hooks/useLogout';
-import { Box, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
+import { BsArchive, BsFillArchiveFill } from 'react-icons/bs';
+import { Archive } from '@mui/icons-material';
 
 const Navbar = ({ setOpenDialog, navOpen }) => {
     const { auth } = useAuth();
@@ -48,7 +50,15 @@ const Navbar = ({ setOpenDialog, navOpen }) => {
                         <Typography component={'span'} className={navOpen ? 'active' : ''}>Students</Typography>
                     </NavLink>
                 }
+
+                <Divider sx={{ ml: 1, width: '100%', mt: 2, mb: 2 }} />
+
+                <NavLink to="archive" className={navOpen ? 'open' : ''}>
+                    <HiOutlineArchiveBox size={26} />
+                    <Typography component={'span'} className={navOpen ? 'active' : ''}>Archived</Typography>
+                </NavLink>
             </nav>
+
 
 
         </div >
