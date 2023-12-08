@@ -12,6 +12,8 @@ import UseLogout from '../../hooks/useLogout';
 import { Box, Divider, Typography } from '@mui/material';
 import { BsArchive, BsFillArchiveFill } from 'react-icons/bs';
 import { Archive } from '@mui/icons-material';
+import { SiGoogleclassroom } from "react-icons/si";
+
 
 const Navbar = ({ setOpenDialog, navOpen }) => {
     const { auth } = useAuth();
@@ -35,7 +37,7 @@ const Navbar = ({ setOpenDialog, navOpen }) => {
                 </NavLink>
 
 
-                {!isAdmin
+                {/* {!isAdmin
                     &&
                     <NavLink to="lessons" className={navOpen ? 'open' : ''}>
                         <IoFolderOpenOutline size={24} />
@@ -49,11 +51,18 @@ const Navbar = ({ setOpenDialog, navOpen }) => {
                         <HiOutlineUserGroup size={26} />
                         <Typography component={'span'} className={navOpen ? 'active' : ''}>Students</Typography>
                     </NavLink>
+                } */}
+                {!isAdmin
+                    &&
+                    <NavLink to="classroom" className={navOpen ? 'open' : ''}>
+                        <SiGoogleclassroom size={26} />
+                        <Typography component={'span'} className={navOpen ? 'active' : ''}>Classroom</Typography>
+                    </NavLink>
                 }
 
                 <Divider sx={{ ml: 1, width: '100%', mt: 2, mb: 2 }} />
 
-                <NavLink to="archive" className={navOpen ? 'open' : ''}>
+                <NavLink to={isAdmin ? "user-archive" : "archive"} className={navOpen ? 'open' : ''}>
                     <HiOutlineArchiveBox size={26} />
                     <Typography component={'span'} className={navOpen ? 'active' : ''}>Archived</Typography>
                 </NavLink>

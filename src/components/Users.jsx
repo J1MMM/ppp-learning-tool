@@ -50,13 +50,13 @@ const Users = () => {
                 });
                 setNoResponse(false)
 
-                isMounted && setUsers(response.data)
+                isMounted && setUsers(response.data?.filter(user => user.archive == false))
             } catch (err) {
                 setNoResponse(true)
                 console.error(err);
             }
         }
-        if (users.length == 0) getUsers()
+        getUsers()
 
         return () => {
             isMounted = false;
@@ -66,21 +66,21 @@ const Users = () => {
 
     const handleDeleteUser = async () => {
         try {
-            const response = await axiosPrivate.delete('users', {
-                data: { "idsToDelete": selectedRows }
-            })
+            const response = await axiosPrivate.patch('users',
+                { "idsToDelete": selectedRows, "toAchive": true }
+            )
 
             setUsers(prev => prev.filter(user => !selectedRows.includes(user._id)))
             // setStudents(prev => prev.filter(user => !selectedRows.includes(user.teacherID)))
             // setLessons(prev => prev.filter(user => !selectedRows.includes(user.teacherID)))
 
-            setResMsg(`${selectedRows.length > 1 ? 'Users have been successfully deleted.' : 'User has been successfully deleted.'}`)
+            setResMsg(`${selectedRows.length > 1 ? 'Users Archived successfully.' : 'User Archived successfully.'}`)
             setSeverity("success")
             setSnack(true)
 
         } catch (error) {
             console.error(error.message);
-            setResMsg('Failed to delete')
+            setResMsg('Failed to Archived')
             setSeverity("error")
             setSnack(true)
         }
@@ -189,8 +189,8 @@ const Users = () => {
             />
 
             <ConfirmationDialog
-                title={`Delete User${selectedRows.length > 1 ? 's' : ''}`}
-                content="You may be deleting user data. After you delete this, it can't be recovered."
+                title={`Archive User${selectedRows.length > 1 ? 's' : ''}`}
+                content={`Are you sure you want to archive this User${selectedRows.length > 1 ? 's' : ''} data?`}
                 open={deleteModal}
                 setOpen={setDeleteModal}
                 confirm={handleDeleteUser}

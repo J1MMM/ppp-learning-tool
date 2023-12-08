@@ -9,9 +9,14 @@ import { Box } from '@mui/material';
 import img1 from '../assets/images/login-slide1.svg'
 import img2 from '../assets/images/login-slide2.svg'
 import img3 from '../assets/images/login-slide3.svg'
+import { useParams } from 'react-router-dom';
 
 
 const SwiperComp = () => {
+    const { id } = useParams();
+
+    console.log(id);
+
     const slides = [
         {
             img: img1,

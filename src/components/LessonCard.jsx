@@ -4,21 +4,22 @@ import React, { useEffect, useState } from 'react';
 import useAxios from '../hooks/useAxios';
 import { BsFilePdf, BsFiletypeDoc, BsFiletypeDocx, BsFiletypeJpg, BsFiletypePng, BsFiletypePpt, BsFiletypePptx, BsPaperclip } from "react-icons/bs";
 
-import banner1 from '../assets/images/banner1.jpg'
-import banner2 from '../assets/images/banner2.svg'
-import banner3 from '../assets/images/banner3.jpg'
-import banner4 from '../assets/images/banner4.jpg'
-import banner5 from '../assets/images/banner5.jpg'
-import banner6 from '../assets/images/banner6.jpg'
-import banner7 from '../assets/images/banner7.jpg'
-import banner8 from '../assets/images/banner1.webp'
-import banner9 from '../assets/images/banner9.jpg'
-import banner10 from '../assets/images/banner10.jpg'
+import banner1 from '../assets/images/lesson1.jpg'
+import banner2 from '../assets/images/lesson2.jpg'
+import banner3 from '../assets/images/lesson3.jpg'
+import banner4 from '../assets/images/lesson4.webp'
+import banner5 from '../assets/images/lesson5.jpg'
+import banner6 from '../assets/images/lesson6.webp'
+import banner7 from '../assets/images/lesson7.png'
+import banner8 from '../assets/images/lesson8.jpg'
+import banner9 from '../assets/images/lesson9.jpg'
+import banner10 from '../assets/images/lesson10.jpg'
 import UserAvatar from './UserAvatar';
 import { BiBrain, BiPencil, BiSolidPencil } from "react-icons/bi";
 import { VscBook } from 'react-icons/vsc';
 import { MdOutlineDraw } from 'react-icons/md';
 import { GoNumber } from 'react-icons/go';
+import useData from '../hooks/useData';
 
 
 const LessonCard =
@@ -33,7 +34,9 @@ const LessonCard =
         setDeleteID,
         handleViewFile,
         show,
+        mode
     }) => {
+        const { archiveMode } = useData()
         const axios = useAxios()
         const [cardElevation, setCardElevation] = useState(3)
         const [anchorEl, setAnchorEl] = useState(null);
@@ -118,6 +121,7 @@ const LessonCard =
                         <Typography component={'span'} variant='caption' zIndex={5} color="#FFF">{lesson.instructor}</Typography>
 
                         <IconButton
+                            disabled={archiveMode}
                             color='common'
                             size='large'
                             sx={{ position: 'absolute', top: 1, right: 1, zIndex: 5 }}
@@ -201,7 +205,7 @@ const LessonCard =
                         onClose={() => setAnchorEl(null)}
                     >
                         <MenuItem onClick={() => { setEditLessonOpen(true); setLessonToEditID(lesson._id); handleEditLesson(lesson._id) }}>Edit</MenuItem>
-                        <MenuItem onClick={() => { setDeleteModal(true); setDeleteID(lesson._id), setDeleteFilename(lesson.filePath), setAnchorEl(null) }}>Delete</MenuItem>
+                        <MenuItem onClick={() => { setDeleteModal(true); setDeleteID(lesson._id), setDeleteFilename(lesson.filePath), setAnchorEl(null) }}>{mode == 'archive' ? 'Archive' : 'Delete'}</MenuItem>
 
                     </Menu>
                 </Paper>

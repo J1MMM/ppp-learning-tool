@@ -1,7 +1,7 @@
 import { Box, Button, Checkbox, Chip, CircularProgress, Collapse, Fade, Grow, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, Tooltip, Typography, capitalize } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import UserAvatar from './UserAvatar';
-import { Add, ArrowUpward, Close, DeleteOutline, EditOutlined, Info, InfoOutlined } from '@mui/icons-material';
+import { Add, ArrowUpward, Close, DeleteOutline, EditOutlined, Info, InfoOutlined, Print, PrintOutlined } from '@mui/icons-material';
 import useAuth from '../hooks/useAuth';
 import emptyTable from '../assets/images/undraw_empty_re_opql.svg'
 import NoServerResponse from './NoServerResponse';
@@ -11,6 +11,8 @@ import { PiGenderFemaleBold, PiGenderMaleBold } from "react-icons/pi";
 import { MdOutlineDraw } from 'react-icons/md';
 import { GoNumber } from 'react-icons/go';
 import { VscBook } from "react-icons/vsc";
+import ReactToPrint, { useReactToPrint } from 'react-to-print';
+import StudentsPrintable from './StudentsPrintable';
 
 const StudentsTable = ({
     students,
@@ -27,10 +29,10 @@ const StudentsTable = ({
     alphabetically
 }) => {
     const { auth } = useAuth();
-    const { users } = useData();
+    const { users, archiveMode } = useData();
     const isAdmin = auth.roles.includes(ROLES_LIST.Admin);
-
     const [mobileView, setMobileView] = useState(false)
+    const [isPrintVisible, setIsPrintVisible] = useState(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -53,9 +55,17 @@ const StudentsTable = ({
         }
     };
 
+    const componentRef = useRef(null);
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
+
     return (
         <Grow in={true}>
-            <TableContainer component={Paper} elevation={3} sx={{ position: 'relative', boxSizing: 'border-box', borderRadius: 3, zIndex: 10 }}>
+            <TableContainer component={Paper} elevation={3} sx={{ position: 'relative', boxSizing: 'border-box', borderRadius: 3, zIndex: 10, filter: archiveMode ? 'grayscale(1)' : '' }}>
+                <Paper sx={{ display: 'none' }}>
+                    <StudentsPrintable ref={componentRef} students={students} />
+                </Paper>
                 <Box
                     bgcolor='#fff'
                     display='flex'
@@ -82,18 +92,33 @@ const StudentsTable = ({
                         </Box>
                         <Typography component={'span'} variant='caption' color='InactiveCaptionText' >Insights and information about different students within the institution.</Typography>
                     </Box>
+                    <Box display={'flex'} gap={2}>
+                        <Button
+                            variant='outlined'
+                            size='small'
+                            onClick={() => {
+                                handlePrint()
+                            }}
+                            sx={{ mb: 2 }}
+                            disabled={students.length == 0 || archiveMode}
+                        >
+                            <PrintOutlined sx={{ color: students.length == 0 ? 'light-grey' : 'primary.main' }} />
+                        </Button>
 
-                    <Button
-                        variant='contained'
-                        size='small'
-                        onClick={() => setAddStudentModal(true)} sx={{ mb: 2 }}
-                    >
-                        <Add sx={{ color: '#FFF' }} />
-                        <Typography component={'span'} pr={1} variant='caption' color="white">
-                            Add Student
-                        </Typography>
-                    </Button>
+                        <Button
+                            variant='contained'
+                            size='small'
+                            onClick={() => setAddStudentModal(true)} sx={{ mb: 2 }}
+                            disabled={archiveMode}
+                        >
+                            <Add sx={{ color: '#FFF' }} />
+                            <Typography component={'span'} pr={1} variant='caption' color="white">
+                                Add Student
+                            </Typography>
+                        </Button>
+                    </Box>
                 </Box>
+
                 <Table sx={{ minWidth: 650, position: 'relative' }} aria-label="simple table" >
                     <TableHead sx={{ bgcolor: '#FAFAFA', boxSizing: 'border-box' }}>
                         <TableRow>
@@ -144,9 +169,9 @@ const StudentsTable = ({
                                     inputProps={{
                                         'aria-label': 'select all',
                                     }}
-                                    disabled={students.length == 0}
+                                    disabled={students.length == 0 || archiveMode}
                                 />
-                                <TableSortLabel active={alphabetically} direction={alphabetically ? 'asc' : 'desc'} onClick={() => setAlphabetically(v => !v)}>Fullname</TableSortLabel>
+                                <TableSortLabel active={alphabetically} direction={alphabetically ? 'asc' : 'desc'} onClick={() => !archiveMode && setAlphabetically(v => !v)}>Fullname</TableSortLabel>
                             </TableCell>
                             <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Email</TableCell>
                             <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Learning Disabilities</TableCell>
@@ -193,10 +218,12 @@ const StudentsTable = ({
                                 <TableRow
                                     key={index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: '#e8fee9' }, bgcolor: selectedRows.includes(student._id) ? '#e8fee9' : '' }}
-                                    onClick={() => handleRowClick(student._id)}
+                                    onClick={() => !archiveMode && handleRowClick(student._id)}
+
                                 >
                                     <TableCell padding='checkbox' sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "12rem", sm: "12rem", md: "18rem" } }}>
                                         <Checkbox
+                                            disabled={archiveMode}
                                             size={mobileView ? 'small' : 'medium'}
                                             color="primary"
                                             inputProps={{
@@ -264,9 +291,21 @@ const StudentsTable = ({
                         >
                             <img src={emptyTable} style={{
                                 width: '100%',
-                                maxWidth: '25rem',
+                                maxWidth: '16rem',
                             }} />
-                            <Typography component={'span'} variant='h4' textAlign="center" color='#2F2E41'>No Students Found</Typography>
+                            <Typography component={'span'} variant='h5' textAlign="center" color='#2F2E41'>Add students to this class</Typography>
+
+                            <Button
+                                disabled={archiveMode}
+                                variant='text'
+                                size='small'
+                                onClick={() => setAddStudentModal(true)}
+                            >
+                                <Add sx={{ color: 'primary.main' }} />
+                                <Typography component={'span'} pr={1} variant='caption' color="primary.main" fontWeight={500}>
+                                    Add Student
+                                </Typography>
+                            </Button>
                         </Box>
                     </Grow>
                 }
@@ -282,6 +321,8 @@ const StudentsTable = ({
                         <CircularProgress />
                     </Box>
                 }
+
+
             </TableContainer>
         </Grow >
     )

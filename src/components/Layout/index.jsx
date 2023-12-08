@@ -15,6 +15,7 @@ import UserAvatar from '../UserAvatar';
 import ConfirmationDialog from '../ConfirmationDialog';
 import { IoFolderOpenOutline } from 'react-icons/io5';
 import Logo from '../../assets/images/logo.png'
+import { SiGoogleclassroom } from 'react-icons/si';
 
 const Layout = () => {
     const { auth } = useAuth()
@@ -191,7 +192,7 @@ const Layout = () => {
                         }
                     </NavLink>
 
-                    {!isAdmin
+                    {/* {!isAdmin
                         &&
                         <NavLink to="lessons" className={'open mobile'}>
                             <IoFolderOpenOutline size={22} />
@@ -205,11 +206,29 @@ const Layout = () => {
                             <HiOutlineUserGroup size={26} />
                             <Typography component={'span'} className={'active'}>Students</Typography>
                         </NavLink>
+                    } */}
+
+                    {!isAdmin
+                        &&
+                        <NavLink to="classroom" className={'open mobile'}>
+                            <SiGoogleclassroom size={26} />
+                            <Typography component={'span'} className={'active'}>Classroom</Typography>
+                        </NavLink>
                     }
-                    <NavLink to="archive" className={'open mobile'}>
-                        <HiOutlineArchiveBox size={26} />
-                        <Typography component={'span'} className={'active'}>Archive</Typography>
-                    </NavLink>
+                    {!isAdmin
+                        &&
+                        <NavLink to="archive" className={'open mobile'}>
+                            <HiOutlineArchiveBox size={26} />
+                            <Typography component={'span'} className={'active'}>Archive</Typography>
+                        </NavLink>
+                    }
+                    {isAdmin
+                        &&
+                        <NavLink to="user-archive" className={'open mobile'}>
+                            <HiOutlineArchiveBox size={26} />
+                            <Typography component={'span'} className={'active'}>Archive</Typography>
+                        </NavLink>
+                    }
                 </nav>
 
                 <MenuItem sx={{

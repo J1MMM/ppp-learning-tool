@@ -14,6 +14,7 @@ import ConfirmationDialog from './ConfirmationDialog';
 import Unauthorized from './Unauthorized';
 import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
 import videoSrc from '../assets/test.mp4'
+import { useParams } from 'react-router-dom';
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -22,7 +23,8 @@ const Transition = forwardRef(function Transition(props, ref) {
 const Lessons = () => {
     const BASE_URL = 'https://capstone-server-kqsi.onrender.com/view/'
     const axiosPrivate = useAxiosPrivate();
-    const { lessons, setLessons } = useData()
+    const { lessons, setLessons, archiveMode } = useData()
+    const { id } = useParams()
 
     const [filteredLessons, setFilteredLessons] = useState([])
 
@@ -61,7 +63,7 @@ const Lessons = () => {
 
         const getLessons = async () => {
             try {
-                const response = await axiosPrivate.get('/upload', {
+                const response = await axiosPrivate.get(`/upload/${id}`, {
                     signal: controller.signal
                 });
                 setNoResponse(false)
@@ -218,7 +220,8 @@ const Lessons = () => {
             sx={{
                 p: 2,
                 borderRadius: 3,
-                minHeight: '50vh'
+                minHeight: '50vh',
+                filter: archiveMode ? 'grayscale(1)' : ''
             }}
         >
             <Box
@@ -262,6 +265,7 @@ const Lessons = () => {
                     </Button>
 
                     <Button
+                        disabled={archiveMode}
                         variant='contained'
                         size='small'
                         onClick={() => setAddLessonOpen(true)}
@@ -334,7 +338,6 @@ const Lessons = () => {
                 content="After you delete this, it can't be recovered. Are you sure to delete this file? "
                 open={deleteModal}
                 setOpen={setDeleteModal}
-
             />
 
             {empty &&
@@ -350,9 +353,21 @@ const Lessons = () => {
                     >
                         <img src={emptyTable} style={{
                             width: '100%',
-                            maxWidth: '25rem'
+                            maxWidth: '15rem'
                         }} />
-                        <Typography component={'span'} variant='h4' textAlign="center" color='#2F2E41'>No Lessons Found</Typography>
+                        <Typography component={'span'} variant='h5' textAlign="center" color='#2F2E41'>Add Lesson to this class</Typography>
+
+                        <Button
+                            disabled={archiveMode}
+                            variant='text'
+                            size='small'
+                            onClick={() => setAddLessonOpen(true)}
+                        >
+                            <Add sx={{ color: 'primary.main' }} />
+                            <Typography component={'span'} pr={1} variant='caption' color="primary.main" fontWeight={500}>
+                                Add Lesson
+                            </Typography>
+                        </Button>
                     </Box>
                 </Grow>
             }

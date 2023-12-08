@@ -9,8 +9,8 @@ const StudentsArchivedDialog = ({ open, onClose, disabilities, infoFname, infoLn
     const { dyslexia, dysgraphia, dyscalculia } = disabilities;
 
     return (
-        <Dialog open={open} onClose={() => onClose(false)} disableAutoFocus>
-            <DialogTitle variant='h5' bgcolor="primary.main" color="#FFF" >Details</DialogTitle>
+        <Dialog open={open} onClose={() => onClose(false)} disableAutoFocus >
+            <DialogTitle variant='h5' bgcolor="grey" color="#FFF" >Details</DialogTitle>
             <Divider />
             <DialogContent>
                 <Box
@@ -91,7 +91,7 @@ const StudentsArchivedDialog = ({ open, onClose, disabilities, infoFname, infoLn
                     </FormControl>
 
                     <FormControl fullWidth margin='dense' disabled>
-                        <InputLabel id="gender">Gender</InputLabel>
+                        <InputLabel id="gender">Sex</InputLabel>
                         <Select
                             labelId="gender"
                             id="gender"

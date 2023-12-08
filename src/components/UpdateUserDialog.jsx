@@ -109,7 +109,7 @@ const UpdateUserDialog = ({
     return (
         <Dialog open={open} onClose={() => { onClose(false); setPwdVisible(false) }} disableAutoFocus>
             <form onSubmit={handleUpdateUser}>
-                <DialogTitle variant='h5' >Edit user </DialogTitle>
+                <DialogTitle variant='h5' bgcolor={"primary.main"} color={"#FFF"} >Edit user </DialogTitle>
                 <Divider />
                 <DialogContent>
                     <Box
@@ -173,7 +173,7 @@ const UpdateUserDialog = ({
                         }}
                     >
                         <FormControl fullWidth margin='dense'>
-                            <InputLabel id="gender">Gender</InputLabel>
+                            <InputLabel id="gender">Sex</InputLabel>
                             <Select
                                 labelId="gender"
                                 id="gender"

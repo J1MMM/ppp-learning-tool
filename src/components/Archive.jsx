@@ -5,10 +5,14 @@ import StudentsTable from './StudentsTable';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import useData from '../hooks/useData';
 import StudentsArchived from './StudentsArchived';
+import Lessons from './Lessons';
+import LessonsArchive from './LessonsArchive';
+import { useParams } from 'react-router-dom';
 
 const Archive = () => {
+    const { id } = useParams()
     const axiosPrivate = useAxiosPrivate()
-    const { tabPage, setTabpage, studentsArchived, setStudentsArchived } = useData();
+    const { archiveMode, studentsArchived, setStudentsArchived } = useData();
 
     const [selectedRows, setSelectedRows] = useState([])
 
@@ -25,7 +29,7 @@ const Archive = () => {
 
         const getStudents = async () => {
             try {
-                const response = await axiosPrivate.get('/students', {
+                const response = await axiosPrivate.get(`/students/${id}`, {
                     signal: controller.signal
                 });
 
@@ -66,32 +70,18 @@ const Archive = () => {
 
     return (
         <Grow in={true}>
-            <Paper elevation={3} sx={{ position: 'relative', boxSizing: 'border-box', borderRadius: 3, zIndex: 10, overflow: 'hidden' }}>
-                <Box borderBottom={1} borderColor={'divider'} bgcolor={'#FFF'} >
-                    <Tabs value={tabPage} onChange={(e, val) => setTabpage(val)} aria-label="tab">
-                        <Tab label="Students" id='tab-1' aria-controls='tab-1' />
-                        <Tab label="Lessons" id='tab-2' aria-controls='tab-2' />
-                    </Tabs>
-                </Box>
-                <Box>
-                    <Box role="tabpanel" hidden={tabPage != 0} aria-labelledby={`table-1`}>
-                        <StudentsArchived
-                            studentsArchived={studentsArchived}
-                            selectedRows={selectedRows}
-                            studentsEmpty={studentsEmpty}
-                            setSelectedRows={setSelectedRows}
-                            setStudentsArchived={setStudentsArchived}
-                            setStudentsEmpty={setStudentsEmpty}
-                            alphabetically={alphabetically}
-                            setAlphabetically={setAlphabetically}
-                        />
-                    </Box>
-                    <Box height={'50vh'} role="tabpanel" hidden={tabPage != 1} aria-labelledby={`table-2`}>
-
-                    </Box>
-                </Box>
+            <Paper elevation={3} sx={{ position: 'relative', boxSizing: 'border-box', borderRadius: 3, zIndex: 10, overflow: 'hidden', filter: archiveMode ? 'grayscale(1)' : '' }}>
+                <StudentsArchived
+                    studentsArchived={studentsArchived}
+                    selectedRows={selectedRows}
+                    studentsEmpty={studentsEmpty}
+                    setSelectedRows={setSelectedRows}
+                    setStudentsArchived={setStudentsArchived}
+                    setStudentsEmpty={setStudentsEmpty}
+                    alphabetically={alphabetically}
+                    setAlphabetically={setAlphabetically}
+                />
             </Paper>
-
         </Grow >
 
     );

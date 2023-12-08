@@ -45,20 +45,10 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                             <Typography component={'span'} variant='h5' >Students Leaderboard</Typography>
                             <Chip label={`${students.length == 0 ? 'Empty' : students.length > 1 ? `${students.length} Students` : `${students.length} Student`}`} sx={{ fontFamily: 'Poppins, sans-serif', color: 'primary.main' }} size='small' />
                         </Box>
-                        <Typography component={'span'} variant='caption' color='InactiveCaptionText' sx={{ fontSize: { xs: 9, sm: 12 } }} >Overview of Student Performance and Achievements.</Typography>
+                        <Typography component={'span'} variant='caption' color='InactiveCaptionText' sx={{ fontSize: { xs: 9, sm: 12 } }} >An overview of the ratings for all students across various sections in your class.</Typography>
                     </Box>
 
-                    <Button
-                        variant='contained'
-                        size='small'
-                        sx={{ mb: 2 }}
-                        onClick={() => navigate('/students')}
-                    >
-                        <HiOutlineUserGroup color={"#FFF"} size={20} />
-                        <Typography component={'span'} pl={1} variant='button'>
-                            Students
-                        </Typography>
-                    </Button>
+
                 </Box>
                 <Table sx={{ minWidth: 650, position: 'relative' }} aria-label="simple table" >
                     <TableHead sx={{ bgcolor: '#FCFCFD' }}>
@@ -130,7 +120,7 @@ const StudentsLeaderborad = ({ students, studentsEmpty }) => {
                                 width: '100%',
                                 maxWidth: '18rem'
                             }} />
-                            <Typography component={'span'} variant='h4' textAlign='center' color='#2F2E41'>No Students Found</Typography>
+                            <Typography component={'span'} variant='h5' textAlign='center' color='#2F2E41'>Add students to get started</Typography>
                         </Box>
                     </Grow>
                 }

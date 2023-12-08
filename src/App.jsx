@@ -1,6 +1,6 @@
 import './App.scss'
 import Layout from './components/Layout'
-import { Route, Routes, ScrollRestoration, useLocation } from 'react-router-dom'
+import { Navigate, Route, Routes, ScrollRestoration, useLocation, } from 'react-router-dom'
 import Home from './components/Home'
 import Missing from './components/Missing'
 import RequireAuth from './components/RequireAuth'
@@ -16,6 +16,11 @@ import { useEffect } from 'react'
 import ResetPassword from './components/resetPassword'
 import VerifyResetToken from './components/VerifyResetToken'
 import Archive from './components/Archive'
+import UserArchive from './components/UserArchive'
+import Classroom from './components/Classroom'
+import ClassroomArchived from './components/ClassroomArchived'
+import Section from './components/Section'
+import SectionArchived from './components/SectionArchived'
 
 function App() {
   const location = useLocation()
@@ -23,6 +28,8 @@ function App() {
   useEffect(() => {
     document.title = getPageTitle(location.pathname);
   }, [location.pathname]);
+
+  console.log(location.pathname);
 
   const getPageTitle = (pathname) => {
     switch (pathname) {
@@ -38,6 +45,10 @@ function App() {
         return 'Dashboard | Lessons Management';
       case '/archive':
         return 'Dashboard |  Archived Management';
+      case '/classroom':
+        return 'Dashboard |  Classroom Management';
+      case 'classroom/:id/students':
+        return 'Classroom |  Students Management';
       case '/reset-password/:token':
         return 'Reset Password';
       case '/unauthorized':
@@ -51,7 +62,6 @@ function App() {
     <Routes>
       <Route element={<PersistLogin />}>
         {/* public routes  */}
-        <Route path='/swiper' element={<SwiperComp />} />
         <Route path='/login' element={<LoginComponenet />} />
         <Route path='/unauthorized' element={<Unauthorized />} />
 
@@ -64,18 +74,32 @@ function App() {
           {/* admin and teaches allowed  */}
           <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Teacher, ROLES_LIST.Admin]} />}>
             <Route path='/' element={<Home />} />
-            <Route path='archive' element={<Archive />} />
           </Route>
+          {/* only Admin allowed  */}
+          <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Admin]} />}>
+            <Route path='user-archive' element={<UserArchive />} />
+          </Route>
+
           {/* only teachers are allowed on this route  */}
           <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Teacher]} />}>
-            <Route path='students' element={<Students />} />
-            <Route path='lessons' element={<Lessons />} />
-          </Route>
-          {/* only admin are allowed  */}
-          {/* <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Admin]} />}>
-            <Route path='users' element={<Users />} />
-          </Route> */}
+            <Route path='classroom' element={<Classroom />} />
+            <Route path='archive' element={<ClassroomArchived />} />
 
+            <Route path='classroom/:id' element={<Navigate to={'students'} replace />} />
+            <Route path='archive/:id' element={<Navigate to={'students'} replace />} />
+
+            <Route path='classroom/:id' element={<Section />}>
+              <Route path='students' element={<Students />} />
+              <Route path='lessons' element={<Lessons />} />
+              <Route path='archive' element={<Archive />} />
+            </Route>
+
+            <Route path='archive/:id' element={<SectionArchived />} >
+              <Route path='students' element={<Students />} />
+              <Route path='lessons' element={<Lessons />} />
+              <Route path='archive' element={<Archive />} />
+            </Route>
+          </Route>
           {/* catch all  */}
         </Route>
         <Route path='*' element={<Missing />} />

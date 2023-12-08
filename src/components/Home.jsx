@@ -26,17 +26,16 @@ import Users from './Users'
 import { VscBook } from 'react-icons/vsc';
 
 const Home = () => {
-    const { students, users, setStudents, setUsers } = useData();
+    const { allStudents, setAllStudents } = useData();
     const { auth } = useAuth()
     const axiosPrivate = useAxiosPrivate()
 
-    const [date, setDate] = useState(new Date())
     const [noServerRes, setNoServerRes] = useState(false)
     const [studentsEmpty, setStudentsEmpty] = useState(false)
 
-    const totalDyslexia = students.filter(student => student.archive == false && student.learning_disabilities.includes('dyslexia')).length
-    const totalDysgraphia = students.filter(student => student.archive == false && student.learning_disabilities.includes('dysgraphia')).length
-    const totalDyscalculia = students.filter(student => student.archive == false && student.learning_disabilities.includes('dyscalculia')).length
+    const totalDyslexia = allStudents.filter(student => student.archive == false && student.learning_disabilities.includes('dyslexia')).length
+    const totalDysgraphia = allStudents.filter(student => student.archive == false && student.learning_disabilities.includes('dysgraphia')).length
+    const totalDyscalculia = allStudents.filter(student => student.archive == false && student.learning_disabilities.includes('dyscalculia')).length
 
     const isAdmin = Boolean(auth?.roles?.find(role => role === ROLES_LIST.Admin))
     if (isAdmin) {
@@ -51,20 +50,20 @@ const Home = () => {
 
         const getData = async () => {
             try {
-                const res1 = await axiosPrivate.get('/students', {
+                const response = await axiosPrivate.get('/students', {
                     signal: controller.signal
                 });
 
                 if (isMounted) {
-                    const sortedData = [...res1.data.filter(student => student.archive == false)].sort((a, b) => {
-                        return a['lastname'].localeCompare(b['lastname']);
+                    const sortedData = [...response.data.filter(student => student.archive == false)].sort((a, b) => {
+                        return b['stars'] - a['stars'];
                     });
 
-                    setStudents(sortedData);
+                    setAllStudents(sortedData);
                     setNoServerRes(false)
                     setStudentsEmpty(false)
 
-                    if (res1.data.filter(student => student.archive == false).length == 0) {
+                    if (response.data.filter(student => student.archive == false).length == 0) {
                         setStudentsEmpty(true)
                     }
                 }
@@ -87,7 +86,7 @@ const Home = () => {
     const cardData = [
         {
             "title": "Total Students",
-            "data": students.length,
+            "data": allStudents.length,
             "icon": <HiOutlineUserGroup color={"#FFF"} size={20} />,
             "subText": "students registered inside your class"
 
@@ -134,7 +133,7 @@ const Home = () => {
                 {cardEl}
             </Box>
 
-            <StudentsLeaderborad students={students} studentsEmpty={studentsEmpty} />
+            <StudentsLeaderborad students={allStudents} studentsEmpty={studentsEmpty} />
         </Box >
     );
 }

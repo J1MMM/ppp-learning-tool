@@ -7,8 +7,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { differenceInYears } from 'date-fns';
+import { useParams } from 'react-router-dom';
 
 const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, setSeverity, setStudentsEmpty }) => {
+    const { id } = useParams()
     const axiosPrivate = useAxiosPrivate();
     const [pwdVisible, setPwdVisible] = useState(false)
 
@@ -83,10 +85,11 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                 "password": pwd.trimStart().trimEnd(),
                 "gender": gender,
                 "address": address.trimStart().trimEnd(),
-                "contactNo": contactNo.trimStart().trimEnd(),
+                "contactNo": contactNo,
                 "guardian": guardian.trimStart().trimEnd(),
                 "birthday": dateOfBirth,
-                "learning_disabilities": selectedDisabilities
+                "learning_disabilities": selectedDisabilities,
+                "classID": id
             })
 
             setStudents(prev => [...prev, response.data.result]);
@@ -100,6 +103,15 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                 setResMsg('No Server Response')
             } else if (error?.response?.status == 409) {
                 setResMsg('Email address is already use')
+                setDisabilities({
+                    dyslexia: false,
+                    dysgraphia: false,
+                    dyscalculia: false,
+                })
+                setSeverity("error")
+                setSnack(true);
+                setDisabled(false)
+                return
             } else {
                 setResMsg('Request Failed')
             }
@@ -228,7 +240,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                         </FormControl>
 
                         <FormControl fullWidth margin='dense'>
-                            <InputLabel id="gender">Gender</InputLabel>
+                            <InputLabel id="gender">Sex</InputLabel>
                             <Select
                                 labelId="gender"
                                 id="gender"
@@ -249,7 +261,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                             margin="dense"
                             id="contactNo"
                             label="Phone number"
-                            type='text'
+                            type='number'
                             variant="outlined"
                             fullWidth
                             value={contactNo}

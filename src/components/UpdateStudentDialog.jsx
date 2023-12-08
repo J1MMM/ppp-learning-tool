@@ -6,6 +6,8 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import dayjs from 'dayjs';
 import { differenceInYears, set } from 'date-fns';
+import { useParams } from 'react-router-dom';
+import useData from '../hooks/useData';
 
 const UpdateStudentDialog = ({
     open,
@@ -43,6 +45,8 @@ const UpdateStudentDialog = ({
     setAlphabetically
 
 }) => {
+    const { archiveMode } = useData()
+    const { id } = useParams()
     const [pwdVisible, setPwdVisible] = useState(false)
     const [disabled, setDisabled] = useState(false)
     const [formReadOnly, setFormReadOnly] = useState(true)
@@ -111,8 +115,8 @@ const UpdateStudentDialog = ({
                 "guardian": updateGuardian.trimStart().trimEnd(),
                 "address": updateAddress.trimStart().trimEnd(),
                 "contactNo": updateContactNo,
-                "birthday": updateDateOfBirth
-
+                "birthday": updateDateOfBirth,
+                "classID": id
             })
 
             setStudents(prev => {
@@ -170,7 +174,7 @@ const UpdateStudentDialog = ({
     }
     // console.log(typeof updateDateOfBirth);
     return (
-        <Dialog open={open} onClose={() => { onClose(false); setPwdVisible(false); setFormReadOnly(true) }} disableAutoFocus>
+        <Dialog open={open} onClose={() => { onClose(false); setPwdVisible(false); setFormReadOnly(true) }} disableAutoFocus sx={{ filter: archiveMode ? 'grayscale(1)' : '' }}>
             <form onSubmit={handleUpdateStudents}>
                 <DialogTitle variant='h5' bgcolor="primary.main" color="#FFF" >Details</DialogTitle>
                 <Divider />
@@ -259,7 +263,7 @@ const UpdateStudentDialog = ({
                         </FormControl>
 
                         <FormControl fullWidth margin='dense' >
-                            <InputLabel id="gender">Gender</InputLabel>
+                            <InputLabel id="gender">Sex</InputLabel>
                             <Select
                                 labelId="gender"
                                 id="gender"
@@ -413,7 +417,7 @@ const UpdateStudentDialog = ({
                     {formReadOnly ?
                         <>
                             <Button disabled={disabled} onClick={() => { onClose(false); setPwdVisible(false); setFormReadOnly(true) }} color='inherit' sx={{ mb: 1 }}><Typography>Close</Typography></Button>
-                            <Button disabled={disabled} type='button' onClick={() => setFormReadOnly(false)} color='warning' sx={{ mb: 1 }}><Typography>Edit Info</Typography></Button>
+                            <Button disabled={disabled || archiveMode} type='button' onClick={() => setFormReadOnly(false)} color='warning' sx={{ mb: 1 }}><Typography>Edit Info</Typography></Button>
 
                         </>
                         :

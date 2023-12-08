@@ -10,8 +10,10 @@ import useData from '../hooks/useData';
 import NoServerResponse from './NoServerResponse';
 import StudentMoreInfo from './StudentMoreInfo';
 import { differenceInMonths, differenceInYears } from 'date-fns'
+import { useParams } from 'react-router-dom';
 
 const Students = () => {
+    const { id } = useParams()
     const { students, setStudents } = useData()
 
     const axiosPrivate = useAxiosPrivate()
@@ -56,7 +58,7 @@ const Students = () => {
 
         const getStudents = async () => {
             try {
-                const response = await axiosPrivate.get('/students', {
+                const response = await axiosPrivate.get(`/students/${id}`, {
                     signal: controller.signal
                 });
 
@@ -80,6 +82,8 @@ const Students = () => {
         }
     }, [])
 
+
+
     useEffect(() => {
         if (students.filter(student => student.archive == false).length > 0) {
             setStudentsEmpty(false)
@@ -88,7 +92,7 @@ const Students = () => {
 
     const handleDeleteStudent = async () => {
         try {
-            const response = await axiosPrivate.patch('/students', { "idsToDelete": selectedRows, "toAchive": true })
+            const response = await axiosPrivate.patch('/students', { "idsToDelete": selectedRows, "toAchive": true, "classID": id })
 
             // setStudents(prev => prev.filter(user => !selectedRows.includes(user._id)))
             setStudents(response.data.filter(student => student.archive == false))
@@ -125,18 +129,18 @@ const Students = () => {
         setUpdateDateOfBirth(null)
         setUpdateAge("")
         try {
-            const response = await axiosPrivate(`/students/${id}`)
-            const parseDate = new Date(response?.data?.birthday)
+            const response = await students.filter(v => v._id == id)
+            const parseDate = new Date(response[0].birthday)
 
-            setUpdateStudentId(response?.data?._id)
-            setUpdateFname(response?.data?.firstname)
-            setUpdateLname(response?.data?.lastname)
-            setUpdateMname(response?.data?.middlename)
-            setUpdateEmail(response?.data?.email)
-            setUpdateGender(response?.data?.gender)
-            setUpdateAddress(response?.data?.address)
-            setUpdateGuardian(response?.data?.guardian)
-            setUpdateContactNo(response?.data?.contactNo)
+            setUpdateStudentId(response[0]._id)
+            setUpdateFname(response[0].firstname)
+            setUpdateLname(response[0].lastname)
+            setUpdateMname(response[0].middlename)
+            setUpdateEmail(response[0].email)
+            setUpdateGender(response[0].gender)
+            setUpdateAddress(response[0].address)
+            setUpdateGuardian(response[0].guardian)
+            setUpdateContactNo(response[0].contactNo)
             setUpdateDateOfBirth(parseDate)
 
             // compute age 
@@ -153,7 +157,7 @@ const Students = () => {
                     dyscalculia: false,
                 };
 
-                response?.data?.learning_disabilities?.map(item => {
+                response[0].learning_disabilities?.map(item => {
                     if (item == 'dyslexia') {
                         myObj.dyslexia = true;
                     }

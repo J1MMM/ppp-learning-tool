@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import useAxios from '../hooks/useAxios';
 import { CloudDownload, CloudUpload, Delete, Description, Done, DownloadDone, FileDownloadDone, FileUpload, FileUploadOutlined, Folder, InsertDriveFile, InsertDriveFileOutlined, UploadFile } from '@mui/icons-material';
 import InputFile from './InputFile';
+import { useParams } from 'react-router-dom';
 
 const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLessons, setSnackMsg, setSnackOpen, setSnackSev, snackSev, snackOpen, snackMsg, setEmpty, setFilter }) => {
     const axios = useAxios();
+    const { id } = useParams()
 
     const [title, setTitle] = useState("")
     const [categories, setCategories] = useState([])
@@ -39,6 +41,7 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
         formData.append('title', title)
         formData.append('file', file)
         formData.append('categories', categories)
+        formData.append('classID', id)
 
         try {
             const response = await axios.post('/upload', formData)

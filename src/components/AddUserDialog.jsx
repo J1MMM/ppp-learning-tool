@@ -145,7 +145,7 @@ const AddUserDialog = ({ open, onClose, setUsers, setResMsg, setSnack, setSeveri
                         }}
                     >
                         <FormControl fullWidth margin='dense'>
-                            <InputLabel id="gender">Gender</InputLabel>
+                            <InputLabel id="gender">Sex</InputLabel>
                             <Select
                                 labelId="gender"
                                 id="gender"

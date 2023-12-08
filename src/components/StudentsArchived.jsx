@@ -13,6 +13,8 @@ import StudentsArchivedDialog from './StudentsArchivedDialog';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import ConfirmationDialog from '../components/ConfirmationDialog';
 import SnackBar from './SnackBar';
+import { useParams } from 'react-router-dom';
+import useData from '../hooks/useData';
 
 
 const StudentsArchived = ({
@@ -25,7 +27,8 @@ const StudentsArchived = ({
     alphabetically,
     setAlphabetically,
 }) => {
-
+    const { id } = useParams()
+    const { archiveMode } = useData()
     const axiosPrivate = useAxiosPrivate()
     const [mobileView, setMobileView] = useState(false)
     const [infoModal, setInfoModal] = useState(false)
@@ -69,7 +72,7 @@ const StudentsArchived = ({
 
     const handleDeleteStudent = async () => {
         try {
-            const response = await axiosPrivate.delete('/students', { data: { "idsToDelete": selectedRows } })
+            const response = await axiosPrivate.delete('/students', { data: { "idsToDelete": selectedRows, "classID": id } })
 
             setStudentsArchived(response.data.filter(student => student.archive == true))
             setResMsg('Student Deleted successfully')
@@ -109,17 +112,17 @@ const StudentsArchived = ({
         setInfoAge("")
 
         try {
-            const studentInfo = await axiosPrivate(`/students/${id}`)
-            const parseDate = new Date(studentInfo?.data.birthday)
+            const studentInfo = await studentsArchived.filter(v => v._id == id)
+            const parseDate = new Date(studentInfo[0].birthday)
 
-            setInfoFname(studentInfo?.data?.firstname)
-            setInfoLname(studentInfo?.data?.lastname)
-            setInfoMname(studentInfo?.data?.middlename)
-            setInfoEmail(studentInfo?.data?.email)
-            setInfoGender(studentInfo?.data?.gender)
-            setInfoAddress(studentInfo?.data?.address)
-            setInfoGuardian(studentInfo?.data?.guardian)
-            setInfoContactNo(studentInfo?.data?.contactNo)
+            setInfoFname(studentInfo[0].firstname)
+            setInfoLname(studentInfo[0].lastname)
+            setInfoMname(studentInfo[0].middlename)
+            setInfoEmail(studentInfo[0].email)
+            setInfoGender(studentInfo[0].gender)
+            setInfoAddress(studentInfo[0].address)
+            setInfoGuardian(studentInfo[0].guardian)
+            setInfoContactNo(studentInfo[0].contactNo)
             setInfoDoB(parseDate)
 
             // compute age 
@@ -135,7 +138,7 @@ const StudentsArchived = ({
                     dyscalculia: false,
                 };
 
-                studentInfo?.data?.learning_disabilities?.map(item => {
+                studentInfo[0].learning_disabilities?.map(item => {
                     if (item == 'dyslexia') {
                         myObj.dyslexia = true;
                     }
@@ -153,9 +156,8 @@ const StudentsArchived = ({
         }
     }
     const handleRestoreStudents = async () => {
-
         try {
-            const response = await axiosPrivate.patch('/students', { "idsToDelete": selectedRows, "toAchive": false })
+            const response = await axiosPrivate.patch('/students', { "idsToDelete": selectedRows, "toAchive": false, "classID": id })
 
             setStudentsArchived(response.data.filter(student => student.archive == true))
             setResMsg('Student restored successfully')
@@ -274,9 +276,9 @@ const StudentsArchived = ({
                                 inputProps={{
                                     'aria-label': 'select all',
                                 }}
-                                disabled={studentsArchived.length == 0}
+                                disabled={studentsArchived.length == 0 || archiveMode}
                             />
-                            <TableSortLabel active={alphabetically} direction={alphabetically ? 'asc' : 'desc'} onClick={() => setAlphabetically(v => !v)}>Fullname</TableSortLabel>
+                            <TableSortLabel active={alphabetically} direction={alphabetically ? 'asc' : 'desc'} onClick={() => !archiveMode && setAlphabetically(v => !v)}>Fullname</TableSortLabel>
                         </TableCell>
                         <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }}>Email</TableCell>
                         <TableCell sx={{ color: 'GrayText', fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: "5rem" }} >Learning Disabilities</TableCell>
@@ -319,10 +321,11 @@ const StudentsArchived = ({
                             <TableRow
                                 key={index}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: '#e8fee9' }, bgcolor: selectedRows.includes(student._id) ? '#e8fee9' : '' }}
-                                onClick={() => handleRowClick(student._id)}
+                                onClick={() => !archiveMode && handleRowClick(student._id)}
                             >
                                 <TableCell padding='checkbox' sx={{ fontSize: { xs: "x-small", sm: "x-small", md: "small" }, minWidth: { xs: "12rem", sm: "12rem", md: "18rem" } }}>
                                     <Checkbox
+                                        disabled={archiveMode}
                                         size={mobileView ? 'small' : 'medium'}
                                         color="primary"
                                         inputProps={{
@@ -390,9 +393,9 @@ const StudentsArchived = ({
                     >
                         <img src={emptyTable} style={{
                             width: '100%',
-                            maxWidth: '25rem',
+                            maxWidth: '15rem',
                         }} />
-                        <Typography component={'span'} variant='h4' textAlign="center" color='#2F2E41'>No Students Found</Typography>
+                        <Typography component={'span'} variant='h5' textAlign="center" color='#2F2E41'>No Students have been Archived</Typography>
                     </Box>
                 </Grow>
             }
@@ -432,7 +435,7 @@ const StudentsArchived = ({
             />
             <ConfirmationDialog
                 title={`Restore Confirmation`}
-                content={"Are you sure you want to restore all this data? All restored data will be merged into the Students' data."}
+                content={"Are you sure you want to restore all this data? All restored data will be merged into the Students data."}
                 open={restoreConfirmation}
                 setOpen={setRestoreConfirmation}
                 confirm={handleRestoreStudents}
