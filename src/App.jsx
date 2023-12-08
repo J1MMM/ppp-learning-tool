@@ -29,7 +29,6 @@ function App() {
     document.title = getPageTitle(location.pathname);
   }, [location.pathname]);
 
-  console.log(location.pathname);
 
   const getPageTitle = (pathname) => {
     switch (pathname) {

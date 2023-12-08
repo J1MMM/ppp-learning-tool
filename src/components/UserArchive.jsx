@@ -276,9 +276,9 @@ const UserArchive = () => {
                     >
                         <img src={emptyTable} style={{
                             width: '100%',
-                            maxWidth: '25rem',
+                            maxWidth: '15rem',
                         }} />
-                        <Typography component={'span'} variant='h4' textAlign="center" color='#2F2E41'>No Archive Users Found</Typography>
+                        <Typography component={'span'} variant='h5' textAlign="center" color='#2F2E41'>No Archive Users Found</Typography>
                     </Box>
                 </Grow>
             }
