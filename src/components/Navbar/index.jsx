@@ -92,7 +92,7 @@ const Navbar = ({ setOpenDialog, navOpen }) => {
 
                         <a className={navOpen ? 'open' : ''} onClick={() => setClassesShow(v => !v)} style={{ userSelect: 'none', cursor: 'pointer' }}>
                             {classesShow ? <IoMdArrowDropright /> : <IoMdArrowDropdown />}
-                            <FaChalkboardTeacher size={24} />
+                            {navOpen && <FaChalkboardTeacher size={24} />}
                             <Typography component={'span'} className={navOpen ? 'active' : ''}>Classes</Typography>
                         </a>
 
