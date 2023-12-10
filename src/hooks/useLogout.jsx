@@ -4,7 +4,7 @@ import useData from './useData';
 
 const UseLogout = () => {
     const { setAuth } = useAuth();
-    const { setUsers, setStudents, setLessons, setLessonsArchived, setStudentsArchived, setTabpage, setClasses, setClassesArchived } = useData();
+    const { setUsers, setStudents, setLessons, setLessonsArchived, setStudentsArchived, setTabpage, setClasses, setClassesArchived, setAllStudents } = useData();
 
     const logout = async () => {
         setAuth({});
@@ -16,6 +16,7 @@ const UseLogout = () => {
         setStudentsArchived([])
         setClasses([])
         setClassesArchived([])
+        setAllStudents([])
         try {
             const response = axios('/logout', {
                 withCredentials: true

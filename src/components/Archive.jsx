@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 const Archive = () => {
     const { id } = useParams()
     const axiosPrivate = useAxiosPrivate()
-    const { archiveMode, studentsArchived, setStudentsArchived } = useData();
+    const { archiveMode, studentsArchived, setStudentsArchived, currentSection } = useData();
 
     const [selectedRows, setSelectedRows] = useState([])
 
@@ -26,6 +26,7 @@ const Archive = () => {
         window.scrollTo(0, 0);
         let isMounted = true;
         const controller = new AbortController();
+        document.title = `Archived Students in ${currentSection}`
 
         const getStudents = async () => {
             try {

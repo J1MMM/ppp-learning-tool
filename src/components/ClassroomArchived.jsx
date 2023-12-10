@@ -36,6 +36,7 @@ const ClassroomArchived = () => {
         window.scrollTo(0, 0);
         let isMounted = true;
         const controller = new AbortController();
+        document.title = "Archived Classes"
 
         const getClasses = async () => {
             try {

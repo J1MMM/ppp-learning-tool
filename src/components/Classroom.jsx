@@ -48,6 +48,7 @@ const Classroom = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Class Management"
         let isMounted = true;
         const controller = new AbortController();
 
@@ -71,12 +72,12 @@ const Classroom = () => {
         }
     }, [])
 
-    useEffect(() => {
-        setSortedClasses(v => sortByDate(classes, 'schoolYear'))
+    // useEffect(() => {
+    //     setSortedClasses(v => sortByDate(classes, 'schoolYear'))
 
-    }, [classes])
+    // }, [classes])
 
-    const ClassCardsElements = sortedClasses.map((item, index) => {
+    const ClassCardsElements = classes.map((item, index) => {
         return <ClassroomCard
             key={index}
             item={item}

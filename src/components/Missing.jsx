@@ -4,6 +4,7 @@ import img404 from '../assets/images/404.svg'
 import { useNavigate } from 'react-router-dom';
 
 const Missing = () => {
+    document.title = "Page 404"
     const navigate = useNavigate()
     return (
         <Box

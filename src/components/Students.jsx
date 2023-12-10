@@ -14,7 +14,7 @@ import { useParams } from 'react-router-dom';
 
 const Students = () => {
     const { id } = useParams()
-    const { students, setStudents } = useData()
+    const { students, setStudents, currentSection } = useData()
 
     const axiosPrivate = useAxiosPrivate()
     const [studentsEmpty, setStudentsEmpty] = useState(false)
@@ -51,10 +51,12 @@ const Students = () => {
         dyscalculia: false,
     })
 
+
     useEffect(() => {
         window.scrollTo(0, 0);
         let isMounted = true;
         const controller = new AbortController();
+        document.title = `Students in ${currentSection}`
 
         const getStudents = async () => {
             try {

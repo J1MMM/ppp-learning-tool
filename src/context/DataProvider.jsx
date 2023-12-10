@@ -14,6 +14,7 @@ export const DataProvider = ({ children }) => {
     const [allStudents, setAllStudents] = useState([])
 
     const [archiveMode, setArchiveMode] = useState(false)
+    const [currentSection, setCurrentSection] = useState("")
 
     const [tabPage, setTabpage] = useState(0);
 
@@ -40,7 +41,9 @@ export const DataProvider = ({ children }) => {
             allStudents,
             setAllStudents,
             archiveMode,
-            setArchiveMode
+            setArchiveMode,
+            setCurrentSection,
+            currentSection
         }}>
             {children}
         </DataContext.Provider>

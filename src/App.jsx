@@ -23,39 +23,7 @@ import Section from './components/Section'
 import SectionArchived from './components/SectionArchived'
 
 function App() {
-  const location = useLocation()
 
-  useEffect(() => {
-    document.title = getPageTitle(location.pathname);
-  }, [location.pathname]);
-
-
-  const getPageTitle = (pathname) => {
-    switch (pathname) {
-      case '/':
-        return 'Dashboard | Overview';
-      case '/users':
-        return 'Dashboard | Users Management';
-      case '/students':
-        return 'Dashboard | Students Management';
-      case '/login':
-        return 'PPPedu | Login';
-      case '/lessons':
-        return 'Dashboard | Lessons Management';
-      case '/archive':
-        return 'Dashboard |  Archived Management';
-      case '/classroom':
-        return 'Dashboard |  Classroom Management';
-      case 'classroom/:id/students':
-        return 'Classroom |  Students Management';
-      case '/reset-password/:token':
-        return 'Reset Password';
-      case '/unauthorized':
-        return 'Unauthorized User';
-      default:
-        return 'page not found';
-    }
-  };
 
   return (
     <Routes>

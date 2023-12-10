@@ -4,15 +4,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import unauthorizedImg from '../assets/images/denied.svg'
 
 const Unauthorized = () => {
-    const [show, setShow] = useState(false)
 
-    useEffect(() => {
-        setShow(true)
-    }, [])
+    document.title = "Unauthorized"
 
     const navigate = useNavigate()
     return (
-        <Grow in={show}>
+        <Grow in={true}>
             <Box
                 width="100%"
                 height='80vh'

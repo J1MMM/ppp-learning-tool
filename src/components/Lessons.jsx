@@ -23,7 +23,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 const Lessons = () => {
     const BASE_URL = 'https://capstone-server-kqsi.onrender.com/view/'
     const axiosPrivate = useAxiosPrivate();
-    const { lessons, setLessons, archiveMode } = useData()
+    const { lessons, setLessons, archiveMode, currentSection } = useData()
     const { id } = useParams()
 
     const [filteredLessons, setFilteredLessons] = useState([])
@@ -55,11 +55,11 @@ const Lessons = () => {
     const filterCategories1 = ['Dyslexia', 'Dysgraphia', 'Dyscalculia']
     const filterCategories2 = ['Documents', 'Videos', 'Images']
 
-
     useEffect(() => {
         window.scrollTo(0, 0);
         let isMounted = true;
         const controller = new AbortController();
+        document.title = `Lessons for ${currentSection}`
 
         const getLessons = async () => {
             try {

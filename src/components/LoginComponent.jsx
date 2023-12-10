@@ -20,14 +20,15 @@ import Logo from '../assets/images/ppp-logo-login.png'
 
 import img1 from '../assets/images/slider-photo-1.jpg'
 import img2 from '../assets/images/slider-photo-4.jpg'
-import img3 from '../assets/images/slider-photo-1.jpg'
-import img4 from '../assets/images/slider-photo-4.jpg'
-import img5 from '../assets/images/slider-photo-1.jpg'
+import img3 from '../assets/images/slider-photo-5.jpg'
+import img4 from '../assets/images/slider-photo-2.jpg'
+import img5 from '../assets/images/slider-photo-3.jpg'
 
 
 const LOGIN_URL = '/auth';
 
 const LoginComponenet = () => {
+    document.title = "Login"
     const { auth, setAuth } = useAuth()
     const navigate = useNavigate();
     const location = useLocation();
@@ -325,7 +326,6 @@ const LoginComponenet = () => {
                             />
                         </FormControl>
                         <Link
-                            href="#"
                             variant='subtitle2'
                             mt={1}
                             sx={{ textDecoration: 'none', float: 'right', color: formDisabled && 'lightgrey', pointerEvents: formDisabled && 'none' }}

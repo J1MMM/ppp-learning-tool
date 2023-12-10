@@ -26,7 +26,7 @@ import Users from './Users'
 import { VscBook } from 'react-icons/vsc';
 
 const Home = () => {
-    const { allStudents, setAllStudents } = useData();
+    const { allStudents, setAllStudents, setClasses, classes } = useData();
     const { auth } = useAuth()
     const axiosPrivate = useAxiosPrivate()
 
@@ -39,11 +39,12 @@ const Home = () => {
 
     const isAdmin = Boolean(auth?.roles?.find(role => role === ROLES_LIST.Admin))
     if (isAdmin) {
-        document.title = "Dashboard | Users Management"
+        document.title = "Users Management"
         return <Users />
     }
 
     useEffect(() => {
+        document.title = "Home"
         window.scrollTo(0, 0);
         let isMounted = true;
         const controller = new AbortController();
@@ -81,7 +82,8 @@ const Home = () => {
             isMounted && controller.abort();
         }
     }, [])
-    // console.log(auth);
+
+
 
     const cardData = [
         {

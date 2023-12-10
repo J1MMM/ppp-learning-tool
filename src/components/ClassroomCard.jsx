@@ -34,7 +34,7 @@ const ClassroomCard = ({
 
 }) => {
     const axiosPrivate = useAxiosPrivate();
-    const { classes, setClasses } = useData()
+    const { classes, setClasses, setCurrentSection } = useData()
 
     const [cardElevation, setCardElevation] = useState(3)
     const [anchorEl, setAnchorEl] = useState(null);
@@ -111,7 +111,7 @@ const ClassroomCard = ({
                     position: 'relative',
                 }}
             >
-                <NavLink to={`${item._id}`} style={{ textDecoration: 'none' }}>
+                <NavLink to={`${item._id}`} style={{ textDecoration: 'none' }} onClick={() => setCurrentSection(item.section)}>
                     <Box
                         position="relative"
                         width="100%"

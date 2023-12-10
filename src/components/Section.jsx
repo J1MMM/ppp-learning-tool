@@ -1,16 +1,14 @@
 import { Box, Paper, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
-import { Navigate, Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import ClassroomNavbar from './ClassroomNavbar';
 import useData from '../hooks/useData';
 
 const Section = () => {
-    const { id } = useParams()
     const { setStudents, setStudentsArchived, setLessons, setArchiveMode } = useData()
-    const navigate = useNavigate()
-
 
     useEffect(() => {
+
         setArchiveMode(false)
         return () => {
             setStudentsArchived([])
