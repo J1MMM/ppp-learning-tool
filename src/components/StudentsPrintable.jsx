@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 class StudentsPrintable extends Component {
+
     formatReadableDate = (dateString) => {
         const date = new Date(dateString);
         // Options for formatting the date (without time)
@@ -9,12 +10,16 @@ class StudentsPrintable extends Component {
         return date.toLocaleString('en-US', options);
     };
 
+
     render() {
         const { students } = this.props;
+        const date = new Date;
 
         return (
-            <div style={{ padding: 8 }}>
-                <h1 style={{ fontWeight: 500, marginBottom: 8 }}>List of Students</h1>
+            <div style={{ padding: 8, flex: 1 }}>
+                <small style={{ display: 'block' }}>
+                    Total Students: {students?.length}
+                </small>
 
                 <table style={{ border: '1px solid black', width: '100%', borderCollapse: 'collapse', fontSize: 'xx-small' }}>
                     <thead>
@@ -51,6 +56,7 @@ class StudentsPrintable extends Component {
                         }
                     </tbody>
                 </table>
+                <small style={{ textAlign: 'end', width: '100%', marginTop: '1rem', display: 'block' }}><b>Printed at:</b> {date && date.toString()}</small>
             </div>
         );
     }
