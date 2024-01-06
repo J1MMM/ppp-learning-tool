@@ -340,7 +340,9 @@ const LoginComponenet = () => {
                             type='submit'
                             disabled={formDisabled}
                         >Login</Button>
+
                     </form>
+                    <a style={{ position: 'absolute', bottom: 42, textDecoration: 'none', color: '#2DA544', }} href="https://expo.dev/artifacts/eas/bC9h6MpsHsjWgvTDvaaM5Y.apk"> 🎮 Download now: PPPKids!</a>
                 </Box>
             </Container>
 
