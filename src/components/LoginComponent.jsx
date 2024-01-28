@@ -342,7 +342,7 @@ const LoginComponenet = () => {
                         >Login</Button>
 
                     </form>
-                    <a style={{ position: 'absolute', bottom: 42, textDecoration: 'none', color: '#2DA544', }} href="https://expo.dev/artifacts/eas/bC9h6MpsHsjWgvTDvaaM5Y.apk"> 🎮 Download now: PPPKids!</a>
+                    <a style={{ position: 'absolute', bottom: 42, textDecoration: 'none', color: '#2DA544', }} href="https://www.mediafire.com/file/y45umlcnui5uxsa/PPPKids.apk/file"> 🎮 Download now: PPPKids!</a>
                 </Box>
             </Container>
 
