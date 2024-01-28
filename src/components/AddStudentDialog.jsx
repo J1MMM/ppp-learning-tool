@@ -1,4 +1,4 @@
-import { CheckBox, Visibility, VisibilityOff } from '@mui/icons-material';
+import { CheckBox, Help, Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
@@ -17,6 +17,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
     const [fname, setFname] = useState("")
     const [lname, setLname] = useState("")
     const [mname, setMname] = useState("")
+    const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [pwd, setPwd] = useState("")
     const [address, setAddress] = useState("")
@@ -56,8 +57,8 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
             return;
         }
 
-        if (fname.length < 2 || lname.length < 2) {
-            setResMsg("Student name should be at least 2 characters");
+        if (fname.length < 2 || lname.length < 2 || username.length < 2) {
+            setResMsg("Student name and username should be at least 2 characters");
             setSeverity("error")
             setSnack(true);
             setDisabled(false)
@@ -81,6 +82,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                 "firstname": fname.trimStart().trimEnd(),
                 "lastname": lname.trimStart().trimEnd(),
                 "middlename": mname.trimStart().trimEnd(),
+                "username": username.trimStart().trimEnd(),
                 "email": email.trimStart().trimEnd(),
                 "password": pwd.trimStart().trimEnd(),
                 "gender": gender,
@@ -102,7 +104,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
             if (!error?.response) {
                 setResMsg('No Server Response')
             } else if (error?.response?.status == 409) {
-                setResMsg('Email address is already use')
+                setResMsg(error.response?.data?.message)
                 setDisabilities({
                     dyslexia: false,
                     dysgraphia: false,
@@ -122,6 +124,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
         setFname("")
         setLname("")
         setMname("")
+        setUsername("")
         setEmail("")
         setPwd("")
         setGender("")
@@ -155,7 +158,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
     return (
         <Dialog open={open} onClose={() => onClose(false)} disableAutoFocus >
             <form onSubmit={handleAddStudent} >
-                <DialogTitle variant='h5' bgcolor="primary.main" color="#FFF" >Add Student</DialogTitle>
+                <DialogTitle variant='h6' bgcolor="primary.main" color="#FFF" >Add Student</DialogTitle>
                 <Divider />
                 <DialogContent>
                     <Box
@@ -206,6 +209,9 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                             onChange={(e) => setMname(e.target.value)}
                         />
                     </Box>
+
+
+
 
                     <TextField
                         disabled={disabled}
@@ -307,7 +313,19 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
 
                         />
                     </Box>
+                    <TextField
+                        disabled={disabled}
+                        required
+                        margin="dense"
+                        id="email"
+                        label="Email Address"
+                        type="email"
+                        variant="outlined"
+                        fullWidth
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
 
+                    />
                     <Box
                         mt={1}
                         display="flex"
@@ -319,20 +337,20 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                             }
                         }}
                     >
+
                         <TextField
                             disabled={disabled}
                             required
                             margin="dense"
-                            id="email"
-                            label="Email Address"
-                            type="email"
+                            id="username"
+                            label="Username"
+                            type="text"
                             variant="outlined"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             fullWidth
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
 
                         />
-
                         <FormControl fullWidth variant="outlined" margin='dense'>
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <OutlinedInput
@@ -358,9 +376,14 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                         </FormControl>
                     </Box>
 
+                    <Box display={'flex'} gap={1} alignItems={'center'}>
+                        <Help fontSize='small' color='primary' />
+                        <Typography fontSize='small' sx={{ color: 'primary.main' }}>username and password will be used to login to the PPPKids game.</Typography>
+                    </Box>
+
                     <FormControl sx={{ mt: 2 }} error={disabilitiesRequired}>
                         <FormLabel component="legend">Learning Disabilities:</FormLabel>
-                        <FormGroup>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                             <FormControlLabel
                                 sx={{ width: 'fit-content' }}
                                 control={
@@ -381,7 +404,7 @@ const AddStudentDialog = ({ open, onClose, setStudents, setResMsg, setSnack, set
                                     <Checkbox disabled={disabled} checked={dyscalculia} name='dyscalculia' onChange={disabilitiesChange} />
                                 }
                                 label="Dyscalculia" />
-                        </FormGroup>
+                        </Box>
                     </FormControl>
                 </DialogContent>
 

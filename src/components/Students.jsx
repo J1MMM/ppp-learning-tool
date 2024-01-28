@@ -33,6 +33,7 @@ const Students = () => {
     const [updateFname, setUpdateFname] = useState("")
     const [updateLname, setUpdateLname] = useState("")
     const [updateMname, setUpdateMname] = useState("")
+    const [updateUsername, setUpdateUsername] = useState("")
     const [updateEmail, setUpdateEmail] = useState("")
     const [updatePwd, setUpdatePwd] = useState("")
     const [updateGender, setUpdateGender] = useState("")
@@ -122,6 +123,7 @@ const Students = () => {
         setUpdateFname("")
         setUpdateLname("")
         setUpdateMname("")
+        setUpdateUsername("")
         setUpdateEmail("")
         setUpdatePwd("")
         setUpdateGender("")
@@ -138,6 +140,7 @@ const Students = () => {
             setUpdateFname(response[0].firstname)
             setUpdateLname(response[0].lastname)
             setUpdateMname(response[0].middlename)
+            setUpdateUsername(response[0].username)
             setUpdateEmail(response[0].email)
             setUpdateGender(response[0].gender)
             setUpdateAddress(response[0].address)
@@ -208,6 +211,7 @@ const Students = () => {
                 setSelectedRows={setSelectedRows}
                 setAlphabetically={setAlphabetically}
                 alphabetically={alphabetically}
+
             />
 
             <AddStudentDialog
@@ -218,6 +222,7 @@ const Students = () => {
                 setSnack={setSnack}
                 setSeverity={setSeverity}
                 setStudentsEmpty={setStudentsEmpty}
+
             />
 
             <UpdateStudentDialog
@@ -254,6 +259,8 @@ const Students = () => {
                 updateAge={updateAge}
                 setUpdateAge={setUpdateAge}
                 setAlphabetically={setAlphabetically}
+                setUpdateUsername={setUpdateUsername}
+                updateUsername={updateUsername}
             />
 
             <SnackBar

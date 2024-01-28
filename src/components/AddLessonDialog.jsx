@@ -1,7 +1,7 @@
-import { Box, Button, Checkbox, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, Grow, IconButton, InputLabel, ListItemText, MenuItem, OutlinedInput, Popover, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, Grow, IconButton, InputLabel, List, ListItem, ListItemText, MenuItem, OutlinedInput, Popover, Select, TextField, Tooltip, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import useAxios from '../hooks/useAxios';
-import { CloudDownload, CloudUpload, Delete, Description, Done, DownloadDone, FileDownloadDone, FileUpload, FileUploadOutlined, Folder, InsertDriveFile, InsertDriveFileOutlined, UploadFile } from '@mui/icons-material';
+import { Delete, Description, Help } from '@mui/icons-material';
 import InputFile from './InputFile';
 import { useParams } from 'react-router-dom';
 
@@ -9,11 +9,13 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
     const axios = useAxios();
     const { id } = useParams()
 
+    const [anchorEl, setAnchorEl] = useState(null);
     const [title, setTitle] = useState("")
     const [categories, setCategories] = useState([])
     const [file, setFile] = useState(null)
 
     const items = ['Dyslexia', 'Dysgraphia', 'Dyscalculia']
+
 
 
     const handleAddLesson = async (e) => {
@@ -120,7 +122,6 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                 />
-
                                 <FormControl variant="outlined" fullWidth margin='dense'>
                                     <InputLabel id="demo-multiple-name-label">Learning Support</InputLabel>
                                     <Select
@@ -148,6 +149,48 @@ const AddLessonDialog = ({ baseURL, open, onClose, disabled, setDisabled, setLes
                             </Box>
                             {/* input file */}
                             <InputFile file={file} setFile={setFile} disabled={disabled} />
+                            <Box display={'flex'} gap={1} alignItems={'center'}>
+                                <Help fontSize='small' color='disabled' onMouseEnter={(e) => setAnchorEl(e.currentTarget)} onMouseLeave={() => setAnchorEl(null)} />
+                                <Typography fontSize='small' color='InactiveCaptionText'>Accepted File Formats</Typography>
+                            </Box>
+
+                            <Popover
+                                id="mouse-over-popover"
+                                sx={{
+                                    pointerEvents: 'none',
+                                }}
+                                open={Boolean(anchorEl)}
+                                anchorEl={anchorEl}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                onClose={() => setAnchorEl(null)}
+                                disableRestoreFocus
+
+                            >
+                                <Box p={2}>
+                                    <Typography variant='subtitle1' fontWeight={'700'}>We accept the following files, under 100MB size:</Typography>
+                                    <ul style={{ margin: 0 }}>
+                                        <li>
+                                            <Typography variant='subtitle2'><strong>Documents:</strong> .doc, .docx, .pdf, .txt</Typography>
+                                        </li>
+                                        <li>
+                                            <Typography variant='subtitle2'><strong>Presentations:</strong> .ppt, .pptx, .pptm</Typography>
+                                        </li>
+                                        <li>
+                                            <Typography variant='subtitle2'><strong>Images:</strong> .jpg, .jpeg, .png</Typography>
+                                        </li>
+                                        <li>
+                                            <Typography variant='subtitle2'><strong>Videos:</strong> .mp4</Typography>
+                                        </li>
+                                    </ul>
+                                </Box>
+                            </Popover>
 
                             {file && <Grow in={file ? true : false} >
                                 <Box

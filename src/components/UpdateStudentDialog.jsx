@@ -1,10 +1,9 @@
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Help, Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { axiosPrivate } from '../api/axios';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import dayjs from 'dayjs';
 import { differenceInYears, set } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import useData from '../hooks/useData';
@@ -19,10 +18,12 @@ const UpdateStudentDialog = ({
     updateFname,
     updateLname,
     updateMname,
+    updateUsername,
     updateEmail,
     setUpdateFname,
     setUpdateLname,
     setUpdateMname,
+    setUpdateUsername,
     setUpdateEmail,
     setUpdatePwd,
     updatePwd,
@@ -68,8 +69,8 @@ const UpdateStudentDialog = ({
             return;
         }
 
-        if (updateFname.length < 2 || updateLname.length < 2) {
-            setResMsg("Student name should be at least 2 characters");
+        if (updateFname.length < 2 || updateLname.length < 2 || updateUsername.length < 2) {
+            setResMsg("Student name and username should be at least 2 characters");
             setSeverity("error")
             setSnack(true);
             setDisabled(false)
@@ -108,6 +109,7 @@ const UpdateStudentDialog = ({
                 "firstname": updateFname.trimStart().trimEnd(),
                 "lastname": updateLname.trimStart().trimEnd(),
                 "middlename": updateMname.trimStart().trimEnd(),
+                "username": updateUsername.trimStart().trimEnd(),
                 "email": updateEmail.trimStart().trimEnd(),
                 "password": updatePwd.trimStart().trimEnd(),
                 "learning_disabilities": selectedDisabilities,
@@ -139,7 +141,7 @@ const UpdateStudentDialog = ({
                 setSeverity("warning")
                 setResMsg(`No changes for student with email: ${updateEmail}`)
             } else if (error?.response?.status == 409) {
-                setResMsg('Email address is already use')
+                setResMsg(error.response?.data?.message)
             } else {
                 setResMsg('Request Failed')
             }
@@ -151,6 +153,7 @@ const UpdateStudentDialog = ({
         setUpdateLname("")
         setUpdateMname("")
         setUpdateEmail("")
+        setUpdateUsername("")
         setUpdatePwd("")
         setDisabilities({
             dyslexia: false,
@@ -176,7 +179,7 @@ const UpdateStudentDialog = ({
     return (
         <Dialog open={open} onClose={() => { onClose(false); setPwdVisible(false); setFormReadOnly(true) }} disableAutoFocus sx={{ filter: archiveMode ? 'grayscale(1)' : '' }}>
             <form onSubmit={handleUpdateStudents}>
-                <DialogTitle variant='h5' bgcolor="primary.main" color="#FFF" >Details</DialogTitle>
+                <DialogTitle variant='h6' bgcolor="primary.main" color="#FFF" >Details</DialogTitle>
                 <Divider />
                 <DialogContent>
                     <Box
@@ -333,7 +336,19 @@ const UpdateStudentDialog = ({
                             inputProps={{ readOnly: formReadOnly }}
                         />
                     </Box>
-
+                    <TextField
+                        disabled={disabled}
+                        required
+                        margin="dense"
+                        id="email"
+                        label="Email Address"
+                        type="email"
+                        variant="outlined"
+                        fullWidth
+                        value={updateEmail}
+                        onChange={(e) => setUpdateEmail(e.target.value)}
+                        inputProps={{ readOnly: formReadOnly }}
+                    />
                     <Box
                         mt={1}
                         display='flex'
@@ -349,13 +364,13 @@ const UpdateStudentDialog = ({
                             disabled={disabled}
                             required
                             margin="dense"
-                            id="email"
-                            label="Email Address"
-                            type="email"
+                            id="username"
+                            label="Username"
+                            type="text"
                             variant="outlined"
                             fullWidth
-                            value={updateEmail}
-                            onChange={(e) => setUpdateEmail(e.target.value)}
+                            value={updateUsername}
+                            onChange={(e) => setUpdateUsername(e.target.value)}
                             inputProps={{ readOnly: formReadOnly }}
                         />
 
@@ -382,13 +397,14 @@ const UpdateStudentDialog = ({
                                 label="Password"
                             />
                         </FormControl>
-
-
                     </Box>
-
+                    <Box display={'flex'} gap={1} alignItems={'center'}>
+                        <Help fontSize='small' color='primary' />
+                        <Typography fontSize='small' sx={{ color: 'primary.main' }}>username and password will be used to login to the PPPKids game.</Typography>
+                    </Box>
                     <FormControl sx={{ mt: 2 }} error={disabilitiesRequired} >
                         <FormLabel component="legend">Learning Disabilities:</FormLabel>
-                        <FormGroup >
+                        <Box display={'flex'} alignItems={'center'} >
                             <FormControlLabel
                                 sx={{ width: 'fit-content' }}
                                 control={
@@ -409,7 +425,7 @@ const UpdateStudentDialog = ({
                                     <Checkbox disabled={disabled || formReadOnly} checked={dyscalculia} name='dyscalculia' onChange={disabilitiesChange} />
                                 }
                                 label="Dyscalculia" />
-                        </FormGroup>
+                        </Box>
                     </FormControl>
                 </DialogContent>
 

@@ -1,11 +1,12 @@
-import { Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, Grow, IconButton, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, Grow, IconButton, InputLabel, ListItemText, MenuItem, OutlinedInput, Popover, Select, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import InputFile from './InputFile';
-import { Delete, Description } from '@mui/icons-material';
+import { Delete, Description, Help } from '@mui/icons-material';
 import useAxios from '../hooks/useAxios';
 
 const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEditID, setSnackSev, setSnackMsg, setLessons, setSnackOpen, setEmpty, lessons, newFile, newTitle, setNewFile, setNewTitle, newCategories, setNewCategories, setFilter }) => {
     const axios = useAxios()
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const items = ['Dyslexia', 'Dysgraphia', 'Dyscalculia']
 
@@ -134,6 +135,48 @@ const EditLesson = ({ baseURL, open, onClose, disabled, setDisabled, lessonToEdi
 
                             <InputFile file={newFile} setFile={setNewFile} disabled={disabled} />
 
+                            <Box display={'flex'} gap={1} alignItems={'center'}>
+                                <Help fontSize='small' color='disabled' onMouseEnter={(e) => setAnchorEl(e.currentTarget)} onMouseLeave={() => setAnchorEl(null)} />
+                                <Typography fontSize='small' color='InactiveCaptionText'>Accepted File Formats</Typography>
+                            </Box>
+
+                            <Popover
+                                id="mouse-over-popover"
+                                sx={{
+                                    pointerEvents: 'none',
+                                }}
+                                open={Boolean(anchorEl)}
+                                anchorEl={anchorEl}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                onClose={() => setAnchorEl(null)}
+                                disableRestoreFocus
+
+                            >
+                                <Box p={2}>
+                                    <Typography variant='subtitle1' fontWeight={'700'}>We accept the following files, under 100MB size:</Typography>
+                                    <ul style={{ margin: 0 }}>
+                                        <li>
+                                            <Typography variant='subtitle2'><strong>Documents:</strong> .doc, .docx, .pdf, .txt</Typography>
+                                        </li>
+                                        <li>
+                                            <Typography variant='subtitle2'><strong>Presentations:</strong> .ppt, .pptx, .pptm</Typography>
+                                        </li>
+                                        <li>
+                                            <Typography variant='subtitle2'><strong>Images:</strong> .jpg, .jpeg, .png</Typography>
+                                        </li>
+                                        <li>
+                                            <Typography variant='subtitle2'><strong>Videos:</strong> .mp4</Typography>
+                                        </li>
+                                    </ul>
+                                </Box>
+                            </Popover>
                             {newFile && <Grow in={newFile ? true : false} >
                                 <Box
                                     width="100%"
